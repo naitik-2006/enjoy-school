@@ -1,0 +1,1757 @@
+{% extends 'class_layout.html' %}
+
+{% block title %} {{tittle}} {% endblock %}
+
+{% block cssfile %}
+
+<!-- Norama Style  -->
+<style>
+    #class_nav2.shadow2 {
+        box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+        padding-top: 0rem !important;
+    }
+
+    #tab_class {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    #tab_class2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class2 .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class2 .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    .bg-gradient-primary-to-secondary2 {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-size: 100%;
+        padding-bottom: 3rem !important;
+        -webkit-box-direction: normal;
+    }
+</style>
+<!-- Chatting -->
+<style>
+    .signup-form {
+        width: 100% !important;
+    }
+
+    .message_head {
+        display: inline-flex;
+        max-width: 100%;
+        color: var(--teal-lighter);
+        font-weight: 500;
+        font-size: 12.8px;
+        line-height: 22px;
+        color: #35cd96 !important;
+    }
+
+    .chat-message {
+        background: white;
+        padding: 6px 7px 8px 9px;
+        box-sizing: border-box;
+        border-radius: 7.5px;
+        line-break: anywhere;
+    }
+
+    .message-in .chat-message {
+        border-top-left-radius: 0;
+    }
+
+    .message-in3 .chat-message {
+        border-top-left-radius: 7.5px;
+    }
+
+    .message-in4 .chat-message {
+        border-top-right-radius: 0px;
+    }
+
+    .message-in2 .chat-body:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+    }
+
+    textarea {
+        resize: none;
+        max-height: 45px;
+        min-height: 30px;
+        height: auto;
+        line-height: normal !important;
+        padding: 0.5rem !important;
+    }
+
+    .textarea {
+        box-shadow: none !important;
+        border-width: 0 1px 1px 0;
+        border-radius: 50px !important;
+    }
+
+    textarea::-webkit-scrollbar {
+        display: block;
+        width: .3rem;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        border-radius: 10rem;
+        height: 0.5em;
+        border-width: .1rem;
+        border-style: solid;
+        background-clip: padding-box
+    }
+
+    #message {
+        border-radius: 50px !important;
+        padding-left: 1rem !important;
+        padding-right: 0px !important;
+        border-top-right-radius: 0px !important;
+        border-bottom-right-radius: 0px !important;
+        padding-bottom: 0.25rem !important;
+        padding-top: 0.25rem !important;
+    }
+
+    textarea::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+        display: none
+    }
+
+    textarea::-webkit-scrollbar-corner {
+        background-color: transparent
+    }
+
+    textarea:hover::-webkit-scrollbar {
+        display: block
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        /* background-color: #c5ccd6; */
+        border-color: transparent
+    }
+
+    textarea::-webkit-scrollbar-track {
+        background-color: #fff;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+        background-color: #c5ccd6;
+        border-color: #c5ccd6
+    }
+
+    textarea::-webkit-scrollbar-track {
+        background-color: #fff;
+    }
+
+    .message-in4 .chat-body:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .signup-form form {
+        border-radius: 1px;
+        margin-bottom: 15px;
+        background: #fff;
+        border: 1px solid #f3f3f3;
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        padding: 30px;
+    }
+
+    .signup-form .form-group {
+        margin-bottom: 0px;
+    }
+
+    .signup-form label {
+        font-weight: normal;
+        font-size: 13px;
+    }
+
+    .signup-form .form-control {
+        min-height: 32px;
+        max-height: 35px;
+        box-shadow: none !important;
+        border-width: 0 0px 0px 0;
+        border-radius: 0px !important;
+    }
+
+    .signup-form .input-group-addon {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        max-width: 42px;
+        text-align: center;
+        background: #ffffff;
+        border-bottom: 1px solid #e1e1e1;
+        padding-left: 5px;
+        padding-right: 10px;
+    }
+
+    .signup-form .input-group-addon2 {
+        border-radius: 50%;
+        max-height: 50px;
+        min-height: 30px;
+        text-align: center;
+        background: #ffffff;
+    }
+
+    .form-control,
+    .form-control:focus,
+    .input-group-addon {
+        border-color: #e1e1e1;
+        border-radius: 0;
+    }
+
+    .fa,
+    .far,
+    .fas {
+        display: inline;
+    }
+
+    .signup-form .btn,
+    .signup-form .btn:active {
+        font-size: 1.15rem;
+        font-weight: bold;
+        border-radius: 5px;
+        border: none;
+        min-width: 140px;
+    }
+
+    .signup-form a {
+        color: blue;
+        text-decoration: none;
+    }
+
+    .signup-form a:hover {
+        text-decoration: underline;
+    }
+
+    .signup-form .fa {
+        font-size: 21px;
+        position: relative;
+        top: 8px;
+
+    }
+
+    .signup-form .fa-envelope {
+        font-size: 21px;
+        color: #999 !important;
+    }
+
+    .fa-envelope::before {
+        color: #999 !important;
+
+    }
+
+    .navbar-nav.mx-2 {
+        padding-right: 1.5rem !important;
+    }
+
+    .date_fix {
+        margin-bottom: 12px;
+        display: flex;
+        flex-direction: row !important;
+        justify-content: center !important;
+        position: relative !important;
+    }
+
+    .date_main_bg {
+        padding: 5px 12px 6px;
+        text-align: center;
+        text-shadow: 0 1px 0 rgba(var(--inverse-rgb), .4);
+        background-color: rgba(225, 245, 254, 0.92);
+        border-radius: 7.5px;
+        box-shadow: 0 1px .5px rgba(199, 193, 186, .13);
+        display: inline-block;
+        flex: none;
+        max-width: 100% !important;
+        color: black;
+        font-size: 12.5px;
+        line-height: 21px;
+    }
+
+    .signup-form .fa-check {
+        color: #fff;
+        left: 10px;
+        top: 20px;
+        font-size: 7px;
+        position: absolute;
+    }
+
+    .chat-message .invisible-space {
+        line-height: 18px;
+        margin: 0;
+        margin-right: 0.36rem;
+        color: black;
+        padding: 0;
+    }
+
+    .headp {
+        position: relative;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    .chat-body {
+        border-radius: 7.5px;
+        margin-bottom: 0;
+        position: relative;
+        flex: none;
+        color: white;
+        font-size: 14.2px;
+        line-height: 19px;
+    }
+
+    #chatting {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    .bg {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .message-in2 .chat-body:before {
+        left: -12px;
+        border-bottom: 12px solid transparent;
+        border-right: 12px solid white;
+    }
+
+    .message-in5 .chat-body:before {
+        right: -12px;
+        border-bottom: 12px solid transparent;
+        border-left: 12px solid white;
+    }
+
+    .time_div {
+        float: right;
+        margin: -6px -1px -3px 4px;
+        color: black;
+        position: relative;
+        z-index: 10;
+    }
+
+    .hpppp {
+        padding-right: 4%;
+        padding-left: 4%;
+    }
+
+    .for_time {
+        height: 15px;
+        color: var(--bubble-meta);
+        font-size: 11px;
+        line-height: 15px;
+        white-space: nowrap;
+    }
+
+    .style_time {
+        display: inline-block;
+    }
+
+    .style_time {
+        vertical-align: top;
+    }
+
+    .special_padding {
+        display: inline-block;
+        width: 54px;
+        vertical-align: middle;
+    }
+
+    .special_padding {
+        width: 35px;
+    }
+
+    .class_style {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .message-out {
+        align-items: flex-end;
+    }
+
+    .message-in {
+        align-items: flex-start;
+    }
+
+    .class_style {
+        margin-bottom: 12px;
+    }
+
+    .class_style.style_class {
+        margin-bottom: 0.235rem;
+    }
+
+    .class_style,
+    .class_style {
+        padding-right: 9%;
+        padding-left: 9%;
+    }
+
+    .body_style2 {
+        box-shadow: 0 1px .5px rgba(0, 0, 0, .13);
+    }
+
+    #messages {
+        margin-bottom: 0.5rem;
+    }
+
+    .body_style1 {
+        position: relative;
+        z-index: 200;
+    }
+
+    .body_style1 {
+        border-radius: 7.5px;
+    }
+
+    .body_style2 {
+        box-shadow: 0 1px .5px rgba(var(--shadow-rgb), .13);
+    }
+
+    .message-in .body_style1 {
+        background-color: var(--incoming-background);
+    }
+
+    .message-in ._1dvTE .body_style1 {
+        border-top-left-radius: 0;
+    }
+
+    .card_heading_style3 {
+        visibility: visible;
+    }
+
+    .card_heading_style {
+        flex: 0 1 auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .selectable-text {
+        -webkit-user-select: text;
+        -moz-user-select: text;
+        -ms-user-select: text;
+        user-select: text;
+    }
+
+    .custom_btn {
+        border: none;
+        color: unset;
+        box-shadow: none;
+        min-width: 3rem !important;
+        width: 3rem !important;
+        max-height: 45px;
+        min-height: 30px;
+        border-radius: 50% !important;
+        background-color: #3f9c54e8;
+    }
+
+    #chatting::-webkit-scrollbar {
+        display: block;
+        width: .3rem;
+    }
+
+    #chatting::-webkit-scrollbar-thumb {
+        border-radius: 10rem;
+        height: 3em;
+        border-width: .1rem;
+        border-style: solid;
+        background-clip: padding-box
+    }
+
+    #chatting::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+        display: none
+    }
+
+    #chatting::-webkit-scrollbar-corner {
+        background-color: transparent
+    }
+
+    #chatting:hover::-webkit-scrollbar {
+        display: block
+    }
+
+    #chatting::-webkit-scrollbar-thumb {
+        background-color: #c5ccd6;
+        border-color: transparent
+    }
+
+    #chatting::-webkit-scrollbar-track {
+        background-color: rgba(31, 45, 65, .05);
+    }
+
+    #chatting::-webkit-scrollbar-thumb {
+        background-color: #c5ccd6;
+        border-color: #c5ccd6
+    }
+
+    #chatting::-webkit-scrollbar-track {
+        background-color: #f3f4f5;
+    }
+
+    .input_plus_footer {
+        position: fixed;
+        bottom: 0;
+        padding-left: 4.5rem;
+        padding-right: 4.5rem;
+    }
+
+    .input_plus_footer34 {
+        width: calc(100% - 16rem) !important;
+    }
+
+    .input_plus_footer35 {
+        width: calc(100% - 0rem) !important;
+    }
+
+    .custom_btn:focus,
+    .custom_btn:active,
+    .custom_btn:disabled {
+        border: none;
+        box-shadow: none;
+        color: green;
+    }
+
+    .inneer {
+        min-height: 32px;
+        max-height: 35px;
+        background-color: #fff;
+        width: 15px;
+        border-top-left-radius: 50px !important;
+        border-bottom-left-radius: 50px !important;
+    }
+
+    .custom_btn.btn.btn-success {
+
+        min-height: 32px;
+        max-height: 35px;
+    }
+
+    .outtr {
+        min-height: 32px;
+        max-height: 35px;
+        background-color: #fff;
+        margin-right: 0.5rem;
+        width: 15px;
+        border-top-right-radius: 50px !important;
+        border-bottom-right-radius: 50px !important;
+    }
+
+    #chatting {
+
+        height: calc(100vh - 187px);
+        overflow-y: scroll;
+    }
+
+    #chatting {
+        margin-top: -4.7rem !important;
+    }
+
+    * {
+        padding: 0px;
+        margin: 0px;
+    }
+
+    ul.flashes,
+    .flashes .alert {
+        margin-bottom: 0rem;
+        border-radius: 0px;
+    }
+
+    .bg-chat-png {
+        backface-visibility: hidden;
+        position: fixed;
+        width: 100%;
+        background-image: url(/static/bg-chat-light.png);
+        background-repeat: repeat;
+        opacity: 0.06;
+        height: 100%;
+    }
+</style>
+<!-- Media screen -->
+<style>
+    @media(max-width: 450px) {
+        #_440 {
+            display: none;
+        }
+    }
+
+    @media(max-width: 850px) {
+        #class_nav1 {
+            box-shadow: none;
+        }
+
+        #chatting {
+            height: calc(100vh - 245px);
+        }
+
+        #tab_class {
+            display: none !important;
+        }
+
+        .side-nav {
+            padding-top: 7.25rem !important;
+        }
+
+        #layoutSidenav_content {
+            top: 7.25rem !important;
+            min-height: calc(100vh - 7.5rem) !important;
+        }
+
+        #class_nav2.shadow2 {
+            box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+            padding-top: 0rem !important;
+        }
+    }
+
+
+    @media(min-width: 850px) {
+        #class_nav2 {
+            display: none;
+        }
+
+        #making_item {
+            display: none !important;
+        }
+    }
+
+    @media(max-width: 670px) {
+        #chatting.container-fluid.mt-n10 {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+
+        .class_style.message-out {
+            padding-right: 7%;
+            padding-left: 1.5%;
+        }
+
+        .class_style {
+            padding-right: 7% !important;
+            padding-left: 7% !important;
+        }
+
+        .hpppp {
+            padding-left: 0%;
+            padding-right: 0%;
+        }
+
+        .input_plus_footer {
+            position: fixed;
+            bottom: 0;
+            padding-left: 6%;
+            padding-right: 6%;
+        }
+    }
+
+    @media(max-width: 1000px) {
+        .input_plus_footer {
+            width: 100% !important;
+        }
+
+        .input_plus_footer35 {
+            width: 100% !important;
+        }
+
+        .input_plus_footer34 {
+            width: 100% !important;
+        }
+    }
+</style>
+<!-- other -->
+<style>
+    #footer_hai {
+        display: none;
+    }
+</style>
+<!-- Preview -->
+<style>
+    .main {
+        height: 100%;
+    }
+
+    #file_preview {
+        visibility: hidden;
+        display: none;
+    }
+
+    #file_preview.display {
+        visibility: visible;
+        display: block;
+        height: calc(100vh - 58px);
+        background-color: #e6e6e6;
+    }
+
+    .preview_container {
+        height: 85%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .height_decider {
+        height: 13.5rem;
+    }
+
+    .preview_heading_contianer {
+        background-color: #00bfa5;
+        padding: 0 20px 0 25px;
+        box-sizing: border-box;
+        display: flex;
+        flex: none;
+        align-items: center;
+        height: 49px;
+        color: #fff;
+    }
+
+    .preview_heading_contianer .contain {
+        display: flex;
+        flex: none;
+        align-items: center;
+        width: 100%;
+    }
+
+    .preview_heading_contianer .main_heading {
+        flex-grow: 1;
+        overflow: hidden;
+        font-size: 19px;
+        line-height: normal;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .preview_heading_contianer .button_container {
+        width: 48px;
+        opacity: .7;
+        flex: none;
+    }
+
+    .main_button_preview {
+        flex: none;
+        vertical-align: top;
+        color: #fff;
+    }
+
+    #button_preview_cancel:hover {
+        color: #ffffff;
+        fill: #ffffff
+    }
+</style>
+<!-- FIle recieve -->
+<style>
+    .file_recieve .chat-body {
+        color: #303030
+    }
+
+    .file_recieve.message-in2 .file-body {
+        border-top-left-radius: 0px !important;
+    }
+
+    .file_recieve.message-in4.message-in5 .file-body {
+        border-top-right-radius: 0px !important;
+    }
+
+    .file-body {
+        background-color: #fff;
+        box-sizing: border-box;
+        width: 336px;
+        padding: 3px 3px 22px;
+        border-radius: 7.5px;
+    }
+
+    .file_download_button {
+        text-align: inherit;
+        cursor: pointer;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        overflow: hidden;
+        color: inherit;
+    }
+
+    .file_download_button_back {
+        background-color: #f0f0f0;
+        border-radius: 6px;
+        width: 100%;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .file-download-button {
+        display: flex;
+        min-width: 0;
+        min-height: 0;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+        padding: 13px 19px;
+    }
+
+    .file-button-image {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADMAAAA8CAYAAADL94L/AAAByElEQVR4Ae3axdJTQRAFYFyegA3u8ALseCDcicsGhxt3x+G32BXc3X3NBnfXYTqp3sZlhuqpOlXZRL46He9ReJyJxGSTEreaPfEHZiX+1uSJvelVNu+Jvjd7Yk9zI8aSUe0eDpjCIYfNSuw5v/zF5In/6mU27478tXriLJvXjdSwPq1lCDTCmxjiCNav8GZYBVMwWKagX8kWjk9vCcMhYWhEFEw1+oV0wZjdPKY6Vn9EwmBDTYPwBoXCYPLGDQTJjkHQNQRJj0FQtmgs+C8wOHIIkh2DoDu5vD5Xfkz9hsTBWDyxhjDYUDqvLRYSY1JilSQGyyxXOt4QKJPX70NDQmI27gyxHcn9bH/5RFMNAUgoDI4afOAMHBiCdiDNj5woGAhgsCEYudSI1lBCRwoPL957slAoDDYEoPXb/ZVs3FE/y9072fDxsx4BMPVfGOpl1VY/y5++4EWM1Fm9LcCKpy8RpnchDGEIQxjCEIYwhCEMYQhDGMIQhjCEIQxhCEMYwhCGMIQhDGEIQxhYNlXiP+XHXLRDM5thQVpyzIfS2YtLceVEkRmzalsgMArPhp258bA6b/LEb8LqPM930VNdvY/fhMmCxw+Of+4BTcPInBo2AAAAAElFTkSuQmCC);
+        width: 26px;
+        height: 30px;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .file_text_container {
+        margin: 0 10px;
+        position: relative;
+        top: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+    }
+
+    .file_main_download {
+        position: relative;
+        display: flex;
+        flex: none;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        color: rgba(51, 51, 51, .5);
+    }
+
+    .file_details {
+        position: absolute;
+        bottom: 3px;
+        height: 15px;
+        font-size: .74rem;
+        line-height: 15px;
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    .extension_name {
+        display: inline-block;
+        max-width: 60px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .file_send_time {
+        position: absolute;
+        right: 7px;
+        bottom: 3px;
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    .send-time-file {
+        height: 15px;
+        font-size: 11px;
+        line-height: 15px;
+        white-space: nowrap;
+    }
+
+    .file_download_button:focus,
+    .file_download_button:hover,
+    .file_download_button:disabled {
+        border-color: transparent;
+        border: none;
+    }
+</style>
+{% endblock %}
+
+{% block nav_edit %}
+<div class="dis" id="making_item">
+    <form class="form-inline mr-auto ">
+        <div class=" mr-sm-2"> </div>
+    </form>
+</div>
+<div class="container" id="tab_class">
+    <ul class="nav ">
+        <li class="nav-item">
+            <a class="nav-link classwork" href="">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="#" class="">Discuss</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  Participant" href="" class="Participant">Participant</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block other_nav %}
+<nav class="topnav navbar  navbar-expand shadow2 topbar navbar-light bg-white" id="class_nav2">
+
+    <div class="container" id="tab_class2">
+        <ul class="nav ">
+            <li class="nav-item">
+                <a class="nav-link classwork" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  active" href="#">Discuss</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  Participant" href="#">Participant</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block coreli %}
+<a class="nav-link " href="/">
+    <div class="nav-link-icon ">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-book-open">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg></i-feather>
+    </div>
+    Home
+</a>
+<a class="nav-link">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-activity">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12">
+                </polyline>
+            </svg></i-feather>
+    </div>
+    Messages
+</a>
+{% endblock %}
+
+{% block Interfaces %}
+<div>
+    <a class="nav-link collapsed active" id="classes">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg></i-feather>
+        </div>
+        Classes
+        <div class="sidenav-collapse-arrow float-left">
+            <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down" class="svg-inline--fa fa-angle-down fa-w-10"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
+                    </path>
+                </svg></fa-icon>
+        </div>
+    </a>
+    <nav class="sidenav-menu-nested nav collapsed" id="classes_content">
+        <div class="submenu collapsed">
+            <a class="nav-link">
+                <span class="nav-link-icon" style="width: 1rem !important;">
+                    <span class="fa fa-plus fa-fw"></span></span>
+                {%if current_user.role == 'Teacher' %}
+                <span id="class_create">Create Class</span>
+                {% endif %}
+                {%if current_user.role == 'Student' %}
+                <span id="class_join">Join Class</span>
+                {% endif %}
+            </a>
+        </div>
+    </nav>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Meeting
+    </a>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                    </path>
+                </svg></i-feather>
+        </div>
+        <!----> Test
+    </a>
+</div>
+{% endblock %}
+
+{% block performance %}
+<a class="nav-link ">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-layout">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg></i-feather>
+    </div>
+    <!----> Performance
+</a>
+{% endblock %}
+{% block main_code %}
+<!-- Chat Code Card -->
+<div class="container-fluid mt-n10" id="chatting">
+    <div id="messages">
+        <div class="file_recieve class_style style_class  message-in message-in2 ">
+            <span></span>
+            <div class="chat-body">
+                <div class="body_style1 body_style2">
+                    <div class="file-body">
+                        <div class="file_download_button" title="Download “user_classes.py”" type="button">
+                            <div class="file_download_button_back">
+                                <div class="file-download-button">
+                                    <div class="file_image_container">
+                                        <div class="file-button-image"></div>
+                                    </div>
+                                    <div class="file_text_container" style="flex-grow: 1;">
+                                        <span class=""
+                                            style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span>
+                                    </div>
+                                    <div class="" style="flex-grow: 0;">
+                                        <div class="file_main_download">
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34"
+                                                    height="34">
+                                                    <path fill="currentColor"
+                                                        d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z">
+                                                    </path>
+                                                    <path fill="currentColor"
+                                                        d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z">
+                                                    </path>
+                                                </svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file_details">
+                            <span class="extension_name" title="flatu">flatu</span>
+                            <span class="extension_name" title="26 kB">26 kB</span>
+                        </div>
+                        <div class="file_send_time">
+                            <div class="send-time-file"><span>7:40 PM</span></div>
+                        </div>
+                    </div>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block footer %}
+<!-- Input footer -->
+<div class="input_plus_footer input_plus_footer34">
+    <div class="container-fluid hpppp">
+        <form id="message_input" class="signup-form">
+            <div class="form-group">
+                <div class="input-group">
+                    <!-- <div class="textarea"> -->
+                    <!-- <div class="inneer"></div> -->
+                    <textarea type="text" class="form-control" name="message" id="message" value=""
+                        placeholder="Enter Your Message Here"></textarea>
+                    <div class="outtr"></div>
+                    <label class=" custom_btn btn btn-success mr-1" id="file_upload_button " for="attachment"
+                        title="Attach"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                            height="24" style="vertical-align: revert;">
+                            <path fill="#fff"
+                                d="M1.816 15.556v.002c0 1.502.584 2.912 1.646 3.972s2.472 1.647 3.974 1.647a5.58 5.58 0 0 0 3.972-1.645l9.547-9.548c.769-.768 1.147-1.767 1.058-2.817-.079-.968-.548-1.927-1.319-2.698-1.594-1.592-4.068-1.711-5.517-.262l-7.916 7.915c-.881.881-.792 2.25.214 3.261.959.958 2.423 1.053 3.263.215l5.511-5.512c.28-.28.267-.722.053-.936l-.244-.244c-.191-.191-.567-.349-.957.04l-5.506 5.506c-.18.18-.635.127-.976-.214-.098-.097-.576-.613-.213-.973l7.915-7.917c.818-.817 2.267-.699 3.23.262.5.501.802 1.1.849 1.685.051.573-.156 1.111-.589 1.543l-9.547 9.549a3.97 3.97 0 0 1-2.829 1.171 3.975 3.975 0 0 1-2.83-1.173 3.973 3.973 0 0 1-1.172-2.828c0-1.071.415-2.076 1.172-2.83l7.209-7.211c.157-.157.264-.579.028-.814L11.5 4.36a.572.572 0 0 0-.834.018l-7.205 7.207a5.577 5.577 0 0 0-1.645 3.971z">
+                            </path>
+                        </svg></label>
+                    <input type="file" name="attachment" id="attachment" style="display:none" visibility="none"
+                        onchange=file_change_done(event)>
+                    <button class=" custom_btn btn btn-success" id="message_submit_button"
+                        style="padding-left: 0.85rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" width="24" height="24" style="vertical-align: revert;">
+                            <path fill="#fff"
+                                d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
+                            </path>
+                        </svg></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- File preview -->
+<div id="file_preview">
+    <div class="preview_heading_contianer">
+        <div class="contain">
+            <div class=" button_container">
+                <button class="btn main_button_preview" id="button_preview_cancel">
+                    <span data-testid="x" data-icon="x" class=""><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor"
+                                d="M19.1 17.2l-5.3-5.3 5.3-5.3-1.8-1.8-5.3 5.4-5.3-5.3-1.8 1.7 5.3 5.3-5.3 5.3L6.7 19l5.3-5.3 5.3 5.3 1.8-1.8z">
+                            </path>
+                        </svg></span>
+                </button>
+            </div>
+            <div class="main_heading">Preview</div>
+        </div>
+    </div>
+    <div style="overflow: hidden; height: 85%;">
+        <div class="preview_container">
+            <div class="height_decider">
+                <img src="" alt="" class="img img-fluid rounded mx-auto d-block " id="img_tag_preview">
+                <video id="video" autoplay controls style="height: -webkit-fill-available;">
+                    <source src="" id="vid_tag_preview" type="video/mp4">
+                </video>
+            </div>
+        </div>
+        <div
+            style="float:right;margin-right: 4rem !important;display: flex;align-items: center;justify-content: center;margin-top: 0.5rem">
+            <button class=" custom_btn btn btn-success" id="file_upload_submit"
+                style="padding-left: 0.85rem !important;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                    width="24" height="24" style="vertical-align: revert;">
+                    <path fill="#fff"
+                        d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
+                    </path>
+                </svg></button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scriptfile %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+
+
+
+<!-- FIle Reader -->
+<script>
+    const reader = new FileReader()
+</script>
+<!-- Socket -->
+<script>
+    const socket = io.connect("http://127.0.1:5000");
+    socket.on('connect', function () {
+        socket.emit('join_room', {
+            username: "{{current_user.name}}",
+            room: href_window + "" + "_chat"
+        })
+        document.getElementById("message_input").onsubmit = function (e) {
+            e.preventDefault()
+            var value_message = document.getElementById("message").value.trim();
+            $("#file_preview").removeClass("display");
+            const file2 = document.getElementById("attachment").files[0];
+            document.getElementById("attachment").value = "";
+            let image_url = ['jpg', 'img', 'jpeg', 'png', 'PNG']
+            let video_url = ['mp4', 'mp3', 'mkv']
+            if (value_message.length) {
+                socket.emit('send_message', {
+                    'username': '{{ current_user.name }}',
+                    'room': href_window + "" + "_chat",
+                    'type': "msg_text",
+                    'useremail': '{{ current_user.email }}',
+                    'message': value_message
+                });
+                document.getElementById("message").value = "";
+                document.getElementById("message").focus;
+
+
+            }
+            else if (file2) {
+                reader.readAsDataURL(file2)
+                let result
+                reader.onload = function () {
+                    result = reader.result;
+                    socket.emit('send_message', {
+                        'username': '{{ current_user.name }}',
+                        'useremail': '{{ current_user.email }}',
+                        'room': href_window + "" + "_chat",
+                        'type': "media_file",
+                        'message': result,
+                        'file_size': 26,
+                        'filename': "Python",
+                        'type': "Py"
+                    });
+                }
+            }
+        }
+        socket.on('recieve_krle', function (data) {
+
+            // Vaiable and loader setter
+            $("#preloader").hide()
+            let newnode = ""
+            let time = new Date()
+            let today_time = time.getHours() + ":" + time.getMinutes()
+            let last_elem_id = "kuch nhi ha /*-**/* yar mere"
+            let last_elem_id2 = "kuch nhi ha /*-**/* yar mere"
+
+            // Getting latest message
+            try {
+                last_elem_id = document.getElementById("messages").lastElementChild.getAttribute("id")
+            }
+            catch {
+            }
+
+            // Getting latest message date
+            try {
+                last_elem_id2 = document.getElementsByClassName("what_is_the_date")[document.getElementsByClassName("what_is_the_date").length - 1].innerText
+            }
+            catch {
+            }
+
+            // Today Date
+            let today_date = time.toLocaleDateString().split("/")[1] + "-" + time.toLocaleDateString().split("/")[0] + "-" + time.toLocaleDateString().split("/")[2]
+
+            if (data['type'] == 'msg_text') {
+                if (data['user_email'] == '{{current_user.email}}') {
+
+                    // Appending today element
+                    if (last_elem_id2 != today_date && last_elem_id2 != "Today") {
+                        newnode = `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                            </div>
+                        </div>`
+                        last_elem_id2 = today_date;
+                    }
+                    else {
+
+                    }
+                    $("#messages").append(newnode)
+
+                    if (last_elem_id != data['user_email']) {
+                        newnode = ` <div class="class_style style_class message-out   message-in4  message-in5" id="${data['user_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${data['msg']}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${today_time}</span></div></div></div><span></span></div></div></div>`;
+                    }
+                    else {
+                        newnode = ` <div class="class_style style_class message-out  " id="${data['user_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${data['msg']}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${today_time}</span></div></div></div><span></span></div></div></div>`;
+                    }
+                }
+                else if (last_elem_id != data['user_email']) {
+
+                    // Appending today element
+                    if (last_elem_id2 != today_date && last_elem_id2 != "Today") {
+                        newnode = `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                            </div>
+                        </div>`
+                        last_elem_id2 = today_date
+                    }
+                    else {
+
+                    }
+                    $("#messages").append(newnode);
+                    newnode = `<div class="class_style style_class  message-in message-in2 " id="${data['user_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div  class="message_head"><span class="card_heading_style  card_heading_style3">${data['user_name']}</span></div><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${data['msg']}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${today_time}</span></div></div></div><span></span></div></div></div>`
+                }
+                else {
+                    // Appending today element
+                    if (last_elem_id2 != today_date && last_elem_id2 != "Today") {
+                        newnode = `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                            </div>
+                        </div>`
+                        last_elem_id2 = today_date
+                    }
+                    else {
+
+                    }
+                    $("#messages").append(newnode);
+
+                    newnode = ` <div class="class_style style_class message-in message-in3" id="${data['user_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${data['msg']}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${today_time}</span></div></div></div><span></span></div></div></div>`
+                }
+            }
+            else {
+                // Note In the red color please listen carefully before changing the variable
+                //mene isime variable bhi assign nhi kiye 
+                //nahi mb hatayi hai 
+
+                if (data['user_email'] == '{{current_user.email}}') {
+
+                    // Appending today element
+                    if (last_elem_id2 != today_date && last_elem_id2 != "Today") {
+                        newnode = `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                            </div>
+                        </div>`
+                        last_elem_id2 = today_date
+                    }
+                    else {
+
+                    }
+                    $("#messages").append(newnode);
+
+                    if (last_elem_id != data['user_email']) {
+                        newnode = `
+                        <div class="file_recieve class_style style_class message-out message-in4 message-in5 " id="${data['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="message_head"><span class="card_heading_style  card_heading_style3">${data['user_name']}</span></div><div class="file_download_button" title="Download “${data['filename']}”" type="button"><a class="file_download_button_back"  href="url"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">${data['filename']}</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name">${data['type']}</span><span class="extension_name"> ${data['file_size']}</span></div><div class="file_send_time"><div class="send-time-file"><span>${today_date}</span></div></div></div> <span></span></div></div></div>`
+                    }
+                    else {
+                        newnode = newnode = `
+                        <div class="file_recieve class_style style_class message-out" id="${data['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class = " file_download_button" title="Download “user_classes.py”" type="button"><a class = " file_download_button_back" href="uel"><div class="file-download-button"><div class = " file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">${data['filename']}</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name" title="flatu">${data['type']}</span><span class="extension_name" title="${data['file_size']}MB">  ${data['file_size']}MB</span></div><div class="file_send_time"><div class="send-time-file"><span>${today_time}</span></div></div></div> <span></span></div></div></div>`
+
+                    }
+
+                }
+                else if (last_elem_id != data['user_email']) {
+                    newnode = `
+                        <div class="file_recieve class_style style_class message-in message-in2 " id="${data['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “user_classes.py”" type="button"><a href="" class="file_download_button_back"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name" title="flatu">flatu</span><span class="extension_name" title="26 kB">26 kB</span></div><div class="file_send_time"><div class="send-time-file"><span>7:40 PM</span></div></div></div> <span></span></div></div></div>`
+
+                }
+                else {
+                    newnode = `
+                        <div class="file_recieve class_style style_class message-in message-in3 " id="${data['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “user_classes.py”" type="button"><a href="url" class="file_download_button_back"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name" title="flatu">flatu</span><span class="extension_name" title="26 kB">26 kB</span></div><div class="file_send_time"><div class="send-time-file"><span>7:40 PM</span></div></div></div> <span></span></div></div></div>`
+
+                }
+            }
+            // Appending message and setting scroll bar
+            $("#messages").append(newnode)
+            $('#chatting').scrollTop($("#chatting").scroll()[0].scrollHeight)
+        });
+
+    })
+
+</script>
+<!-- Loader And Link -->
+<script>
+    function loader_true() {
+        var loader = document.getElementById("preloader")
+        loader.style.display = 'none'
+
+        if (window.innerWidth <= 1000) {
+            $('#layoutSidenav_nav').addClass('remove_padding')
+            $('#layoutSidenav_content').addClass('adding_padding')
+            $('.input_plus_footer').addClass('input_plus_footer35')
+            $('.input_plus_footer').removeClass('input_plus_footer34')
+        }
+
+    }
+    var href_window = "{{href_window}}"
+    $(".Participant").attr("href", `/class/${href_window}/participants`)
+    $(".classwork").attr("href", `/class/${href_window}`)
+</script>
+
+<!-- Get DB Messages -->
+<script>
+    var elemet_to_append_message = document.getElementById("messages")
+    let resp_try = {{ old_chats | tojson }}
+
+    try {
+        let resp = resp_try;
+        let html_for_chats = '';
+        let last_elem_id = "kuch nhi ha /*-**/* yar mere";
+        let last_elem_id2 = "kuch nhi ha /*-**/* yar mere";
+        let url_real_list = []
+        // --------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------Variable----------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
+        try {
+            last_elem_id = document.getElementById("messages").lastElementChild.getAttribute("id")
+        }
+        catch {
+        }
+        try {
+            last_elem_id2 = last_elem_id2 = document.getElementsByClassName("what_is_the_date")[document.getElementsByClassName("what_is_the_date").length - 1].innerText
+        }
+        catch {
+        }
+        let time = new Date()
+        let today_date = time.toLocaleDateString().split("/")[1] + "-" + time.toLocaleDateString().split("/")[0] + "-" + time.toLocaleDateString().split("/")[2]
+        for (var item in resp) {
+
+            try {
+                msg_type = resp[item]["msg_type"]
+                if (msg_type == 'msg_text') {
+
+                    if (resp[item]["message"] == "None") {
+                        msg_type = null
+                    }
+                    else {
+                        msg_type = resp[item]["msg_type"]
+                        msg_content = resp[item]["message"]
+                        msg_urls = resp[item]["msg_details"]["urls"]
+                    }
+
+                    // Url checking and replacing
+                    let str_to_replace = msg_content
+                    if (msg_urls['length'] > 0) {
+                        for (let item_urls in msg_content.split(" ")) {
+                            for (let item_of_url in msg_urls) {
+                                if (msg_urls[item_of_url] == msg_content.split(" ")[item_urls]) {
+                                    str_to_replace = str_to_replace.replace(msg_urls[item_of_url], `<a  class="chat_link" href="${msg_urls[item_of_url]}" target="_blank"> ${msg_urls[item_of_url]}</a>`)
+                                }
+                                else { }
+                            }
+                        }
+                    }
+                    msg_content = str_to_replace
+
+                    // Adding Message
+                    if (resp[item]['participant_email'] == `{{current_user.email}}`) {
+
+                        // Checking date and adding date
+                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
+
+                        }
+                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                            </div>
+                        </div>`
+                            last_elem_id2 = today_date
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
+                            </div>
+                        </div>`;
+                            last_elem_id2 = resp[item]['date-time'].split(" ")[0];
+                        }
+
+                        if (last_elem_id != `{{current_user.email}}`) {
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out   message-in4  message-in5" id="${resp[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                        }
+                        else {
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out  " id="${resp[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                        }
+
+                    }
+                    else if (resp[item]['send-to'].includes(`{{current_user.email}}`)) {
+
+                        // Checking date and adding date
+                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
+                        }
+                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                                </div>
+                            </div>`
+                            last_elem_id2 = today_date
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
+                                </div>
+                            </div>`
+                            last_elem_id2 = resp[item]['date-time'].split(" ")[0]
+                        }
+
+                        if (last_elem_id != `${resp[item]['participant_email']}`) {
+                            html_for_chats = html_for_chats + `<div class="class_style style_class  message-in message-in2 " id="${resp[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div  class="message_head"><span class="card_heading_style  card_heading_style3">${resp[item]['participant_name']}</span></div><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                        }
+                        else {
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-in message-in3" id="${resp[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                        }
+                    }
+                    else {
+                    }
+                    last_elem_id = resp[item]['participant_email'];
+                }
+
+                else if (resp = "Problem In Contacting") {
+                    error_function("Problem in getting contacting ", "error")
+                }
+
+                else {
+
+                    if (resp[item]["message"] == "None") {
+                        msg_type = null
+                    }
+                    else {
+                        msg_type = resp[item]["type"]
+                        user_email= resp[item]["user_email"]
+                        user_name = resp[item]["user_name"]
+                        msg_size = resp[item]["file_size"]
+                        file_name = resp[item]["file_name"]
+                        msg_url = resp[item]["url"]
+                    }
+
+                    // Check for various file types -------
+                    // image , audio , video , doc , pdf these ....
+
+                    if (resp[item]['user_email'] == `{{current_user.email}}`) {
+
+                        // Checking date and adding date
+                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
+                        }
+                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                                </div>
+                            </div>`;
+                            last_elem_id2 = today_date;
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
+                                </div>
+                            </div>`;
+                            last_elem_id2 = resp[item]['date-time'].split(" ")[0];
+                        }
+
+                        if (last_elem_id != `{{current_user.email}}`) {
+                            html_for_chats = html_for_chats + `<div class="file_recieve class_style style_class message-out message-in4 message-in5 " id="${resp[item]['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “${file_name}”" type="button"><a class="file_download_button_back" href="${url}"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">${file_name}</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name" title="${msg_type}">${file_type}</span><span class="extension_name" title=${file_size}>${file_size}</span></div><div class="file_send_time"><div class="send-time-file"><span>${resp[item]['date-time'].split(" ")[1]}</span></div></div></div> <span></span></div></div></div>`;
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `<div class="file_recieve class_style style_class message-out" id="${resp[item]['user_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “${file_name}”" type="button"><a class="file_download_button_back" href="${url}"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">${file_name}</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></a></div><div class="file_details"><span class="extension_name" title="${msg_type}">${file_type}</span><span class="extension_name" title=${file_size}>${file_size}</span></div><div class="file_send_time"><div class="send-time-file"><span>${resp[item]['date-time'].split(" ")[1]}</span></div></div></div> <span></span></div></div></div>`;
+
+                        }
+
+                    }
+                    
+                    
+                    
+                    // --------------------------------------------------------------------------------------------------
+                    // ----------------------------------------------Pause-----------------------------------------------
+                    // --------------------------------------------------------------------------------------------------
+                    
+                    
+                    
+                    else if (resp[item]['send-to'].includes(`{{current_user.email}}`)) {
+
+                        // Checking date and adding date
+                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
+                        }
+                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
+                                </div>
+                            </div>`;
+                            last_elem_id2 = today_date;
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `<div id="messages_date">
+                                <div class="class_style date_fix">
+                                    <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
+                                </div>
+                            </div>`;
+                            last_elem_id2 = resp[item]['date-time'].split(" ")[0];
+                        }
+
+                        if (last_elem_id != `${resp[item]['user_email']}`) {
+                            html_for_chats = html_for_chats + `
+                            <div class="file_recieve class_style style_class message-in message-in2 " id="${resp[item]['participant_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “user_classes.py”" type="button"><div class="file_download_button_back"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></div></div><div class="file_details"><span class="extension_name" title="flatu">flatu</span><span class="extension_name" title="26 kB">26 kB</span></div><div class="file_send_time"><div class="send-time-file"><span>7:40 PM</span></div></div></div> <span></span></div></div></div>`;
+                        }
+                        else {
+                            html_for_chats = html_for_chats + `
+                            <div class="file_recieve class_style style_class message-in message-in2 " id="${resp[item]['participant_email']}"><span></span> <div class="chat-body"><div class="body_style1 body_style2"><div class="file-body"><div class="file_download_button" title="Download “user_classes.py”" type="button"><div class="file_download_button_back"><div class="file-download-button"><div class = "file_image_container" ><div class="file-button-image"></div></div><div class = " file_text_container " style="flex-grow: 1;"><span class="" style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span></div><div class="" style="flex-grow: 0;"><div class="file_main_download"><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34" height="34"><path fill="currentColor" d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z"></path><path fill="currentColor" d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z"></path></svg>    </span></div></div></div></div></div><div class="file_details"><span class="extension_name" title="flatu">flatu</span><span class="extension_name" title="26 kB">26 kB</span></div><div class="file_send_time"><div class="send-time-file"><span>7:40 PM</span></div></div></div> <span></span></div></div></div>`;
+                        }
+
+                    }
+                    else {
+                    }
+                    last_elem_id = resp[item]['user_email'];
+                }
+
+            }
+
+            catch {
+
+            }
+        }
+        $("#messages").append(html_for_chats);
+    }
+
+    catch {
+        alert("Problem in contacting server. Try again later");
+    }
+
+</script>
+
+<!---------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------File Change Event------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<script>
+    var for_event
+    let image_url = ['jpg', 'img', 'jpeg', 'png', 'PNG'];
+    let video_url = ['mp4', 'mp3', 'mkv'];
+    function file_change_done(event) {
+        const file = document.getElementById("attachment").files[0]
+        if (file) {
+            if (image_url.includes(file.name.split(".")[1]) && file.size / (1024 * 1024) <= 5) {
+                $("#only_for_chats").hide();
+                document.getElementById("img_tag_preview").style.display = "block"
+                $("#img_tag_preview").addClass("d-block")
+                document.getElementById("vid_tag_preview").style.display = "None"
+                $("#video").hide();
+                $(".input_plus_footer").hide()
+                $("#file_preview").addClass("display")
+                reader.onload = function () {
+                    let result = reader.result;
+                    document.getElementById("img_tag_preview").src = result
+                }
+                reader.readAsDataURL(file)
+            }
+            else if (video_url.includes(file.name.split(".")[1]) && file.size / (1024 * 1024) <= 15) {
+                $("#only_for_chats").hide();
+                document.getElementById("img_tag_preview").style.display = "None"
+                $("#img_tag_preview").removeClass("d-block")
+                document.getElementById("vid_tag_preview").style.display = "block"
+                $(".input_plus_footer").hide()
+                $("#file_preview").addClass("display")
+                reader.onload = function () {
+                    let result = reader.result;
+                    document.getElementById("vid_tag_preview").src = result
+                    document.getElementById("video").load()
+                    document.getElementById("video").play()
+                }
+                reader.readAsDataURL(file)
+            }
+            else if (image_url.includes(file.name.split(".")[1]) == false && video_url.includes(file.name.split(".")[1]) == false && file.size / (1024 * 1024) <= 15) {
+                document.getElementById("img_tag_preview").src = "";
+                document.getElementById("vid_tag_preview").src = "";
+                $("#file_preview").removeClass("display");
+                $("#only_for_chats").show();
+                $(".input_plus_footer").show();
+                document.getElementById("video").pause();
+                $("#message_submit_button").click();
+                $("#preloader").show()
+            }
+            else { }
+        }
+        else { }
+    }
+    document.getElementById("button_preview_cancel").addEventListener('click', (e) => {
+        document.getElementById("attachment").value = "";
+        document.getElementById("img_tag_preview").src = "";
+        document.getElementById("vid_tag_preview").src = "";
+        $("#file_preview").removeClass("display");
+        $("#only_for_chats").show();
+        $(".input_plus_footer").show();
+        document.getElementById("video").pause();
+    })
+    document.getElementById("file_upload_submit").addEventListener("click", (e) => {
+        document.getElementById("img_tag_preview").src = "";
+        document.getElementById("vid_tag_preview").src = "";
+        $("#file_preview").removeClass("display");
+        $("#only_for_chats").show();
+        $(".input_plus_footer").show();
+        document.getElementById("video").pause();
+        $("#message_submit_button").click();
+        $("#preloader").show()
+    })
+</script>
+
+<!---------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------Setting Cookies--------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<script>
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                console.log(c.substring(name.length, c.length));
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var message_sno = getCookie("last_meassage_sno");
+        if (message_sno != "") {
+        }
+        else {
+        }
+    }
+    checkCookie()
+</script>
+
+
+<!---------------------------------------------------------------------------------------------------------------------->
+<!-------------------------------------Code to block inspect and right click-------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------->
+
+<!-- <script>
+    $(this).bind("contextmenu", function (event) {
+        event.preventDefault()
+        alert('Right click is disable in this site')
+    })
+    $(window).on('keydown', function (event) {
+        if (event.keyCode == 123) {
+            alert('Inspect is disabled in this website');
+            return false;
+        }
+        else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+            alert('Inspect is disabled in this website')
+            return false;  //Prevent from ctrl+shift+i
+        }
+        else if (event.ctrlKey && event.keyCode == 73) {
+            alert('Inspect is disabled in this website')
+            return false;  //Prevent from ctrl+shift+i
+        }
+    });
+</script> -->
+
+{% endblock %}

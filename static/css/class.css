@@ -1,0 +1,23 @@
+
+.showmore {
+    cursor: pointer;
+}
+.showmore span:hover {
+    border-bottom: 1px solid #0061f2;
+}
+.showless {
+    cursor: pointer;
+}
+.showless span:hover {
+    border-bottom: 1px solid #0061f2;
+}
+.submenu.collapsed .nav-link-icon {
+    color: #a2acba;
+}
+.toblock {
+    display: none;
+}
+
+.sidenav-footer a {
+    color: #687281;
+}

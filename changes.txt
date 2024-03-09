@@ -1,0 +1,62 @@
+Change after the comment <!-- Get DB Messages --> ...................
+
+
+1. Removed Code  -------------   
+
+  let participants_email = {{ participants | tojson }}
+    let participant_list = {};
+    console.log(participants_email)
+    if (participants_email == "Problem In Contacting") {
+        participant_list = "Problem"
+    }
+    else {
+        for (let item in participants_email['students']) {
+            participant_list[participants_email['students'][item]['email']] = participants_email['students'][item]['name'];
+        }
+        participant_list[participants_email['teacher']['email']] = participants_email['teacher']['name'];
+    }
+
+
+2. Insert after  (for (var item in resp) {) -------------------
+
+            if (resp[item]["message"] == "None"){
+                msg_type = null                
+            } 
+            else{
+                msg_type = resp[item]["msg_type"]
+                msg_content = resp[item]["message"]
+                msg_urls = resp[item]["msg_details"]["urls"]
+            }
+
+
+3. Variable Change ---
+    resp[item]['type'] is changed to to msg_type
+    resp[item]['urls'] is changed to msg_urls
+    resp[item]['message'] is changed to msg_content
+    resp[item]['participate'] is changed to resp[item]['participant_email']
+
+4. use of try-catch inside for loop....
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+Changes to do -------------------------
+
+1.
+store the latest sno of messages in js cookies when user loads the page
+
+Its uses -----------
+
+when user comes to that page then show it the unread  messages no. and heading.............
+and the scroll bar location should be set accordingly......
+
+
+if there were no unread messages or js cookie is not working then scroll bar should be at bottom  means at the latest message....
+
+
+
+2. 
+
+For limited messages --------------

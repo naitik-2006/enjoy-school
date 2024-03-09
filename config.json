@@ -1,0 +1,8 @@
+{
+    "local_host": "mysql://[root]:[mainhoondon]@localhost",
+    "email-al-regis": "Email alreday Registered! Please log in into the existing account.",
+    "verify-email-id": "enjschoolverify5041@gmail.com",
+    "verify-email-password": "chalbesuar",
+    "website_domain":"https//:EnjoySchool/"
+}
+
