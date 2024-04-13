@@ -876,7 +876,6 @@ def class_name():
 def class_home_page(slug):
 
     cls_name = uc.get_class_name(slug)
-    print(uc.get_class_name(slug) == None)
 
     if uc.get_class_name(slug) == None or current_user.email not in uc.get_participants_email(slug):
         return render_template("404.html")
