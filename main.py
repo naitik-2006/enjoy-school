@@ -809,10 +809,11 @@ def req_join_class():
         if request.method == 'POST':
             cls_id = request.form.get("id")
 
+            print(cls_id)
             if cls_id == None or cls_id == "":
                 fe.some_went_wrong()
                 return redirect("/join-class")
-
+            print(cls_id)
             join_class_request = uc.add_joining_req(current_user.email, current_user.name, cls_id)
 
             if join_class_request in ("Problem In Contacting" , "No class found" , "Already Joined" , "Already Requested", "Max Joined" ):
@@ -845,7 +846,7 @@ def index():
 
         if class_cards == "Problem In Contacting":
             fe.server_contact_error()
-            return render_template("home.html" , get_class_cards = ([]) , nav_classes = ([]))
+            return render_template("home.html" , get_class_cards = ([]) )
 
         return render_template("home.html" , get_class_cards = class_cards  )
 
@@ -881,7 +882,8 @@ def class_home_page(slug):
         return render_template("404.html")
 
     clswrks = ch.get_all_classworks(slug , current_user.email)
-    meetings = ch.get_all_meetings(slug)
+    # meetings = ch.get_all_meetings(slug)
+    meetings = ""
 
     return render_template("class_template/class_work.html", href_window = slug , tittle = cls_name , classworks = clswrks , meetings = meetings)
 
@@ -1170,18 +1172,20 @@ def approve_class_join_req():
     if current_user.role == 'Teacher':
 
         classid = request.form.get('id')
+        print(classid)
 
         if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
             fe.some_went_wrong()
             return "swr"
 
         app_req = uc.approve_request(request.form.get('student_email'), classid)
+        print("add_req")
 
         if app_req in ("Problem In Contacting" , "Request Not Found" , "Max joined" , "Max Participants" , "Already Joined"):
-            return "Problem"
+            return "redirect"
 
         fs.approve_request()
-        return jsonify(None)
+        return "redirect"
     else:
         fe.dnt_have_access()
 

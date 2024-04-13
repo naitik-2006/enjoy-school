@@ -157,37 +157,11 @@
 
 <div id="modal_loader" style="display: none;"></div>
 
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
-    style="    overflow-y: scroll; z-index: 1000000;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Join Class</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- Modal Body (asking classwork type) -->
-            <div class="modal-body" id="exampleModalBody2">
-                <form class="signup-form" style="padding: 10px 0;" action="/join-class"
-                    method="post">
-                    
-                    
-                    <div class="">
-                        <button type="button" class="btn btn-secondary" id="previous_classwork"
-                            data-target="#exampleModal" data-toggle="modal" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Request</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}
 
 {% block main_code %}
 <div class="signup-form">
-    <form action="/join-class"
+    <form id="join_class_form" action="/join-class"
                     method="post" style="margin-top: 2.5rem; border-radius: 1px;
     margin-bottom: 15px;
     background: #fff;
@@ -268,8 +242,14 @@
                     alert("Problem in getting classes")
                 }
             })
+        
         }
 
     })
+</script>
+<script>
+    document.getElementById('join_class_form').addEventListener('submit', function() {
+    document.getElementById('id').disabled = false;
+});
 </script>
 {% endblock %}

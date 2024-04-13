@@ -606,8 +606,6 @@
         <div class="card-body">
             <div class="for_student" id="part_pending">
                 {%for item in pending_student if 1 == 1 %}
-                {% set testing = 'it worked' %}
-                {% set another = testing %}
                 {% set list1 = item['name'].split(' ') %}
                 {% set list3 = namespace(value = '0') %}
                 {% set count = namespace(value=0) %}
@@ -626,19 +624,17 @@
                         </div>
                         <div class="person_name">{{item['name']}}</div>
                     </div>
-                    <div class="float-right"><button
-                            class="response btn btn-outline-danger pending_person_item accept_button_yes {{item['email']}}">Accept</button><button
-                            class="response btn btn-outline-success pending_person_item decline_button_yes {{item['email']}}"
-                            data-toggle="modal" data-target="#exampleModal">Deline</button>
-                        <div class="dropdown response2 pend_for_request"><button class="btn dropdown-toggle"
-                                type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false"></button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                style="left: -2rem !important;"><button
-                                    class="dropdown-item danger pending_person_item decline_button_yes {{item['email']}}">Accept</button><button
-                                    data-toggle="modal" data-target="#exampleModal"
-                                    class="dropdown-item sucess pending_person_item accept_button_yes {{item['email']}}"
-                                    href="#">Decline</button></div>
+                    <div class="float-right">
+                        <button
+                            class="response btn btn-outline-danger pending_person_item accept_button_yes {{item['email']}}" data-toggle="modal" data-target="#exampleModal">Accept</button>
+                        <button
+                            class="response btn btn-outline-success pending_person_item decline_button_yes {{item['email']}}" data-toggle="modal" data-target="#exampleModal">Decline</button>
+                        <div class="dropdown response2 pend_for_request dropleft">
+                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: 0.75rem !important;">
+                                <button class="dropdown-item danger pending_person_item accept_button_yes {{item['email']}}" data-toggle="modal" data-target="#exampleModal">Accept</button>
+                                <button data-toggle="modal" data-target="#exampleModal" class="dropdown-item sucess pending_person_item decline_button_yes {{item['email']}}" href="#">Decline</button></div>
                         </div>
                     </div>
                 </div>
@@ -656,7 +652,7 @@
                     document.getElementById("exampleModalBody").innerText = 'Do you want decline him/her request to join class'
                     document.getElementById("final_button_to_decline").onclick = function (e) {
                         $.ajax({
-                            url: `/pending/class/decline/`,
+                            url: `/class/pending-request/decline`,
                             type: "POST",
                             data: {
                                 "id": href_window,
@@ -679,11 +675,12 @@
             for (var i = 0; i < elements_approve.length; i++) {
                 elements_approve[i].addEventListener('click', function (e) {
                     to_accept_pending = this.className.split(" ")[this.className.split(" ").length - 1]
-                    // document.getElementById("exampleModalLabel").innerText = ' Accept Request'
-                    // document.getElementById("exampleModalBody").innerText = 'Do you want accept him/her request to join class'
-                    // document.getElementById("final_button_to_decline").onclick = function (e) {
+                    document.getElementById("exampleModalLabel").innerText = ' Accept Request'
+                    document.getElementById("exampleModalBody").innerText = 'Do you want accept him/her request to join class'
+                    document.getElementById("final_button_to_decline").onclick = function (e) {
+                    console.log("ajax called")
                     $.ajax({
-                        url: `/pending/class/approve/`,
+                        url: `/class/pending-request/approve`,
                         type: "POST",
                         data: {
                             "id": href_window,
@@ -691,14 +688,14 @@
                         },
                         success: function (resp) {
                             if (resp == 'redirect') {
-                                window.location.href = `/class/${href_window}/participant/`
+                                window.location.href = `/class/${href_window}/participants`
                             }
                         },
                         error: function (e) {
                             to_decline_pending = ""
                         }
                     })
-                    // }
+                    }
                 }, false);
             }
 
@@ -734,94 +731,95 @@
     $(".classwork").attr("href", `/class/${href_window}`)
     $(".Discuss").attr("href", `/class/${href_window}/discuss`)
 </script>
+
 <!-- Participant -->
-{% if current_user.role == 'Teacher' %}
 <script>
-    let resp_try = {{ participants | tojson }};
-    try {
-        let role_user = `{{current_user.name}}`
-        let resp = resp_try;
-        let teacher_item = resp['teacher']['name'].split(" ")
-        let start_word = ""
-        let teacher_item_html = ""
-        let student_item_html = ""
-        let num_for_count = 0
-        for (var item in teacher_item) {
-            start_word = start_word + teacher_item[item].substr(0, 1)
-            num_for_count = num_for_count + 1
-            if (num_for_count == 2) {
-                break
+
+    function generateStartWord(techname) {
+        console.log(techname)
+        let start_word = "";
+        for (var i = 0; i < techname.length; i++) {
+            start_word += techname[i].charAt(0);
+            if (start_word.length === 2) {
+                break;
             }
         }
-        teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['teacher']['name']} (You)</div></div><div class="float-right"><button class="btn btn-outline-danger response      button_dismiss_class " data-toggle="modal" data-target="#exampleModal">Dismiss</button><div class="dropdown response2 pend_for_teacher"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger button_dismiss_class" data-toggle="modal" data-target="#exampleModal">Dismiss</button></div></div></div>`
-        $("#part_teacher").append(teacher_item_html)
-        var decline_class = document.getElementsByClassName("button_dismiss_class")
-        console.log(decline_class)
-        for (var i = 0; i < decline_class.length; i++) {
-            decline_class[i].addEventListener('click', function (e) {
-                document.getElementById("exampleModalLabel").innerText = 'Delete Class'
-                document.getElementById("exampleModalBody").innerText = 'Do you really want to delete class'
-                document.getElementById("final_button_to_decline").onclick = function (e) {
-                    $.ajax({
-                        url: `/class/delete-class`,
-                        type: "POST",
-                        data: {
-                            "id": href_window,
-                            "email": "{{current_user.email}}"
-                        },
-                        success: function (resp) {
-                            if (resp == "redirect") {
-                                window.location.href = "/"
-                            }
-                        },
-                        error: function (e) {
-                            to_decline_pending = ""
-                        }
-                    })
-                }
-            }, false);
-        }
+        return start_word;
+    }
 
+    let resp = {{ participants | tojson }};
+    let   user_roles = `{{ current_user.role }}`;
+    let teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].charAt(0).toLowerCase()} abcd"><div>${generateStartWord(resp['teacher']['name'].split(" "))}</div></div><div class="person_name">${resp['teacher']['name']}</div></div><div class="float-right"></div>`
+
+    try {
+        if (  user_roles == 'Teacher') {
+            teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].charAt(0).toLowerCase()} abcd"><div>${generateStartWord(resp['teacher']['name'].split(" "))}</div></div><div class="person_name">${resp['teacher']['name']} (You)</div></div><div class="float-right"><button class="btn btn-outline-danger response      button_dismiss_class " data-toggle="modal" data-target="#exampleModal">Dismiss</button><div class="dropdown dropleft response2 pend_for_teacher"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger button_dismiss_class" data-toggle="modal" data-target="#exampleModal">Dismiss</button></div></div></div>`
+        }
+        $("#part_teacher").append(teacher_item_html)
+        if (  user_roles == 'Teacher') {
+            var decline_class = document.getElementsByClassName("button_dismiss_class")
+
+            for (var i = 0; i < decline_class.length; i++) {
+                decline_class[i].addEventListener('click', function (e) {
+                    document.getElementById("exampleModalLabel").innerText = 'Delete Class'
+                    document.getElementById("exampleModalBody").innerText = 'Do you really want to delete class'
+                    document.getElementById("final_button_to_decline").onclick = function (e) {
+                        $.ajax({
+                            url: `/class/delete-class`,
+                            type: "POST",
+                            data: {
+                                "id": href_window,
+                                "email": "{{current_user.email}}"
+                            },
+                            success: function (resp) {
+                                if (resp == "redirect") {
+                                    window.location.href = "/"
+                                }
+                            },
+                            error: function (e) {
+                                to_decline_pending = ""
+                            }
+                        })
+                    }
+                }, false);
+            }
+        }
 
         for (let item in resp['students']) {
-            let student_item = resp['students'][item]['name'].split(" ")
-            let start_word = ""
-            let num_for_count = 0
-            for (var item2 in student_item) {
-                start_word = start_word + student_item[item2].substr(0, 1)
-                num_for_count = num_for_count + 1
-                if (num_for_count == 2) {
-                    break
+            if (  user_roles == "Teacher") {
+                student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].charAt(0).toLowerCase()} abcd"><div>${generateStartWord(resp['students'][item]['name'].split(" "))}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"><button class="btn btn-outline-danger response ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button><div class="dropdown dropleft response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: 0.75rem !important;"><button class="dropdown-item  danger ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button></div></div></div></div>`
+                $("#part_student").append(student_item_html)
+            }
+            else {
+                if ('{{current_user.email}}' == resp['students'][item]['email']) {
+                    student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].charAt(0).toLowerCase()} abcd"><div>${generateStartWord(resp['students'][item]['name'].split(" "))}</div></div><div class="person_name">${resp['students'][item]['name']} (You)</div></div><div class="float-right"><button class="response btn btn-outline-danger unroll_student" data-toggle="modal" data-target="#exampleModal">Un Roll</button><div class="dropdown response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger unroll_student " data-toggle="modal" data-target="#exampleModal">Leave</button></div></div></div></div>`
+                    $("#part_student").prepend(student_item_html)
+                }
+                else {
+                    student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].charAt(0).toLowerCase()} abcd"><div>${generateStartWord(resp['students'][item]['name'].split(" "))}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"></div></div>`
+                    $("#part_student").append(student_item_html)
                 }
             }
-            student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"><button class="btn btn-outline-danger response ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button><div class="dropdown response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button></div></div></div></div>`
-            $("#part_student").append(student_item_html)
-
+            
+            if(  user_roles == 'Teacher'){
             var unroll_student_part2 = document.getElementsByClassName("unroll_student_part2")
             var to_unroll_student_part2 = ''
-            let email_to_decline = ""
             for (var i = 0; i < unroll_student_part2.length; i++) {
                 unroll_student_part2[i].addEventListener('click', function (e) {
                     to_unroll_student_part2 = this.className.split(" ")[this.className.split(" ").length - 3]
                     document.getElementById("exampleModalLabel").innerText = 'Remove Student'
                     document.getElementById("exampleModalBody").innerText = 'Do you really want to remove him/her from this class'
-                    // email_to_decline =
                     console.log(to_unroll_student_part2)
                     document.getElementById("final_button_to_decline").onclick = function (e) {
                         $.ajax({
-                            url: `/remove-student/`,
+                            url: `/class/remove-student`,
                             type: "POST",
                             data: {
                                 "url": href_window,
                                 "email": to_unroll_student_part2
                             },
                             success: function (resp) {
-                                if (resp == "redirect2") {
-                                    window.location.href = "/"
-                                }
-                                else if (resp == "redirect") {
-                                    window.location.href = `/class/${href_window}/participant/`
-                                }
+                                    window.location.href = `/class/${href_window}/participants`
                             },
                             error: function (e) {
                                 to_decline_pending = ""
@@ -837,22 +835,17 @@
                 unroll_student[i].addEventListener('click', function (e) {
                     to_unroll_student = this.className.split(" ")[this.className.split(" ").length - 1]
                     document.getElementById("exampleModalLabel").innerText = 'Remove Class'
-                    document.getElementById("exampleModalBody").innerText = 'Do you really want to remove this class'
+                    document.getElementById("exampleModalBody").innerText = 'Do you really want to leave this class'
                     document.getElementById("final_button_to_decline").onclick = function (e) {
                         $.ajax({
-                            url: `/remove-student/`,
+                            url: `/class/leave-class/`,
                             type: "POST",
                             data: {
                                 "url": href_window,
                                 "email": "{{current_user.email}}"
                             },
                             success: function (resp) {
-                                if (resp == "redirect2") {
                                     window.location.href = "/"
-                                }
-                                else if (resp == "redirect") {
-                                    window.location.href = `/class/${href_window}/`
-                                }
                             },
                             error: function (e) {
                                 to_decline_pending = ""
@@ -861,7 +854,7 @@
                     }
                 }, false);
             }
-
+        }
         }
     }
     catch {
@@ -871,56 +864,5 @@
 
 
 </script>
-{% endif %}
-{% if current_user.role == 'Student' %}
-<script>
-    let resp_try = {{ participants | tojson }}
-    try {
-        let role_user = `{{ current_user.role }}`
-        let resp = resp_try
-        let teacher_item = resp['teacher']['name'].split(" ")
-        let start_word = ""
-        let teacher_item_html = ""
-        let student_item_html = ""
-        let num_for_count = 0
-        for (var item in teacher_item) {
-            start_word = start_word + teacher_item[item].substr(0, 1)
-            num_for_count = num_for_count + 1
-            if (num_for_count == 2) {
-                break
-            }
-        }
-
-        teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['teacher']['name']}</div></div><div class="float-right"></div>`
-        $("#part_teacher").append(teacher_item_html)
-        for (let item in resp['students']) {
-            let student_item = resp['students'][item]['name'].split(" ")
-            let start_word = ""
-            let num_for_count = 0
-            for (var item2 in student_item) {
-                start_word = start_word + student_item[item2].substr(0, 1)
-                num_for_count = num_for_count + 1
-                if (num_for_count == 2) {
-                    break
-                }
-            }
-            if ('{{current_user.email}}' == resp['students'][item]['email']) {
-                student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']} (You)</div></div><div class="float-right"><button class="response btn btn-outline-danger unroll_student" data-toggle="modal" data-target="#exampleModal">Un Roll</button><div class="dropdown response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger unroll_student " data-toggle="modal" data-target="#exampleModal">Leave</button></div></div></div></div>`
-                $("#part_student").prepend(student_item_html)
-            }
-            else {
-                student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"></div></div>`
-                // alert("hello")
-                $("#part_student").append(student_item_html)
-            }
-        }
-
-    }
-
-    catch {
-
-    }
-</script>
-{% endif %}
 
 {% endblock %}

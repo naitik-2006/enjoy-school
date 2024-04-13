@@ -52,16 +52,9 @@ def get_user_classes(user_email):
         query = f"""SELECT  `classid` ,  `class_name`FROM joined_classes WHERE email = '{user_email}' """
         mycursor.execute(query)
         cls_tp = mycursor.fetchall()
-
-        print("classes of user")
-        print(cls_tp)
-        class_li = [{"class_name" : class_name.decode() , "classid" : classid.decode() } for classid , class_name in cls_tp ]
-        print("After decoding the same thing")
-        print(class_li)
+        class_li = [{"class_name" : class_name , "classid" : classid } for classid , class_name in cls_tp ]
         if class_li:
-            class_li.sort(key = lambda x : x["class_name"]) 
-            print("After sorting the same thing")
-            print(class_li)
+            class_li.sort(key = lambda x : x["class_name"])
             return class_li
         return None
 
@@ -100,11 +93,11 @@ def get_more_info_classes(user_email):
 
             query = f"""SELECT  `class_standard` FROM basic_information WHERE class_id = '{classid}' """
             print("more info")
-            # class_standard =  db.store_result().fetch_row()[-1][-1].decode()
+            # class_standard =  db.store_result().fetch_row()[-1][-1] 
             mycursor.execute(query)
             cls_tp = mycursor.fetchall()
             print(cls_tp)
-            class_standard = cls_tp[-1].decode()
+            class_standard = cls_tp[-1] 
             class_mr_li.append({"class_name" : user_class["class_name"] , "classid" : classid , "class_standard" : class_standard})
 
         return class_mr_li
@@ -135,7 +128,6 @@ def get_class_cards(user_email):
 
         mycursor2 = db2.cursor()
         mycursor = db.cursor()
-        print("getting classes of the user")
         class_li = get_user_classes(user_email)
 
         if class_li in (None , "Problem In Contacting"):
@@ -150,23 +142,16 @@ def get_class_cards(user_email):
             query = f"""SELECT  `class_name` , `class_standard` FROM basic_information WHERE `class_id` = '{classid}' """
             mycursor.execute(query)
             result = mycursor.fetchall()
-            print("printing fetched result")
-            print(result)
             result = result[-1]
-            print(result)
 
             query = f"""SELECT `name` FROM `{classid}` WHERE `role` = 'Teacher'"""
             mycursor2.execute(query)
             result2 = mycursor2.fetchall()
-            print("printing fetched result")
-            print(result2)
             result2 = result2[-1]
-            print(result2)
 
-            class_name , te_name , class_standard =  result[0].decode() , result2[0].decode(), result[1].decode()
+            class_name , te_name , class_standard =  result[0]  , result2[0] , result[1] 
 
             class_mr_li.append({"class_name" : user_class["class_name"] , "classid" : classid , "class_standard" : class_standard , "teacher" : te_name})
-        print("all classes with the details")
         print(class_mr_li)
 
         return class_mr_li
@@ -188,27 +173,32 @@ def get_participants(classid):
     """
 
     try:
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
 
-        db3 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
+        mycursor = dbase.cursor()
 
-        db3.query(f"""SELECT  `name` , `email` FROM {classid} WHERE `role`  = 'Teacher' """)
-        result = db3.store_result().fetch_row()[-1]
-        teacher_name , teacher_email =  result[0].decode() , result[1].decode()
+        query = (f"""SELECT  `name` , `email` FROM {classid} WHERE `role`  = 'Teacher' """)
+        mycursor.execute(query)
+        result = mycursor.fetchall()[-1]
+        teacher_name , teacher_email =  result[0]  , result[1] 
 
-        db3.query(f"""SELECT  `name` , `email` FROM {classid} WHERE `role`  = 'Student' """)
+        query = (f"""SELECT  `name` , `email` FROM {classid} WHERE `role`  = 'Student' """)
         students = []
-        result = db3.store_result()
+        mycursor.execute(query)
+        result = mycursor.fetchall()
 
-        while True:
-            row = result.fetch_row()
+        for row in result:
             if row:
-                students.append({ "name" : row[-1][0].decode() , "email" :row[-1][1].decode() })
+                # print("printing")
+                # print(row)
+                students.append({ "name" : row[0]  , "email" :row[1]  })
             else:
                 break
         
         students.sort(key = lambda x: x["name"])
 
         participants = {"teacher" : {"name" : teacher_name , "email" : teacher_email} , "students" : students} 
+        # print(participants)
         return participants
 
     except Exception:
@@ -236,7 +226,7 @@ def get_participants_dict(classid):
         while True:
             row = result.fetch_row()
             if row:
-                participants_dict[f"{row[-1][1].decode()}"]  = row[-1][0].decode()
+                participants_dict[f"{row[-1][1] }"]  = row[-1][0] 
             else:
                 break
 
@@ -536,25 +526,35 @@ def add_joining_req(email , name ,  classid):
         return "Already Joined"
 
     try:
-        dbase = _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
+        mycursor = dbase.cursor()
 
     except Exception:
         fe.server_contact_error()
         return "Problem In Contacting"
+    
+    try:
+        
+        query = (f"""SELECT  `name` FROM `{classid}_pd_req` WHERE `email` = '{email}' """)
+        print("not")
+        mycursor.execute(query)
+        result = mycursor.fetchall()
+        print(len(result))
+        if(len(result) != 0):
+            fe.already_req()
+            return "Already Joined"
+    except Exception:
+        fe.some_went_wrong()
+        return "Problem In Contacting"
+
         
     try:
-        dbase.query(f"""INSERT INTO `{classid}_pd_req` (`email`, `name`) VALUES ('{email}', '{name}');""")
-
-    except _exceptions.ProgrammingError:
-        fe.no_class_found()
-        return "No class found"
-
-    except _exceptions.IntegrityError:
-        fe.already_req()
-        return "Already Requested"
+        query = (f"""INSERT INTO `{classid}_pd_req` (`email`, `name`) VALUES ('{email}', '{name}');""")
+        mycursor.execute(query)
+        dbase.commit()
 
     except Exception:
-        fe.server_contact_error()
+        fe.some_went_wrong()
         return "Problem In Contacting"
         
     return None
@@ -573,13 +573,16 @@ def get_join_req(classid):
     """
 
     try:
-        dbase = _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
 
-        dbase.query(f"""SELECT * FROM `{classid}_pd_req`""")
+        mycursor = dbase.cursor()
 
-        req_tp  =  dbase.store_result().fetch_row(maxrows = 0)
+        query = (f"""SELECT * FROM `{classid}_pd_req`""")
+        mycursor.execute(query)
 
-        req_li = [{"email" : email.decode() , "name" : name.decode()} for email, name in req_tp ]
+        req_tp  =  mycursor.fetchall()
+
+        req_li = [{"email" : email  , "name" : name } for email, name in req_tp ]
 
         return req_li
 
@@ -603,7 +606,6 @@ def get_class_name(classid):
         query = (f"""SELECT  `class_name` FROM basic_information WHERE `class_id` = '{classid}' """)
         mycursor.execute(query)
         cls_tp = mycursor.fetchall()
-
         return cls_tp[-1][-1]
         
     except Exception:
@@ -614,7 +616,6 @@ def check_max_participants(classid):
     if participants == "Problem In Contacting":
         return participants
     return len(participants) < 51
-
 
 def approve_request(user_email , classid ):
     """
@@ -646,24 +647,30 @@ def approve_request(user_email , classid ):
         if class_name == None:
             fe.server_contact_error()
             return "Problem In Contacting"
+        dbase1 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        dbase2 = mysql.connector.connect(host="localhost",user=db_user,password="",database="classrooms")
+        dbase3 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
+        mycursor1 = dbase1.cursor()
+        mycursor2 = dbase2.cursor()
+        mycursor3 = dbase3.cursor()
 
-        dbase1 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-        dbase2 =  _mysql.connect(db="classrooms",user = db_user , passwd = mysql_passwd)
-        dbase3 =  _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
+        print("all connection success")
 
-        dbase3.query(f"""SELECT  `name`  FROM `{classid}_pd_req` WHERE email = '{user_email}' """)
-        student = dbase3.store_result().fetch_row()
+        query = (f"""SELECT  `name`  FROM `{classid}_pd_req` WHERE email = '{user_email}' """)
+        mycursor3.execute(query)
+        student = mycursor3.fetchall()
         if not student:
             fe.some_went_wrong()
             return "Request Not Found"
-        st_name  = student[-1][0].decode()
+        st_name  = student[-1][0] 
 
         no_class = check_len_classes(user_email)
         if not(no_class):
             fe.no_more_join_ft()
             
             try:
-                dbase3.query(f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                query = (f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                mycursor3.execute(query)
                 dbase3.commit()
             except Exception:
                 pass
@@ -685,7 +692,8 @@ def approve_request(user_email , classid ):
             fe.max_participants()
 
             try:
-                dbase3.query(f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                query = (f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                mycursor3.execute(query)
                 dbase3.commit()
             except Exception:
                 pass
@@ -693,26 +701,33 @@ def approve_request(user_email , classid ):
             # Add decline request to user notification
             
             return "Max Participants"
-
-        dbase2.query(f"""SELECT  `sno` FROM joined_classes WHERE email = '{user_email}' and classid = '{classid}'""")
-        entry_al_present = dbase2.store_result().fetch_row()
+        # print("max participant")
+        query = (f"""SELECT  `sno` FROM joined_classes WHERE email = '{user_email}' and classid = '{classid}'""")
+        mycursor2.execute(query)
+        entry_al_present = mycursor2.fetchall()
+        # print("entry checked")
         if entry_al_present:
             try:
-                dbase3.query(f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                query = (f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+                mycursor3.execute(query)
                 dbase3.commit()
             except Exception:
                 pass
             fe.already_joined_ft()
             return "Already Joined"
 
-        dbase1.query(f"""INSERT INTO `{classid}` (`email`, `name`, `role`, `statics`) VALUES ('{user_email}', '{st_name}', 'Student', '{"{}"}');""")
+        query = (f"""INSERT INTO `{classid}` (`email`, `name`, `role`, `statics`) VALUES ('{user_email}', '{st_name}', 'Student', '{"{}"}');""")
+        mycursor1.execute(query)
         dbase1.commit()
 
-        dbase2.query(f"""INSERT INTO `joined_classes` (`role`, `classid`, `email`, `class_name`) VALUES  ('Student', '{classid}', '{user_email}', "{class_name}")""")
+        query = (f"""INSERT INTO `joined_classes` (`role`, `classid`, `email`, `class_name`) VALUES  ('Student', '{classid}', '{user_email}', "{class_name}")""")
+        mycursor2.execute(query)
         dbase2.commit()
 
-        dbase3.query(f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+        query = (f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+        mycursor3.execute(query)
         dbase3.commit()
+        # print("finally added")
 
         # Add approve request to user notification
 
@@ -720,14 +735,15 @@ def approve_request(user_email , classid ):
         fe.server_contact_error()
         return "Problem In Contacting"
 
-
 def decline_request(classid , user_email):
 
     try:
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
+        mycursor = dbase.cursor()
 
-        dbase =  _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
-
-        dbase.query(f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+        query = (f"""DELETE FROM `{classid}_pd_req` WHERE `{classid}_pd_req`.`email` = '{user_email}'""")
+        mycursor.execute(query)
+        dbase.commit()
 
         # hm.add_decline_req_message(user_email , class_name)
 
@@ -737,44 +753,40 @@ def decline_request(classid , user_email):
         fe.server_contact_error()
         return "Problem In Contacting"
 
-
 def remove_student(classid , user_email , remover):
     try:
  
+        dbase1 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        dbase2 = mysql.connector.connect(host="localhost",user=db_user,password="",database="classrooms")
+        mycursor = dbase1.cursor()
+        mycursor2 = dbase2.cursor()
 
-        dbase1 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-        dbase2 =  _mysql.connect(db="classrooms",user = db_user , passwd = mysql_passwd)
-
-        dbase1.query(f"""DELETE FROM `{classid}` WHERE `{classid}`.`email` = '{user_email}'""")
+        query = (f"""DELETE FROM `{classid}` WHERE `{classid}`.`email` = '{user_email}'""")
+        mycursor.execute(query)
         dbase1.commit()
 
-        dbase2.query(f"""DELETE FROM `joined_classes` WHERE `joined_classes`.`email` = '{user_email}' AND `joined_classes`.`classid` = '{classid}'""")
+        query = (f"""DELETE FROM `joined_classes` WHERE `joined_classes`.`email` = '{user_email}' AND `joined_classes`.`classid` = '{classid}'""")
+        mycursor2.execute(query)
         dbase2.commit()
-
-        # Add notification here using remover
 
     except Exception:
         fe.server_contact_error()
         return "Problem In Contacting"
 
-
-
 def delete_class(classid):
 
     try:
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="classrooms")
 
-        dbase =  _mysql.connect(db="classrooms",user = db_user , passwd = mysql_passwd)
+        mycursor = dbase.cursor()
+        
 
-        dbase.query(f"""SELECT  `email` FROM joined_classes WHERE classid = '{classid}' """)
-        em_tp =  dbase.store_result().fetch_row(maxrows = 0)
-        em_li = [ email[-1].decode() for email in em_tp]
-
-        dbase.query(f"""DELETE FROM `joined_classes` WHERE `joined_classes`.`classid` = '{classid}'""")
+        query = (f"""DELETE FROM `joined_classes` WHERE `joined_classes`.`classid` = '{classid}'""")
+        mycursor.execute(query)
+        dbase.commit()
 
 
-        del_tables = try_del_tables(classid)
-
-        # hm.add_class_del_message(class_name , em_li)
+        try_del_tables(classid)
         
     except Exception:
         return "Problem In Contacting"
