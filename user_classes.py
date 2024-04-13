@@ -29,7 +29,7 @@ import string
 from random import choice
 import flash_errors as fe
 import home_messages as hm
-
+import mysql.connector
 
 mysql_passwd = ''
 db_user = "root"
@@ -47,16 +47,21 @@ def get_user_classes(user_email):
 
     try:
 
-        db =_mysql.connect(db="classrooms",user = db_user , passwd = mysql_passwd )
-    
-        db.query(f"""SELECT  `classid` ,  `class_name`FROM joined_classes WHERE email = '{user_email}' """)
-        cls_tp =  db.store_result().fetch_row(maxrows = 0)
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="classrooms")
+        mycursor = db.cursor()
+        query = f"""SELECT  `classid` ,  `class_name`FROM joined_classes WHERE email = '{user_email}' """
+        mycursor.execute(query)
+        cls_tp = mycursor.fetchall()
 
-        
+        print("classes of user")
+        print(cls_tp)
         class_li = [{"class_name" : class_name.decode() , "classid" : classid.decode() } for classid , class_name in cls_tp ]
-
+        print("After decoding the same thing")
+        print(class_li)
         if class_li:
             class_li.sort(key = lambda x : x["class_name"]) 
+            print("After sorting the same thing")
+            print(class_li)
             return class_li
         return None
 
@@ -78,8 +83,8 @@ def get_more_info_classes(user_email):
 
     try:
 
-
-        db = _mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
+        mycursor = db.cursor()
         
         class_li = get_user_classes(user_email)
         print(class_li)
@@ -93,10 +98,13 @@ def get_more_info_classes(user_email):
 
             classid = user_class["classid"]
 
-            db.query(f"""SELECT  `class_standard` FROM basic_information WHERE class_id = '{classid}' """)
+            query = f"""SELECT  `class_standard` FROM basic_information WHERE class_id = '{classid}' """
             print("more info")
-            class_standard =  db.store_result().fetch_row()[-1][-1].decode()
-            print(class_standard)
+            # class_standard =  db.store_result().fetch_row()[-1][-1].decode()
+            mycursor.execute(query)
+            cls_tp = mycursor.fetchall()
+            print(cls_tp)
+            class_standard = cls_tp[-1].decode()
             class_mr_li.append({"class_name" : user_class["class_name"] , "classid" : classid , "class_standard" : class_standard})
 
         return class_mr_li
@@ -118,13 +126,16 @@ def get_class_cards(user_email):
     
     [{'class_name': "Naitik's Hindi Class", 'classid': '03neblduab6u0fm', 'class_standard': '12 B', 'teacher': 'Naitik Agrawal'}, {'class_name': "Naitik's Hindi Class", 'classid': '5uzgiwo2uvbobk0', 'class_standard': '12 B', 'teacher': 'Naitik Agrawal'}]
     """
+    print("class card function called")
+    
 
     try:
+        db2 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
 
-        db = _mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
-
-        db2 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-        
+        mycursor2 = db2.cursor()
+        mycursor = db.cursor()
+        print("getting classes of the user")
         class_li = get_user_classes(user_email)
 
         if class_li in (None , "Problem In Contacting"):
@@ -136,15 +147,27 @@ def get_class_cards(user_email):
 
             classid = user_class["classid"]
 
-            db.query(f"""SELECT  `class_name` , `class_standard` FROM basic_information WHERE `class_id` = '{classid}' """)
-            result = db.store_result().fetch_row()[-1]
+            query = f"""SELECT  `class_name` , `class_standard` FROM basic_information WHERE `class_id` = '{classid}' """
+            mycursor.execute(query)
+            result = mycursor.fetchall()
+            print("printing fetched result")
+            print(result)
+            result = result[-1]
+            print(result)
 
-            db2.query(f"""SELECT `name` FROM `{classid}` WHERE `role` = 'Teacher'""")
-            result2 = db2.store_result().fetch_row()[-1]
+            query = f"""SELECT `name` FROM `{classid}` WHERE `role` = 'Teacher'"""
+            mycursor2.execute(query)
+            result2 = mycursor2.fetchall()
+            print("printing fetched result")
+            print(result2)
+            result2 = result2[-1]
+            print(result2)
 
             class_name , te_name , class_standard =  result[0].decode() , result2[0].decode(), result[1].decode()
 
             class_mr_li.append({"class_name" : user_class["class_name"] , "classid" : classid , "class_standard" : class_standard , "teacher" : te_name})
+        print("all classes with the details")
+        print(class_mr_li)
 
         return class_mr_li
 
@@ -226,13 +249,13 @@ def get_participants_dict(classid):
 
 def get_participants_email(classid):
     try:
-
-        db3 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-
-        db3.query(f"""SELECT  `email` FROM {classid}""")
-        result = db3.store_result().fetch_row(maxrows = 0)
-        email_tp =  result
-        email_li = [ email[-1].decode() for email in email_tp ]
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        mycursor = db.cursor()
+        query = f"""SELECT  `email` FROM {classid}"""
+        mycursor.execute(query)
+        result = mycursor.fetchall()
+        print(result)
+        email_li = [ email[-1] for email in result ]
 
         return email_li
 
@@ -251,13 +274,16 @@ def get_uni_cls_id():
     """
 
     try:
-
-        db =_mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
-
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
         classid =  ''.join(choice(string.ascii_lowercase  + string.digits) for x in range(15))
+
         while True:
-            db.query(f"""SELECT  `class_name` FROM basic_information WHERE class_id = '{classid}' """)
-            if not (db.store_result().fetch_row()):
+            query = (f"""SELECT  `class_name` FROM basic_information WHERE class_id = '{classid}' """)
+            mycursor = db.cursor()
+            mycursor.execute(query)
+            myresult = mycursor.fetchall()
+
+            if not (myresult):
                 return classid
             classid =  ''.join(choice(string.ascii_lowercase + string.digits) for x in range(15))
     except Exception:
@@ -291,38 +317,45 @@ def try_del_tables(classid):
     """
 
     try:
-        dbase =_mysql.connect(db="class_chats",user = db_user , passwd = mysql_passwd)
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_chats")
+        dbase2 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        dbase3 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_other")
+        dbase4 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
+        dbase5 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
 
-        dbase2 =_mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-
-        dbase3 =_mysql.connect(db="class_other",user = db_user , passwd = mysql_passwd)
-
-        dbase4 = _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
-
-        dbase5 = _mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
+        mycursor = dbase.cursor()
+        mycursor5 = dbase5.cursor()
+        mycursor2 = dbase2.cursor()
+        mycursor3 = dbase3.cursor()
+        mycursor4 = dbase4.cursor()
          
         try: 
-            dbase.query(f"""DROP TABLE `{classid}_chats`""")
+            query = (f"""DROP TABLE `{classid}_chats`""")
+            mycursor.execute(query)
         except Exception:
             pass
 
         try: 
-            dbase2.query(f"""DROP TABLE `{classid}`""")
+            query = (f"""DROP TABLE `{classid}`""")
+            mycursor2.execute(query)
         except Exception:
             pass
 
         try: 
-            dbase3.query(f"""DROP TABLE `{classid}_other`""")
+            query = (f"""DROP TABLE `{classid}_other`""")
+            mycursor3.execute(query)
         except Exception:
             pass
 
         try: 
-            dbase4.query(f"""DROP TABLE `{classid}_pd_req`""")
+            query = (f"""DROP TABLE `{classid}_pd_req`""")
+            mycursor4.execute(query)
         except Exception:
             pass
 
         try: 
-            dbase5.query(f"""DELETE FROM `basic_information` WHERE `class_id` = '{classid}'""")
+            query = (f"""DELETE FROM `basic_information` WHERE `class_id` = '{classid}'""")
+            mycursor5.execute(query)
         except Exception:
             pass
 
@@ -340,28 +373,35 @@ def create_tables(dbase , dbase2 , dbase3 , dbase4 , classid , name , email , cl
 
 
     try:
+        mycur = dbase.cursor()
+        query = (f"""CREATE TABLE `class_chats`.`{classid}_chats` ( `sno` INT(5) NOT NULL AUTO_INCREMENT ,  `user_email` VARCHAR(200) NOT NULL , `user_name` VARCHAR(200) NOT NULL , `send_msg` TEXT NOT NULL,  `msg` TEXT NOT NULL , `date-time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,    PRIMARY KEY  (`sno`)) ENGINE = InnoDB;""")
+        mycur.execute(query)
 
-        dbase.query(f"""CREATE TABLE `class_chats`.`{classid}_chats` ( `sno` INT(5) NOT NULL AUTO_INCREMENT ,  `user_email` VARCHAR(200) NOT NULL , `user_name` VARCHAR(200) NOT NULL , `send_msg` TEXT NOT NULL,  `msg` TEXT NOT NULL , `date-time` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,    PRIMARY KEY  (`sno`)) ENGINE = InnoDB;""")
 
-
-        dbase.query(f"""INSERT INTO `{classid}_chats` (`sno`, `user_email`, `send_msg`, `msg` , `date-time`) VALUES (1 , 'None', 'None' '[]', 'None' , current_timestamp());""")
+        query = (f"""INSERT INTO `{classid}_chats` (`sno`, `user_email`, `send_msg`, `msg` , `date-time`) VALUES (1 , 'None', 'None' '[]', 'None' , current_timestamp());""")
+        mycur.execute(query)
         dbase.commit()
 
+        mycur = dbase2.cursor()
+        query = (f"""CREATE TABLE `class_information`.`{classid}` ( `email` VARCHAR(400) NOT NULL ,  `name` TEXT NOT NULL ,  `role` TEXT NOT NULL , `statics` TEXT NOT NULL ,    PRIMARY KEY  (`email`)) ENGINE = InnoDB;""")
+        mycur.execute(query)
 
-        dbase2.query(f"""CREATE TABLE `class_information`.`{classid}` ( `email` VARCHAR(400) NOT NULL ,  `name` TEXT NOT NULL ,  `role` TEXT NOT NULL , `statics` TEXT NOT NULL ,    PRIMARY KEY  (`email`)) ENGINE = InnoDB;""")
-
-        dbase2.query(f"""INSERT INTO `{classid}` (`email`, `name`, `role`, `statics`) VALUES ('{email}', '{name}', 'Teacher', '{"{}"}');""")
-
+        query = (f"""INSERT INTO `{classid}` (`email`, `name`, `role`, `statics`) VALUES ('{email}', '{name}', 'Teacher', '{"{}"}');""")
+        mycur.execute(query)
         dbase2.commit()
-        
-        dbase3.query(f"""CREATE TABLE `class_other`.`{classid}_other` ( `sno` INT(5) NOT NULL AUTO_INCREMENT , `type` VARCHAR(30) NOT NULL , `details` TEXT NOT NULL , `st_details` TEXT NOT NULL,  PRIMARY KEY (`sno`)) ENGINE = InnoDB;""")
 
-        dbase3.query(f"""INSERT INTO `{classid}_other` (`sno`, `type`, `details`, `st_details`) VALUES (1 , 'None', 'None' , 'None');""")
+        
+        mycur = dbase3.cursor()
+        query = (f"""CREATE TABLE `class_other`.`{classid}_other` ( `sno` INT(5) NOT NULL AUTO_INCREMENT , `type` VARCHAR(30) NOT NULL , `details` TEXT NOT NULL , `st_details` TEXT NOT NULL,  PRIMARY KEY (`sno`)) ENGINE = InnoDB;""")
+        mycur.execute(query)
+
+        query = (f"""INSERT INTO `{classid}_other` (`sno`, `type`, `details`, `st_details`) VALUES (1 , 'None', 'None' , 'None');""")
+        mycur.execute(query)
         dbase3.commit()
 
-        dbase4.query(f"""CREATE TABLE `class_pd_req`.`{classid}_pd_req` ( `email` VARCHAR(400) NOT NULL ,  `name` TEXT NOT NULL, PRIMARY KEY  (`email`)) ENGINE = InnoDB;""")
-        
-        dbase4.commit()
+        mycur = dbase4.cursor()
+        query = (f"""CREATE TABLE `class_pd_req`.`{classid}_pd_req` ( `email` VARCHAR(400) NOT NULL ,  `name` TEXT NOT NULL, PRIMARY KEY  (`email`)) ENGINE = InnoDB;""")
+        mycur.execute(query)
 
         return None
 
@@ -401,7 +441,6 @@ def create_new_class(user_email , class_name , name , class_standard , descripti
 
     """
 
-
     no_classes = check_len_classes(user_email)
     classid = get_uni_cls_id()
 
@@ -416,35 +455,37 @@ def create_new_class(user_email , class_name , name , class_standard , descripti
   
     del_tables = try_del_tables(classid)
 
+    # print("all previous classes delted successfully")
+
     if del_tables == "Problem In Contacting":
         fe.server_contact_error()
         return None
 
     try:
 
-        dbase =_mysql.connect(db="classrooms",user = db_user , passwd = mysql_passwd)
-
-        db =_mysql.connect(db="class_chats",user = db_user , passwd= mysql_passwd)
-
-        db2 = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-
-        db3 = _mysql.connect(db="class_other",user = db_user , passwd = mysql_passwd)
-
-        db4 = _mysql.connect(db="class_pd_req",user = db_user , passwd = mysql_passwd)
-
-        db5 = _mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
+        dbase = mysql.connector.connect(host="localhost",user=db_user,password="",database="classrooms")
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_chats")
+        db2 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        db3 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_other")
+        db4 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_pd_req")
+        db5 = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
 
         cr_tab = create_tables(db , db2, db3 , db4 , classid , name , user_email , class_standard)
 
         if cr_tab == "Problem In Contacting":
+            # print("returning none")
             return None
 
-        db5.query(f"""INSERT INTO `basic_information` (`class_id`, `class_name`, `teacher`, `class_standard` , `description`) VALUES ('{classid}', "{class_name}", '{user_email}', '{class_standard}' , '{description}');""")
         
-        dbase.query(f"""INSERT INTO `joined_classes` (`role`, `classid`, `email`, `class_name`) VALUES  ('Teacher', '{classid}', '{user_email}', "{class_name}")""")
-        
+        query = (f"""INSERT INTO `joined_classes` (`role`, `classid`, `email`, `class_name`) VALUES  ('Teacher', '{classid}', '{user_email}', "{class_name}")""")
+        mycursor = dbase.cursor()
+        mycursor.execute(query)
         dbase.commit()
+        query = (f"""INSERT INTO `basic_information` (`class_id`, `class_name`, `teacher`, `class_standard` , `description`) VALUES ('{classid}', "{class_name}", '{user_email}', '{class_standard}' , '{description}');""")
+        mycursor = db5.cursor()
+        mycursor.execute(query)
         db5.commit()
+
         return classid
 
     except Exception:
@@ -556,11 +597,14 @@ def get_class_name(classid):
 
 
     try:
-        dbase =  _mysql.connect(db="class_inf",user = db_user , passwd = mysql_passwd)
+        db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_inf")
+        mycursor = db.cursor()
 
-        dbase.query(f"""SELECT  `class_name` FROM basic_information WHERE `class_id` = '{classid}' """)
+        query = (f"""SELECT  `class_name` FROM basic_information WHERE `class_id` = '{classid}' """)
+        mycursor.execute(query)
+        cls_tp = mycursor.fetchall()
 
-        return dbase.store_result().fetch_row()[-1][-1].decode()
+        return cls_tp[-1][-1]
         
     except Exception:
         return None

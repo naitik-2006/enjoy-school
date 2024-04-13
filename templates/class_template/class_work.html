@@ -1342,6 +1342,8 @@
 </script>
 <!-- Upload Classwork -->
 <script>
+
+    // to get date in desired format
     function todayDate() {
         var today = new Date(); // get the current date
         var dd = today.getDate(); //get the day from today.
@@ -1361,6 +1363,8 @@
         //finally join yyyy mm and dd with a "-" between then
         return yyyy + '-' + mm + '-' + dd;
     }
+    
+    // setting modal default , min value
     $(document).ready(function () {
         $('#start_time').attr('min', todayDate());
         $('#end_time').attr('min', todayDate());
@@ -1385,10 +1389,10 @@
     }
 </script>
 
+<!-- // Toggle classes  -->
 <script>
 
 
-    // Toggle classes 
     var classes2 = document.getElementById("meeting_collapse")
     classes2.addEventListener('click', function () {
         var class_classes2 = classes2.className.split(' ');

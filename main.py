@@ -241,21 +241,17 @@ def get_nav_classes(user):
     if user.role == "Teacher":
         classes = uc.get_more_info_classes(user.email)
         if classes == "Problem In Contacting":
+            fe.server_contact_error()
             return "Problem"
 
     else:
 
         classes = uc.get_user_classes(user.email)
         if classes == "Problem In Contacting":
+            fe.server_contact_error()
             return "Problem"    
 
 
-
-@app.route("/test")
-def test():
-    
-
-    return render_template("test.html")
 
 @app.route("/upload" , methods = ["POST"])
 def upload():
@@ -777,6 +773,7 @@ def resend_foget_pass_verify_otp(slug):
 @login_required
 @app.route("/create-class" , methods = ["POST", "GET"] )
 def create_class():
+    print("request")
     if current_user.role == 'Teacher':
 
         if request.method == 'POST':
@@ -785,21 +782,21 @@ def create_class():
             std = request.form.get("Standard")
             desp = request.form.get("description")
 
-            if None in (cls_name , std , desp) or "" in (cls_name , std , desp) :
+            if None in (cls_name , std) or "" in (cls_name , std) :
                 fe.some_went_wrong()
                 return redirect("/create-class")
-
+            
             create_class_request = uc.create_new_class(current_user.email, cls_name, current_user.name, std, desp)
 
             
             if create_class_request == None :
-                return render_template("create_class.html" ,  nav_classes = get_nav_classes(current_user))
+                return redirect(url_for(f"/create-class"))
             
             else:
                 fs.create_class()
-                return redirect(url_for(f"/class/{create_class_request}"))
+                return redirect((f"/class/{create_class_request}"))
         
-        return render_template("create_class.html" , nav_classes = get_nav_classes(current_user))
+        return render_template("create_class.html"  )
     
     else:
         return render_template("404.html")
@@ -819,12 +816,12 @@ def req_join_class():
             join_class_request = uc.add_joining_req(current_user.email, current_user.name, cls_id)
 
             if join_class_request in ("Problem In Contacting" , "No class found" , "Already Joined" , "Already Requested", "Max Joined" ):
-                return render_template("join_class.html" , nav_classes = get_nav_classes(current_user))
+                return render_template("join_class.html"  )
             
             fs.join_req_class()
             return redirect(url_for('index'))
         
-        return render_template("join_class.html", nav_classes = get_nav_classes(current_user))
+        return render_template("join_class.html" )
     else:
         return render_template("404.html")
 
@@ -850,7 +847,7 @@ def index():
             fe.server_contact_error()
             return render_template("home.html" , get_class_cards = ([]) , nav_classes = ([]))
 
-        return render_template("home.html" , get_class_cards = class_cards , nav_classes = get_nav_classes(current_user))
+        return render_template("home.html" , get_class_cards = class_cards  )
 
     return redirect("/login")
 
@@ -879,6 +876,7 @@ def class_name():
 def class_home_page(slug):
 
     cls_name = uc.get_class_name(slug)
+    print(uc.get_class_name(slug) == None)
 
     if uc.get_class_name(slug) == None or current_user.email not in uc.get_participants_email(slug):
         return render_template("404.html")
@@ -886,7 +884,7 @@ def class_home_page(slug):
     clswrks = ch.get_all_classworks(slug , current_user.email)
     meetings = ch.get_all_meetings(slug)
 
-    return render_template("class_template/class_work.html", href_window = slug , nav_classes = get_nav_classes(current_user) , tittle = cls_name , classworks = clswrks , meetings = meetings)
+    return render_template("class_template/class_work.html", href_window = slug , tittle = cls_name , classworks = clswrks , meetings = meetings)
 
 
 
@@ -1065,7 +1063,7 @@ def class_discuss_page(slug):
     if cls_name == None or current_user.email not in uc.get_participants_email(slug) :
         return render_template("404.html")
 
-    return render_template("class_template/chat.html" , href_window = slug, old_chats = cc.get_class_chats(slug) , nav_classes = get_nav_classes(current_user) , tittle = cls_name , participants = uc.get_participants(slug))
+    return render_template("class_template/chat.html" , href_window = slug, old_chats = cc.get_class_chats(slug)   , tittle = cls_name , participants = uc.get_participants(slug))
 
 
 @socketio.on('join_room')
@@ -1158,10 +1156,10 @@ def class_participant_page(slug):
     if current_user.role == "Teacher":
 
         pending_requests = uc.get_join_req(slug)
-        return render_template("class_template/participants.html", pending_student = pending_requests , href_window = slug , participants = participants , nav_classes = get_nav_classes(current_user), title = cls_name)
+        return render_template("class_template/participants.html", pending_student = pending_requests , href_window = slug , participants = participants  , title = cls_name)
 
     else:
-        return render_template("class_template/participants.html" , href_window = slug , participants = participants , nav_classes = get_nav_classes(current_user) , tittle = cls_name)
+        return render_template("class_template/participants.html" , href_window = slug , participants = participants   , tittle = cls_name)
 
 
 
@@ -1290,6 +1288,7 @@ def get_teacher_classes():
     classes = uc.get_more_info_classes(current_user.email)
     if classes == 'Problem In Contacting':
         classes = "Problem"
+    print(jsonify(classes))
     return jsonify(classes)
 
 @login_required
@@ -1325,11 +1324,17 @@ def get_participants():
 
     return jsonify(participants)
 
-
+@app.route("/test", methods = ['GET'])
+def test():
+    data = "string"
+    data = jsonify(data)
+    print(data)
+    return data
 
 #************************************************************************
 
 if __name__ == "__main__":
 
 
+        
         socketio.run(app, debug=True)
