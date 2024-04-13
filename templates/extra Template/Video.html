@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Clock Using Pure JS</title>
+    </head>
+
+    <body>
+        <div id="clockContainer">
+            <video id="video" width="400" height="300" autoplay></video>
+            <canvas id="canvas" width="400" height="300"></canvas>
+        </div>
+    </body>
+    <script>
+        //         (function() {
+        //             var video = document.getElementById('video')
+        //             var vendorurl = window.URL || window.webkitURL ;
+        //             console.log(vendorurl)
+        //             navigator.getMedia = navigator.getUserMedia || 
+        //                                  navigator.mozGetUserMedia || 
+        //                                  navigator.msGetUserMedia || 
+        //                                  navigator.webkitGetUserMedia;
+        //             navigator.getMedia({
+        //                 video: true,
+        //                 audio: false
+        //             }, function (stream) {
+        //                 console.log(stream)
+        //                 video.srco = vendorurl.createObjectURL(stream);
+        //                 video.play();
+        //             }, function (error) {
+        //                 console.log(error);
+        //             })
+        // })();
+
+        var video = document.querySelector("#video");
+        navigator.getMedia = navigator.getUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia ||
+            navigator.webkitGetUserMedia;
+
+        if (navigator.getMedia) {
+            navigator.getMedia({ video: true, audio: true },
+                function (stream) {
+                    console.log(stream)
+                    video.srcObject = stream;
+                },
+                function (error) {
+                    console.log("Something went wrong!");
+                });
+        }
+    </script>
+
+</html>

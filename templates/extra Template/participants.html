@@ -1,0 +1,907 @@
+{% extends 'class_layout.html' %}
+
+{% block title %} {{tittle}} {% endblock %}
+
+{% block cssfile %}
+<!-- Nav2 And Media Screen -->
+<style>
+    @media(max-width: 450px) {
+        #_440 {
+            display: none;
+        }
+    }
+
+    @media(max-width: 850px) {
+
+        #layoutSidenav_content.scrollable {
+            height: calc(100vh - 7.25rem) !important;
+            display: block;
+            overflow-y: auto;
+        }
+    }
+
+    @media(max-width: 850px) {
+        #class_nav1 {
+            box-shadow: none;
+        }
+
+
+        #tab_class {
+            display: none !important;
+        }
+
+        .side-nav {
+            padding-top: 7.25rem !important;
+        }
+
+        #layoutSidenav_content {
+            top: 7.25rem !important;
+            min-height: calc(100vh - 7.5rem) !important;
+        }
+
+        #class_nav2.shadow2 {
+            box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+            padding-top: 0rem !important;
+        }
+    }
+
+    @media(min-width: 850px) {
+        #class_nav2 {
+            display: none;
+        }
+
+        #making_item {
+            display: none !important;
+        }
+    }
+
+
+    #class_nav2.shadow2 {
+        box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+        padding-top: 0rem !important;
+    }
+
+    #tab_class {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    #tab_class2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class2 .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class2 .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+</style>
+<!-- Modal And Other -->
+<style>
+    .modal-backdrop.show {
+        opacity: 0.26;
+    }
+
+    .modal {
+        z-index: 10000000;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    .navbar-nav.mx-2 {
+        padding-right: 5.5rem !important;
+    }
+
+    .bg {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+<!-- Participant -->
+<style>
+    .card_item_person .person_name {
+        max-width: 10rem;
+    }
+
+    .dropdown.show.pend_for_request {
+        padding-bottom: 4.75rem !important;
+    }
+
+    .dropdown.show.pend_for_teacher {
+        padding-bottom: 3rem !important;
+    }
+
+    .dropdown.show.pend_for_student {
+        padding-bottom: 3rem !important;
+    }
+
+    #Teacher {
+        color: #0061f2;
+        font-weight: bold;
+    }
+
+    #Student {
+        color: #0061f2;
+        font-weight: bold;
+    }
+
+    #Pending_Request {
+        color: #0061f2;
+        font-weight: bold;
+    }
+
+    #part_teacher {
+        padding-bottom: 0.25rem;
+    }
+
+    .abcd {
+        background-color: rgb(192 57 43);
+        border: 5px solid rgb(192 57 43);
+        border-radius: 29%;
+        width: 2.6rem;
+        height: 2.5rem;
+        display: flex;
+        color: white;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .a,
+    .c,
+    .h {
+        background-color: #27ae60;
+        border: 5px solid #27ae60;
+
+    }
+
+    .m,
+    .q {
+
+        background-color: #ab47bc;
+        border: 5px solid #ab47bc;
+    }
+
+    .b,
+    .d,
+    .f {
+
+        background-color: #f39c12;
+        border: 5px solid #f39c12;
+    }
+
+    .s,
+    .e,
+    .k {
+
+        background-color: #f39c12;
+        border: 5px solid #f39c12;
+    }
+
+    .o,
+    .t,
+    .w {
+
+        background-color: #2980b9;
+        border: 5px solid #2980b9;
+    }
+
+    .y,
+    .v,
+    .x {
+
+        background-color: #c0392b;
+        border: 5px solid #c0392b;
+    }
+
+    .r,
+    .z,
+    .g {
+
+        background-color: #16a085;
+        border: 5px solid #16a085;
+    }
+
+    .l,
+    .i,
+    .j {
+        background-color: #2980b9;
+        border: 5px solid #2980b9;
+
+    }
+
+    .n,
+    .u {
+        background-color: rgb(192 57 43) !important;
+        border: 5px solid rgb(192 57 43) !important;
+    }
+
+    .abcd div {
+        text-align: center;
+    }
+
+    #people .card-header {
+        color: green;
+        border-color: green;
+        background-color: #fff;
+        margin-left: 1rem;
+        padding-left: 1rem;
+        margin-right: 1.5rem;
+    }
+
+    #people .card-body {
+        color: black;
+        padding-left: 1rem;
+        padding-bottom: 0.6rem;
+        padding-top: 0.7rem;
+    }
+
+    #people .card-header {
+        margin-left: 1rem;
+    }
+
+    .response2 .dropdown-item.danger:hover {
+        color: black;
+    }
+
+    .response2 .dropdown-item.danger {
+        color: red;
+    }
+
+    .response2 .dropdown-item.sucess {
+        color: green;
+    }
+
+    @media(min-width: 1000px) {
+        #class_nav2 {
+            display: none;
+        }
+
+        #making_item {
+            display: none !important;
+        }
+    }
+
+    @media(max-width: 1000px) {
+        #people .float-right .response {
+            display: none
+        }
+
+        #people .float-right .response2 {
+            display: block !important;
+        }
+    }
+
+    #people .float-right .response2 {
+        display: none
+    }
+
+    #people .float-right .response2.dropdown .dropdown-menu {
+        left: -2rem !important;
+    }
+
+    #people {
+        max-width: 44rem;
+        min-width: 18rem;
+        margin: 0 auto !important;
+        margin-top: -3.5rem !important;
+    }
+
+    #people .card {
+        margin-bottom: 0.75rem;
+        max-width: 44rem;
+        min-width: 18rem;
+    }
+
+    #class_nav2.shadow2 {
+        box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+        padding-top: 0rem !important;
+    }
+
+    #people .card .card-header {
+        font-size: 1.5rem;
+    }
+
+    #tab_class {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    #tab_class2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class2 .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class2 .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    .card_item_person {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .for_student .card_item_person {
+        margin-bottom: 0.85rem;
+    }
+
+    .person_name {
+        margin-left: 1rem;
+    }
+
+    .bg-gradient-primary-to-secondary2 {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        /* background-repeat: no-repeat; */
+        background-size: 100%;
+        /* width: 100%; */
+        padding-bottom: 3rem !important;
+        /* padding-bottom: 1rem !important; */
+        -webkit-box-direction: normal;
+    }
+
+    /* .bg-gradient-primary-to-secondary2 .page-header-content{
+                padding-bottom: 1.75rem;
+            } */
+    .card-body.for_student {
+        /* display: flex;
+                flex-direction: column;
+                align-self: start;
+                align-items: flex-start;
+                justify-content: flex-start; */
+    }
+
+    #part_pending .float-right .response.btn {
+        margin-right: 0.3rem;
+        margin-right: 0.3rem;
+    }
+
+    #Teacher {
+        /* margin-bottom: 1rem; */
+    }
+
+    .modal {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    @media(max-width: 500px) {
+        .navbar-brand.d-sm-block {
+            font-size: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block nav_edit %}
+<div class="dis" id="making_item">
+    <form class="form-inline mr-auto ">
+        <div class=" mr-sm-2"> </div>
+    </form>
+</div>
+<div class="container" id="tab_class">
+    <ul class="nav ">
+        <li class="nav-item">
+            <a class="nav-link classwork" href="#">Class Work</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  active" href="" class="Participant">Participant</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link Discuss" href="" class="">Discuss</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+{% block other_nav %}
+<nav class="topnav navbar  navbar-expand shadow2 topbar navbar-light bg-white" id="class_nav2">
+
+    <div class="container" id="tab_class2">
+        <ul class="nav ">
+            <li class="nav-item">
+                <a class="nav-link classwork" href="#">Class Work</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  active" href="#">Participant</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  Discuss" href="#">Discuss</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block coreli %}
+<a class="nav-link " href="/">
+    <div class="nav-link-icon ">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-book-open">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg></i-feather>
+    </div>
+    Home
+</a>
+<a class="nav-link">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-activity">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12">
+                </polyline>
+            </svg></i-feather>
+    </div>
+    Messages
+</a>
+{% endblock %}
+
+{% block Interfaces %}
+<div>
+    <a class="nav-link collapsed active" id="classes">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg></i-feather>
+        </div>
+        Classes
+        <div class="sidenav-collapse-arrow float-left">
+            <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down" class="svg-inline--fa fa-angle-down fa-w-10"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
+                    </path>
+                </svg></fa-icon>
+        </div>
+    </a>
+    <nav class="sidenav-menu-nested nav collapsed" id="classes_content">
+        <div class="submenu collapsed">
+            <a class="nav-link">
+                <span class="nav-link-icon" style="width: 1rem !important;">
+                    <span class="fa fa-plus fa-fw"></span></span>
+                {%if current_user.role == 'Teacher' %}
+                <span id="class_create">Create Class</span>
+                {% endif %}
+                {%if current_user.role == 'Student' %}
+                <span id="class_join"> Join Class</span>
+                {% endif %}
+            </a>
+        </div>
+    </nav>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Meeting
+    </a>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                    </path>
+                </svg></i-feather>
+        </div>
+        <!----> Test
+    </a>
+</div>
+{% endblock %}
+
+{% block performance %}
+<a class="nav-link ">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-layout">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg></i-feather>
+    </div>
+    <!----> Performance
+</a>
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="exampleModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    id="final_button_to_decline">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block main_code %}
+<div class="container-fluid mt-n5" id="people">
+    <div class="card">
+        <div class="card-header" id="Teacher">Teacher</div>
+        <div class="card-body">
+            <div class="" id="part_teacher">
+
+            </div>
+        </div>
+
+    </div>
+    <div class="card" id="container_for_pending">
+        {%if current_user.role == "Teacher"%}
+        <div class="card-header" id="Pending_Request">Joining Requests</div>
+        <div class="card-body">
+            <div class="for_student" id="part_pending">
+                {%for item in pending_student if 1 == 1 %}
+                {% set testing = 'it worked' %}
+                {% set another = testing %}
+                {% set list1 = item['name'].split(' ') %}
+                {% set list3 = namespace(value = '0') %}
+                {% set count = namespace(value=0) %}
+                {% for item2 in list1 if 2 >= count.value%}
+                {% set count.value = count.value + 1 %}
+                {% endfor %}
+                {% set list3.value = list1[0][0:1]%}
+                {%if count.value == 2%}
+                {% set list3.value = list3.value + list1[1][0:1]%}
+                {% endif%}
+
+                <div>
+                    <div class="card_item_person">
+                        <div class="{{ list1[0][0:1]}} abcd">
+                            <div>{{list3.value}}</div>
+                        </div>
+                        <div class="person_name">{{item['name']}}</div>
+                    </div>
+                    <div class="float-right"><button
+                            class="response btn btn-outline-danger pending_person_item accept_button_yes {{item['email']}}">Accept</button><button
+                            class="response btn btn-outline-success pending_person_item decline_button_yes {{item['email']}}"
+                            data-toggle="modal" data-target="#exampleModal">Deline</button>
+                        <div class="dropdown response2 pend_for_request"><button class="btn dropdown-toggle"
+                                type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                                style="left: -2rem !important;"><button
+                                    class="dropdown-item danger pending_person_item decline_button_yes {{item['email']}}">Accept</button><button
+                                    data-toggle="modal" data-target="#exampleModal"
+                                    class="dropdown-item sucess pending_person_item accept_button_yes {{item['email']}}"
+                                    href="#">Decline</button></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- {{item}} -->
+                {%endfor%}
+            </div>
+        </div>
+        <script>
+            var elements = document.getElementsByClassName("decline_button_yes")
+            var to_decline_pending = ''
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].addEventListener('click', function (e) {
+                    to_decline_pending = this.className.split(" ")[this.className.split(" ").length - 1]
+                    document.getElementById("exampleModalLabel").innerText = ' Decline Request'
+                    document.getElementById("exampleModalBody").innerText = 'Do you want decline him/her request to join class'
+                    document.getElementById("final_button_to_decline").onclick = function (e) {
+                        $.ajax({
+                            url: `/pending/class/decline/`,
+                            type: "POST",
+                            data: {
+                                "id": href_window,
+                                "student_email": to_decline_pending
+                            },
+                            success: function (resp) {
+                                if (resp == 'redirect') {
+                                    window.location.href = `/class/${href_window}/participant/`
+                                }
+                            },
+                            error: function (e) {
+                                to_decline_pending = ""
+                            }
+                        })
+                    }
+                }, false);
+            }
+            var elements_approve = document.getElementsByClassName("accept_button_yes")
+            var to_accept_pending = ''
+            for (var i = 0; i < elements_approve.length; i++) {
+                elements_approve[i].addEventListener('click', function (e) {
+                    to_accept_pending = this.className.split(" ")[this.className.split(" ").length - 1]
+                    // document.getElementById("exampleModalLabel").innerText = ' Accept Request'
+                    // document.getElementById("exampleModalBody").innerText = 'Do you want accept him/her request to join class'
+                    // document.getElementById("final_button_to_decline").onclick = function (e) {
+                    $.ajax({
+                        url: `/pending/class/approve/`,
+                        type: "POST",
+                        data: {
+                            "id": href_window,
+                            "student_email": to_accept_pending
+                        },
+                        success: function (resp) {
+                            if (resp == 'redirect') {
+                                window.location.href = `/class/${href_window}/participant/`
+                            }
+                        },
+                        error: function (e) {
+                            to_decline_pending = ""
+                        }
+                    })
+                    // }
+                }, false);
+            }
+
+        </script>
+        {% endif %}
+    </div>
+    <div class="card">
+        <div class="card-header" id="Student">Students</div>
+        <div class="card-body">
+            <div class="for_student" id="part_student">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scriptfile %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<!-- Socket -->
+<script>
+    const socket = io.connect("http://127.0.1:5000");
+    socket.on('connect', function () {
+        socket.emit('join_room', {
+            username: "{{current_user.name}}",
+            room: href_window + "" + "_asssignment"
+        })
+    })
+</script>
+<!-- Loader And Link -->
+<script>
+    function loader_true() {
+        var loader = document.getElementById("preloader")
+        loader.style.display = 'none'
+
+        if (window.innerWidth <= 1000) {
+            $('#layoutSidenav_nav').addClass('remove_padding')
+            $('#layoutSidenav_content').addClass('adding_padding')
+        }
+
+    }
+    var href_window = "{{href_window}}"
+    $(".classwork").attr("href", `/class/${href_window}`)
+    $(".Discuss").attr("href", `/class/${href_window}/discuss`)
+</script>
+<!-- Participant -->
+<script>
+    role_user = `{{ current_user.role }}`
+    console.log(role_user)
+    let part_url = `/get_participats`
+    $.ajax({
+        url: part_url,
+        type: "POST",
+        data: {
+            "id": href_window
+        },
+        success: function (resp) {
+            let teacher_item = resp['teacher']['name'].split(" ")
+            let start_word = ""
+            let teacher_item_html = ""
+            let student_item_html = ""
+            let num_for_count = 0
+            for (var item in teacher_item) {
+                start_word = start_word + teacher_item[item].substr(0, 1)
+                num_for_count = num_for_count + 1
+                if (num_for_count == 2) {
+                    break
+                }
+            }
+            if (role_user == 'Teacher') {
+                teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['teacher']['name']} (You)</div></div><div class="float-right"><button class="btn btn-outline-danger response      button_dismiss_class " data-toggle="modal" data-target="#exampleModal">Dismiss</button><div class="dropdown response2 pend_for_teacher"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger button_dismiss_class" data-toggle="modal" data-target="#exampleModal">Dismiss</button></div></div></div>`
+                $("#part_teacher").append(teacher_item_html)
+                var decline_class = document.getElementsByClassName("button_dismiss_class")
+                console.log(decline_class)
+                for (var i = 0; i < decline_class.length; i++) {
+                    decline_class[i].addEventListener('click', function (e) {
+                        document.getElementById("exampleModalLabel").innerText = 'Delete Class'
+                        document.getElementById("exampleModalBody").innerText = 'Do you really want to delete class'
+                        document.getElementById("final_button_to_decline").onclick = function (e) {
+                            $.ajax({
+                                url: `/dismiss-class/`,
+                                type: "POST",
+                                data: {
+                                    "id": href_window,
+                                    "email": "{{current_user.email}}"
+                                },
+                                success: function (resp) {
+                                    if (resp == "redirect") {
+                                        window.location.href = "/"
+                                    }
+                                },
+                                error: function (e) {
+                                    to_decline_pending = ""
+                                }
+                            })
+                        }
+                    }, false);
+                }
+
+            }
+            else {
+                teacher_item_html = `<div><div class="card_item_person"><div class="${resp['teacher']['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['teacher']['name']}</div></div><div class="float-right"></div>`
+                document.getElementById("container_for_pending").style.display = 'none'
+                $("#part_teacher").append(teacher_item_html)
+            }
+            for (let item in resp['students']) {
+                let student_item = resp['students'][item]['name'].split(" ")
+                let start_word = ""
+                let num_for_count = 0
+                for (var item2 in student_item) {
+                    start_word = start_word + student_item[item2].substr(0, 1)
+                    num_for_count = num_for_count + 1
+                    if (num_for_count == 2) {
+                        break
+                    }
+                }
+                if (role_user == 'Teacher') {
+                    student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"><button class="btn btn-outline-danger response ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button><div class="dropdown response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger ${resp['students'][item]['email']} unroll_student_part2 " data-toggle="modal" data-target="#exampleModal">Remove</button></div></div></div></div>`
+                    $("#part_student").append(student_item_html)
+                }
+                else {
+                    if ('{{current_user.name}}' == resp['students'][item]) {
+                        student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']} (You)</div></div><div class="float-right"><button class="response btn btn-outline-danger unroll_student" data-toggle="modal" data-target="#exampleModal">Un Roll</button><div class="dropdown response2 pend_for_student"><button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button><div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="left: -2rem !important;"><button class="dropdown-item  danger unroll_student " data-toggle="modal" data-target="#exampleModal">Leave</button></div></div></div></div>`
+                        $("#part_student").prepend(student_item_html)
+                    }
+                    else {
+                        student_item_html = `<div><div class="card_item_person"><div class="${resp['students'][item]['name'].substr(0, 1).toLowerCase()} abcd"><div>${start_word}</div></div><div class="person_name">${resp['students'][item]['name']}</div></div><div class="float-right"></div></div>`
+                        // alert("hello")
+                        $("#part_student").append(student_item_html)
+                    }
+                }
+            }
+            var unroll_student_part2 = document.getElementsByClassName("unroll_student_part2")
+            var to_unroll_student_part2 = ''
+            let email_to_decline = ""
+            for (var i = 0; i < unroll_student_part2.length; i++) {
+                unroll_student_part2[i].addEventListener('click', function (e) {
+                    to_unroll_student_part2 = this.className.split(" ")[this.className.split(" ").length - 3]
+                    document.getElementById("exampleModalLabel").innerText = 'Remove Student'
+                    document.getElementById("exampleModalBody").innerText = 'Do you really want to remove him/her from this class'
+                    // email_to_decline =
+                    console.log(to_unroll_student_part2)
+                    document.getElementById("final_button_to_decline").onclick = function (e) {
+                        $.ajax({
+                            url: `/remove-student/`,
+                            type: "POST",
+                            data: {
+                                "url": href_window,
+                                "email": to_unroll_student_part2
+                            },
+                            success: function (resp) {
+                                if (resp == "redirect2") {
+                                    window.location.href = "/"
+                                }
+                                else if (resp == "redirect") {
+                                    window.location.href = `/class/${href_window}/participant/`
+                                }
+                            },
+                            error: function (e) {
+                                to_decline_pending = ""
+                            }
+                        })
+
+                    }
+                }, false);
+            }
+            var unroll_student = document.getElementsByClassName("unroll_student")
+            var to_unroll_student = ''
+            for (var i = 0; i < unroll_student.length; i++) {
+                unroll_student[i].addEventListener('click', function (e) {
+                    to_unroll_student = this.className.split(" ")[this.className.split(" ").length - 1]
+                    document.getElementById("exampleModalLabel").innerText = 'Remove Class'
+                    document.getElementById("exampleModalBody").innerText = 'Do you really want to remove this class'
+                    document.getElementById("final_button_to_decline").onclick = function (e) {
+                        $.ajax({
+                            url: `/remove-student/`,
+                            type: "POST",
+                            data: {
+                                "url": href_window,
+                                "email": "{{current_user.email}}"
+                            },
+                            success: function (resp) {
+                                if (resp == "redirect2") {
+                                    window.location.href = "/"
+                                }
+                                else if (resp == "redirect") {
+                                    window.location.href = `/class/${href_window}/`
+                                }
+                            },
+                            error: function (e) {
+                                to_decline_pending = ""
+                            }
+                        })
+                    }
+                }, false);
+            }
+
+        },
+        error: function () {
+
+        }
+
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends 'class_layout.html' %}
+
+{% block title %} Enjoy School {% endblock %}
+
+{% block cssfile %}
+<style>
+    .bg_class1 {
+
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .bg_class2 {
+        background-image: url("{{ url_for('static', filename='bg_class2.jpg') }}") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .bg_class3 {
+
+        background-image: url("{{ url_for('static', filename='bg_class3.jpg') }}") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .bg_class4 {
+        background-image: url("{{ url_for('static', filename='bg_class4.jpg') }}") !important;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+
+    .go {
+        fill: whitesmoke;
+        color: #a2acba;
+    }
+
+    .go svg {
+        margin-top: -0.25rem;
+        float: right !important;
+    }
+</style>
+{% endblock %}
+
+{% block nav_edit %}
+<div class="dis">
+    <form class="form-inline mr-auto ">
+        <div class=" mr-sm-2"> </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block coreli %}
+<a class="nav-link active" href="#">
+    <div class="nav-link-icon ">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-book-open">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg></i-feather>
+    </div>
+    Home
+</a>
+<a class="nav-link">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-activity">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12">
+                </polyline>
+            </svg></i-feather>
+    </div>
+    Messages
+</a>
+{% endblock %}
+
+{% block Interfaces %}
+<div>
+    <a class="nav-link collapsed" id="classes">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg></i-feather>
+        </div>
+        Classes
+        <div class="sidenav-collapse-arrow float-left">
+            <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down" class="svg-inline--fa fa-angle-down fa-w-10"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
+                    </path>
+                </svg></fa-icon>
+        </div>
+    </a>
+    <nav class="sidenav-menu-nested nav collapsed" id="classes_content">
+        <div class="submenu collapsed">
+            <a class="nav-link">
+                <span class="nav-link-icon" style="width: 1rem !important;">
+                    <span class="fa fa-plus fa-fw"></span>
+                </span>
+                {%if current_user.role == 'Teacher' %}
+                <span id="class_create">Create Class</span>
+                {% endif %}
+                {%if current_user.role == 'Student' %}
+                <span id="class_join">Join Class</span>
+                {% endif %}
+            </a>
+        </div>
+    </nav>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Meeting
+    </a>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                    </path>
+                </svg></i-feather>
+        </div>
+        <!----> Test
+    </a>
+</div>
+{% endblock %}
+
+{% block performance %}
+<a class="nav-link ">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-layout">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg></i-feather>
+    </div>
+    <!----> Performance
+</a>
+{% endblock %}
+
+{% block main_code %}
+<div class="container-fluid mt-n10" style="padding-top:1.25rem;">
+    <div class="row " id="class_card">
+    </div>
+</div>
+{% endblock %}
+
+{% block scriptfile %}
+<script>
+
+    let resp = {{ get_class_cards | tojson}}
+    console.log(resp)
+    if (resp == null) {
+    }
+
+    else{
+        let classes_for_class = ['bg_class1', 'bg_class4', 'bg_class3', 'bg_class2']
+        let bg_num = 0
+        for (var item in resp) {
+            if (item > 3){
+                if (bg_num > 3){
+                    bg_num = 0
+                }
+                else{
+
+                }
+
+            }
+            else{
+            }
+
+            let rand = bg_num;
+            let class_card_value = `<div class="col-xxl-3 col-lg-4" id="${resp[item]['classid']}_card">
+            <div class="card  text-white mb-4 ${classes_for_class[rand]}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="mr-3">
+                            <h4 class="text-white-75 card-title">${resp[item]['class_name']}</h4>
+                            <div class="text-lg">${resp[item]['teacher']}</div>
+                        </div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar feather-xl text-white-50"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+                </div>
+                <div class="card-footer d-flex align-items-center justify-content-between ">
+                    <span class="small text-white stretched-link" >Standard :- ${resp[item]['class_standard']}</span>
+                    <svg focusable="false" width="24" height="20" viewBox="0 0 24 24" class=" float-right go"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7.55 0c.14-.15.33-.25.55-.25s.41.1.55.25c.12.13.2.31.2.5 0 .41-.34.75-.75.75s-.75-.34-.75-.75c0-.19.08-.37.2-.5zM19 5v10.79C16.52 14.37 13.23 14 12 14s-4.52.37-7 1.79V5h14zM5 19v-.77C6.74 16.66 10.32 16 12 16s5.26.66 7 2.23V19H5z"></path><path d="M12 13c1.94 0 3.5-1.56 3.5-3.5S13.94 6 12 6 8.5 7.56 8.5 9.5 10.06 13 12 13zm0-5c.83 0 1.5.67 1.5 1.5S12.83 11 12 11s-1.5-.67-1.5-1.5S11.17 8 12 8z"></path></svg>
+                </div>
+            </div>
+            </div>`
+            $("#class_card").append(class_card_value)
+            let id_url = `${resp[item]['classid']}`
+            document.getElementById(`${resp[item]['classid'] }_card`).addEventListener("click", (e)=>{
+                window.location.href = `/class/${id_url}`
+            })
+            bg_num = bg_num + 1
+    }
+    }
+
+</script>
+{% endblock %}

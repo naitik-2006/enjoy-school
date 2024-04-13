@@ -1,0 +1,1526 @@
+{% extends 'class_layout.html' %}
+
+{% block title %} {{tittle}} {% endblock %}
+
+{% block cssfile %}
+<!-- Card Style And Upload Button -->
+<style>
+    #Upload_button {
+        text-decoration: none;
+        color: white
+    }
+
+    .classes_get {
+        display: -webkit-flex;
+        display: flex;
+        justify-content: center;
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+        padding-left: 1.5rem;
+        padding-top: 1.5rem;
+    }
+
+    .classes_get_material {
+        background-color: #fff;
+        -webkit-border-radius: 0.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+        height: auto;
+        margin-bottom: 1.5rem;
+        margin-right: 1.5rem;
+        overflow: hidden;
+        position: relative;
+        text-align: left;
+        color: black;
+    }
+
+    ol {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    @media (min-width: 801px) {
+
+        .card.classes_get_material.col-md-3 {
+            max-width: 30rem !important;
+            min-width: 21rem;
+        }
+
+        .card.classes_get_material.col-md-3 {
+            margin-right: 1.75rem !important;
+        }
+    }
+
+    @media (max-width: 801px) {
+
+        .card.classes_get_material.col-md-3 {
+            max-width: 30rem !important;
+            min-width: 22rem;
+        }
+
+        .card.classes_get_material.col-md-3 {
+            margin-right: 0.75rem !important;
+        }
+    }
+
+    @media (max-width: 510px) {
+
+        .card.classes_get_material.col-md-3 {
+            max-width: 34rem !important;
+            min-width: 22rem;
+        }
+
+        .card.classes_get_material.col-md-3 {
+            margin-right: 0.15rem !important;
+        }
+
+        .classes_get.row {
+            padding-left: 0.15rem !important;
+        }
+    }
+
+    .class_footer_for {
+        border-top: .0625rem solid #e0e0e0;
+        line-height: 0;
+        padding: 0.25rem;
+        background-color: #fff !important;
+    }
+
+    .class_heading_for2 {
+        max-height: 14rem;
+        min-height: 7.5rem;
+        position: relative;
+        background-image: url("{{ url_for('static', filename='bg_class4.jpg') }}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .class_heading_for {
+        position: relative;
+        max-height: 14rem;
+        min-height: 7.5rem;
+        background-image: url("{{ url_for('static', filename='bg_class3.jpg') }}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .class_heading_for3 {
+        position: relative;
+        background-color: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        max-height: 14rem;
+        min-height: 7.5rem;
+        flex-shrink: 0;
+    }
+
+    .bg {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .class_heading_for4 {
+        max-height: 14rem;
+        min-height: 7.5rem;
+        position: relative;
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #fff;
+        flex-shrink: 0;
+    }
+
+    .class_name {
+        font-size: 1.55rem;
+        text-align: left;
+        margin: 1rem;
+        margin-bottom: 2.25rem;
+    }
+
+    .class_name a {
+        text-decoration: none;
+    }
+
+    .class_name a {
+        color: #fff !important;
+    }
+
+    .class_subname {
+        text-align: left;
+        margin: 1rem;
+        margin-bottom: 1rem;
+        margin-top: 0rem;
+        font-size: 1.25rem;
+    }
+
+    .card-heading.class_heading_for :hover {
+        cursor: pointer;
+    }
+
+    .card-heading.class_heading_for2 :hover {
+        cursor: pointer;
+    }
+
+    .card-heading.class_heading_for3 :hover {
+        cursor: pointer;
+    }
+
+    .card-heading.class_heading_for4 :hover {
+        cursor: pointer;
+    }
+
+    .go {
+        padding: 0.55rem;
+        fill: #a2acba;
+        color: #a2acba;
+    }
+
+    .go svg {
+        margin-top: -0.25rem;
+        float: right !important;
+    }
+
+    .class_name_svg {
+        color: #fff;
+        fill: #fff;
+
+    }
+
+    .card.classes_get_material.col-md-3 {
+        padding-left: 0;
+        padding-right: 0;
+        margin-right: 2.5rem;
+    }
+
+    .heading_class {
+        margin-bottom: 0.35rem;
+    }
+
+    .inform_ing {
+        color: black;
+        margin-top: 0.5rem;
+        margin-bottom: 0.9rem;
+
+    }
+</style>
+<!-- Nav2 And Media Screen -->
+<style>
+    @media(max-width: 450px) {
+        #_440 {
+            display: none;
+        }
+    }
+
+    @media(max-width: 436px) {
+        .bg.container-fluid {
+            height: 200px !important;
+        }
+    }
+
+    @media(max-width: 991px) {
+        .bg.container-fluid {
+            height: 200px !important;
+        }
+    }
+
+    @media(max-width: 850px) {
+
+        #layoutSidenav_content.scrollable {
+            height: calc(100vh - 7.25rem) !important;
+            display: block;
+            overflow-y: auto;
+        }
+    }
+
+    @media(max-width: 850px) {
+        #class_nav1 {
+            box-shadow: none;
+        }
+
+
+        #tab_class {
+            display: none !important;
+        }
+
+        .side-nav {
+            padding-top: 7.25rem !important;
+        }
+
+        #layoutSidenav_content {
+            top: 7.25rem !important;
+            min-height: calc(100vh - 7.5rem) !important;
+        }
+
+        #class_nav2.shadow2 {
+            box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+            padding-top: 0rem !important;
+        }
+    }
+
+    @media(min-width: 850px) {
+        #class_nav2 {
+            display: none;
+        }
+
+        #making_item {
+            display: none !important;
+        }
+    }
+
+
+    #class_nav2.shadow2 {
+        box-shadow: 0 1rem 1rem 0 rgba(58, 59, 69, .15) !important;
+        padding-top: 0rem !important;
+    }
+
+    #tab_class {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+
+    #tab_class2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        justify-items: center;
+        color: black !important;
+        width: max-content;
+    }
+
+    #tab_class2 .nav-item .nav-link {
+        color: black !important;
+    }
+
+    #tab_class2 .nav-item .nav-link.active {
+        color: #007b83 !important;
+        border-bottom: solid 0.125rem transparent;
+        -webkit-border-radius: 0.25rem 0.25rem 0 0;
+        border-radius: 0.25rem 0.25rem 0 0;
+        border-color: #007b83;
+    }
+</style>
+<!-- Modal And Other -->
+<style>
+    .modal-backdrop.show {
+        opacity: 0.26;
+    }
+
+    .modal {
+        z-index: 10000000;
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    .navbar-nav.mx-2 {
+        padding-right: 5.5rem !important;
+    }
+
+    .bg {
+        background-image: url("{{ url_for('static', filename='bg_class1.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+</style>
+<!-- Meeting Classwork Test Dropdown -->
+<style>
+    #meeting_collapse.collapsed .sidenav-collapse-arrow {
+        -webkit-transform: rotate(-90deg);
+        transform: rotate(-90deg);
+    }
+
+    #meeting_collapse:hover {
+        cursor: pointer;
+    }
+
+    #meeting_table_content.card-body.collapsed {
+        overflow: hidden;
+        height: 0px;
+        min-height: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .card-body.collapsed {
+        overflow: hidden;
+        height: 0px;
+        min-height: 0px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+</style>
+<!-- Table  -->
+<style>
+
+    .to-mb-4 .card-header{
+        padding-top: 0.1rem;
+        padding-bottom: 0.1rem;
+    }
+    .to-mb-4 .card-header .card-name-dropdown, .to-mb-4 .card-header .card-modal-button{
+        height: 48px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    } 
+    .to-mb-4 .card-header .card-name-dropdown{
+        display: inline-flex;
+    }
+
+    @media (min-width: 768px) {
+        .responsive_table {
+            overflow: visible;
+        }
+    }
+
+    .responsive_table {
+        overflow-x: scroll;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .responsive_table::-webkit-scrollbar {
+        display: none;
+    }
+
+    .main {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    tr.odd {
+        background-color: transparent !important;
+    }
+
+    tr.odd>.sorting_1 {
+        background-color: transparent !important;
+    }
+
+    td {
+        min-width: 6.9rem;
+        max-width: 15rem;
+    }
+
+    tr.even>.sorting_1 {
+        background-color: transparent !important;
+    }
+
+    th {
+        color: #0061f2 !important;
+        padding: 0.75rem !important;
+        padding-right: 30px !important;
+        font-weight: 600 !important;
+        border-bottom: 2px solid #e0e5ec !important;
+    }
+
+    .table-bordered td,
+    .table-bordered th {
+        border: none;
+        border-right: 1px solid #e0e5ec !important;
+    }
+
+    .table-bordered td {
+        border: 1px solid #e0e5ec;
+        border-bottom-width: 0;
+        border-left-width: 0;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #e0e5ec !important;
+        border-right-width: 0;
+    }
+
+    .table td {
+        padding: 0.75rem !important;
+        color: #69707a !important;
+    }
+</style>
+<!-- DataTable -->
+<style>
+    /*
+ * Table styles
+ */
+    table.dataTable {
+        width: 100%;
+        margin: 0 auto;
+        clear: both;
+        border-collapse: separate;
+        border-spacing: 0;
+        /*
+   * Header and footer styles
+   */
+        /*
+   * Body styles
+   */
+    }
+
+    table.dataTable thead th,
+    table.dataTable tfoot th {
+        font-weight: bold;
+    }
+
+    table.dataTable thead th,
+    table.dataTable thead td {
+        padding: 10px 18px;
+        border-bottom: 1px solid #111;
+    }
+
+    table.dataTable thead th:active,
+    table.dataTable thead td:active {
+        outline: none;
+    }
+
+    table.dataTable tfoot th,
+    table.dataTable tfoot td {
+        padding: 10px 18px 6px 18px;
+        border-top: 1px solid #111;
+    }
+
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc,
+    table.dataTable thead .sorting_asc_disabled,
+    table.dataTable thead .sorting_desc_disabled {
+        cursor: pointer;
+        *cursor: hand;
+        background-repeat: no-repeat;
+        background-position: center right;
+    }
+
+    table.dataTable thead .sorting {
+        background-image: url("{{ url_for('static', filename='sort_both.png') }}");
+    }
+
+    table.dataTable thead .sorting_asc {
+        background-image: url("{{ url_for('static', filename='sort_asc.png') }}") !important;
+    }
+
+    table.dataTable thead .sorting_desc {
+        background-image: url("{{ url_for('static', filename='sort_desc.png') }}") !important;
+    }
+
+    table.dataTable thead .sorting_asc_disabled {
+        background-image: url("{{ url_for('static', filename='sort_asc_disabled.png') }}");
+    }
+
+    table.dataTable thead .sorting_desc_disabled {
+        background-image: url("{{ url_for('static', filename='sort_desc_disabled.png') }}");
+    }
+
+    table.dataTable tbody tr {
+        background-color: #ffffff;
+    }
+
+    table.dataTable tbody tr.selected {
+        background-color: #B0BED9;
+    }
+
+    table.dataTable tbody th,
+    table.dataTable tbody td {
+        padding: 8px 10px;
+    }
+
+    table.dataTable.row-border tbody th,
+    table.dataTable.row-border tbody td,
+    table.dataTable.display tbody th,
+    table.dataTable.display tbody td {
+        border-top: 1px solid #ddd;
+    }
+
+    table.dataTable.row-border tbody tr:first-child th,
+    table.dataTable.row-border tbody tr:first-child td,
+    table.dataTable.display tbody tr:first-child th,
+    table.dataTable.display tbody tr:first-child td {
+        border-top: none;
+    }
+
+    table.dataTable.cell-border tbody th,
+    table.dataTable.cell-border tbody td {
+        border-top: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+
+    table.dataTable.cell-border tbody tr th:first-child,
+    table.dataTable.cell-border tbody tr td:first-child {
+        border-left: 1px solid #ddd;
+    }
+
+    table.dataTable.cell-border tbody tr:first-child th,
+    table.dataTable.cell-border tbody tr:first-child td {
+        border-top: none;
+    }
+
+    table.dataTable.stripe tbody tr.odd,
+    table.dataTable.display tbody tr.odd {
+        background-color: #f9f9f9;
+    }
+
+    table.dataTable.stripe tbody tr.odd.selected,
+    table.dataTable.display tbody tr.odd.selected {
+        background-color: #acbad4;
+    }
+
+    table.dataTable.hover tbody tr:hover,
+    table.dataTable.display tbody tr:hover {
+        background-color: #f6f6f6;
+    }
+
+    table.dataTable.hover tbody tr:hover.selected,
+    table.dataTable.display tbody tr:hover.selected {
+        background-color: #aab7d1;
+    }
+
+    table.dataTable.order-column tbody tr>.sorting_1,
+    table.dataTable.order-column tbody tr>.sorting_2,
+    table.dataTable.order-column tbody tr>.sorting_3,
+    table.dataTable.display tbody tr>.sorting_1,
+    table.dataTable.display tbody tr>.sorting_2,
+    table.dataTable.display tbody tr>.sorting_3 {
+        background-color: #fafafa;
+    }
+
+    table.dataTable.order-column tbody tr.selected>.sorting_1,
+    table.dataTable.order-column tbody tr.selected>.sorting_2,
+    table.dataTable.order-column tbody tr.selected>.sorting_3,
+    table.dataTable.display tbody tr.selected>.sorting_1,
+    table.dataTable.display tbody tr.selected>.sorting_2,
+    table.dataTable.display tbody tr.selected>.sorting_3 {
+        background-color: #acbad5;
+    }
+
+    table.dataTable.display tbody tr.odd>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.odd>.sorting_1 {
+        background-color: #f1f1f1;
+    }
+
+    table.dataTable.display tbody tr.odd>.sorting_2,
+    table.dataTable.order-column.stripe tbody tr.odd>.sorting_2 {
+        background-color: #f3f3f3;
+    }
+
+    table.dataTable.display tbody tr.odd>.sorting_3,
+    table.dataTable.order-column.stripe tbody tr.odd>.sorting_3 {
+        background-color: whitesmoke;
+    }
+
+    table.dataTable.display tbody tr.odd.selected>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_1 {
+        background-color: #a6b4cd;
+    }
+
+    table.dataTable.display tbody tr.odd.selected>.sorting_2,
+    table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_2 {
+        background-color: #a8b5cf;
+    }
+
+    table.dataTable.display tbody tr.odd.selected>.sorting_3,
+    table.dataTable.order-column.stripe tbody tr.odd.selected>.sorting_3 {
+        background-color: #a9b7d1;
+    }
+
+    table.dataTable.display tbody tr.even>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.even>.sorting_1 {
+        background-color: #fafafa;
+    }
+
+    table.dataTable.display tbody tr.even>.sorting_2,
+    table.dataTable.order-column.stripe tbody tr.even>.sorting_2 {
+        background-color: #fcfcfc;
+    }
+
+    table.dataTable.display tbody tr.even>.sorting_3,
+    table.dataTable.order-column.stripe tbody tr.even>.sorting_3 {
+        background-color: #fefefe;
+    }
+
+    table.dataTable.display tbody tr.even.selected>.sorting_1,
+    table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_1 {
+        background-color: #acbad5;
+    }
+
+    table.dataTable.display tbody tr.even.selected>.sorting_2,
+    table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_2 {
+        background-color: #aebcd6;
+    }
+
+    table.dataTable.display tbody tr.even.selected>.sorting_3,
+    table.dataTable.order-column.stripe tbody tr.even.selected>.sorting_3 {
+        background-color: #afbdd8;
+    }
+
+    table.dataTable.display tbody tr:hover>.sorting_1,
+    table.dataTable.order-column.hover tbody tr:hover>.sorting_1 {
+        background-color: #eaeaea;
+    }
+
+    table.dataTable.display tbody tr:hover>.sorting_2,
+    table.dataTable.order-column.hover tbody tr:hover>.sorting_2 {
+        background-color: #ececec;
+    }
+
+    table.dataTable.display tbody tr:hover>.sorting_3,
+    table.dataTable.order-column.hover tbody tr:hover>.sorting_3 {
+        background-color: #efefef;
+    }
+
+    table.dataTable.display tbody tr:hover.selected>.sorting_1,
+    table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_1 {
+        background-color: #a2aec7;
+    }
+
+    table.dataTable.display tbody tr:hover.selected>.sorting_2,
+    table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_2 {
+        background-color: #a3b0c9;
+    }
+
+    table.dataTable.display tbody tr:hover.selected>.sorting_3,
+    table.dataTable.order-column.hover tbody tr:hover.selected>.sorting_3 {
+        background-color: #a5b2cb;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 1px solid #111;
+    }
+
+    table.dataTable.nowrap th,
+    table.dataTable.nowrap td {
+        white-space: nowrap;
+    }
+
+    table.dataTable.compact thead th,
+    table.dataTable.compact thead td {
+        padding: 4px 17px;
+    }
+
+    table.dataTable.compact tfoot th,
+    table.dataTable.compact tfoot td {
+        padding: 4px;
+    }
+
+    table.dataTable.compact tbody th,
+    table.dataTable.compact tbody td {
+        padding: 4px;
+    }
+
+    table.dataTable th.dt-left,
+    table.dataTable td.dt-left {
+        text-align: left;
+    }
+
+    table.dataTable th.dt-center,
+    table.dataTable td.dt-center,
+    table.dataTable td.dataTables_empty {
+        text-align: center;
+    }
+
+    table.dataTable th.dt-right,
+    table.dataTable td.dt-right {
+        text-align: right;
+    }
+
+    table.dataTable th.dt-justify,
+    table.dataTable td.dt-justify {
+        text-align: justify;
+    }
+
+    table.dataTable th.dt-nowrap,
+    table.dataTable td.dt-nowrap {
+        white-space: nowrap;
+    }
+
+    table.dataTable thead th.dt-head-left,
+    table.dataTable thead td.dt-head-left,
+    table.dataTable tfoot th.dt-head-left,
+    table.dataTable tfoot td.dt-head-left {
+        text-align: left;
+    }
+
+    table.dataTable thead th.dt-head-center,
+    table.dataTable thead td.dt-head-center,
+    table.dataTable tfoot th.dt-head-center,
+    table.dataTable tfoot td.dt-head-center {
+        text-align: center;
+    }
+
+    table.dataTable thead th.dt-head-right,
+    table.dataTable thead td.dt-head-right,
+    table.dataTable tfoot th.dt-head-right,
+    table.dataTable tfoot td.dt-head-right {
+        text-align: right;
+    }
+
+    table.dataTable thead th.dt-head-justify,
+    table.dataTable thead td.dt-head-justify,
+    table.dataTable tfoot th.dt-head-justify,
+    table.dataTable tfoot td.dt-head-justify {
+        text-align: justify;
+    }
+
+    table.dataTable thead th.dt-head-nowrap,
+    table.dataTable thead td.dt-head-nowrap,
+    table.dataTable tfoot th.dt-head-nowrap,
+    table.dataTable tfoot td.dt-head-nowrap {
+        white-space: nowrap;
+    }
+
+    table.dataTable tbody th.dt-body-left,
+    table.dataTable tbody td.dt-body-left {
+        text-align: left;
+    }
+
+    table.dataTable tbody th.dt-body-center,
+    table.dataTable tbody td.dt-body-center {
+        text-align: center;
+    }
+
+    table.dataTable tbody th.dt-body-right,
+    table.dataTable tbody td.dt-body-right {
+        text-align: right;
+    }
+
+    table.dataTable tbody th.dt-body-justify,
+    table.dataTable tbody td.dt-body-justify {
+        text-align: justify;
+    }
+
+    table.dataTable tbody th.dt-body-nowrap,
+    table.dataTable tbody td.dt-body-nowrap {
+        white-space: nowrap;
+    }
+
+    table.dataTable,
+    table.dataTable th,
+    table.dataTable td {
+        box-sizing: content-box;
+    }
+
+    /*
+ * Control feature layout
+ */
+    .dataTables_wrapper {
+        position: relative;
+        clear: both;
+        *zoom: 1;
+        zoom: 1;
+    }
+
+    .dataTables_wrapper .dataTables_length {
+        float: left;
+    }
+
+    .dataTables_wrapper .dataTables_length select {
+        border: 1px solid #aaa;
+        border-radius: 3px;
+        padding: 5px;
+        background-color: transparent;
+        padding: 4px;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        float: right;
+        text-align: right;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border: 1px solid #aaa;
+        border-radius: 3px;
+        padding: 5px;
+        background-color: transparent;
+        margin-left: 3px;
+    }
+
+    .dataTables_wrapper .dataTables_info {
+        clear: both;
+        float: left;
+        padding-top: 0.755em;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        float: right;
+        text-align: right;
+        padding-top: 0.25em;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        display: inline-block;
+        padding: 0.5em 1em;
+        text-align: center;
+        text-decoration: none !important;
+        cursor: pointer;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        color: white !important;
+        border: 1px solid #0061f2;
+        background-color: #0061f2;
+    }
+
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+        cursor: default;
+        color: #666 !important;
+        border: 1px solid transparent;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .paginate_button:hover {
+        background-color: #e0e5ec;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+        color: #0061f2;
+        border-color: #e0e5ec !important;
+        box-shadow: inset 0 0 3px #e0e5ec;
+    }
+
+    .dataTables_wrapper .dataTables_scroll {
+        clear: both;
+    }
+
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
+        *margin-top: -1px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>th,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>td,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>th,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td {
+        vertical-align: middle;
+    }
+
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>th>div.dataTables_sizing,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>thead>tr>td>div.dataTables_sizing,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>th>div.dataTables_sizing,
+    .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody>table>tbody>tr>td>div.dataTables_sizing {
+        height: 0;
+        overflow: hidden;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .dataTables_wrapper.no-footer .dataTables_scrollBody {
+        border-bottom: 1px solid #111;
+    }
+
+    .dataTables_wrapper.no-footer div.dataTables_scrollHead table.dataTable,
+    .dataTables_wrapper.no-footer div.dataTables_scrollBody>table {
+        border-bottom: none;
+    }
+
+    .dataTables_wrapper:after {
+        visibility: hidden;
+        display: block;
+        content: "";
+        clear: both;
+        height: 0;
+    }
+
+    @media screen and (max-width: 767px) {
+
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            float: none;
+            text-align: center;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 0.5em;
+        }
+    }
+
+    @media screen and (max-width: 640px) {
+
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            float: none;
+            text-align: center;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            margin-top: 0.5em;
+        }
+    }
+</style>
+<!-- Paginate -->
+<style>
+    tr:hover {
+        background-color: #f6f6f6 !important;
+    }
+
+    #example_panigate {
+        margin: 2px 0 !important;
+        white-space: nowrap !important;
+        justify-content: flex-end !important;
+    }
+
+    #example_previous {
+        border: 1px solid #d4dae3 !important;
+        color: #0061f2 !important;
+        border-right-width: 0 !important;
+        border-top-left-radius: 0.35rem !important;
+        border-bottom-left-radius: 0.35rem !important;
+        padding: 0.5rem 0.75rem !important;
+        margin-left: -1px !important;
+        line-height: 1.25 !important;
+
+    }
+
+    #example_previous:hover {
+        background-color: #e0e5ec !important;
+    }
+
+    #example_previous.disabled:hover {
+        background-color: transparent !important;
+    }
+
+    .paginate_button:hover {
+        background-color: #e0e5ec !important;
+    }
+
+    .paginate_button.disabled:hover {
+        background-color: transparent !important;
+    }
+
+    #example_previous.disabled {
+        color: #69707a !important;
+        pointer-events: none !important;
+        cursor: auto !important;
+        background-color: #fff !important;
+        border-color: #d4dae3 !important;
+    }
+
+    .paginate_button {
+        color: #0061f2 !important;
+        border: 1px solid #d4dae3 !important;
+        line-height: 1.25 !important;
+        border-right-width: 0 !important;
+    }
+
+    #example_next {
+        border-right-width: 1px !important;
+        border-top-right-radius: 0.35rem !important;
+        border-bottom-right-radius: 0.35rem !important;
+    }
+
+    #example_length {
+        color: #69707a !important;
+    }
+
+    #example_length label {
+        color: #69707a !important;
+    }
+
+    #example_filter label {
+        color: #69707a !important;
+    }
+</style>
+<!-- Special -->
+<style>
+    .bg {
+        background-color: #0061f2;
+        background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%);
+    }
+</style>
+{% endblock %}
+
+{% block nav_edit %}
+<div class="dis" id="making_item">
+    <form class="form-inline mr-auto ">
+        <div class=" mr-sm-2"> </div>
+    </form>
+</div>
+<div class="container" id="tab_class">
+    <ul class="nav ">
+        <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link Discuss" href="" class="">Discuss</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link  Participant" href="" class="Participant">Participant</a>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
+
+{% block other_nav %}
+<nav class="topnav navbar  navbar-expand shadow2 topbar navbar-light bg-white" id="class_nav2">
+
+    <div class="container" id="tab_class2">
+        <ul class="nav ">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  Discuss" href="#">Discuss</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link  Participant" href="#">Participant</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
+{% block coreli %}
+<a class="nav-link " href="/">
+    <div class="nav-link-icon ">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-book-open">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg></i-feather>
+    </div>
+    Home
+</a>
+<a class="nav-link">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-activity">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12">
+                </polyline>
+            </svg></i-feather>
+    </div>
+    Messages
+</a>
+{% endblock %}
+
+{% block Interfaces %}
+<div>
+    <a class="nav-link collapsed active" id="classes">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg></i-feather>
+        </div>
+        Classes
+        <div class="sidenav-collapse-arrow float-left">
+            <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down" class="svg-inline--fa fa-angle-down fa-w-10"
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path fill="currentColor"
+                        d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
+                    </path>
+                </svg></fa-icon>
+        </div>
+    </a>
+    <nav class="sidenav-menu-nested nav collapsed" id="classes_content">
+        <div class="submenu collapsed">
+            <a class="nav-link">
+                <span class="nav-link-icon" style="width: 1rem !important;">
+                    <span class="fa fa-plus fa-fw"></span></span>
+                {%if current_user.role == 'Teacher' %}
+                <span id="class_create">Create Class</span>
+                {% endif %}
+                {%if current_user.role == 'Student' %}
+                <span id="class_join">Join Class</span>
+                {% endif %}
+            </a>
+        </div>
+    </nav>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Meeting
+    </a>
+</div>
+<div>
+    <a class="nav-link ">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-layout">
+                    <path
+                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                    </path>
+                </svg></i-feather>
+        </div>
+        <!----> Test
+    </a>
+</div>
+{% endblock %}
+
+{% block performance %}
+<a class="nav-link ">
+    <div class="nav-link-icon">
+        <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24" class="feather feather-layout">
+                <line x1="12" y1="20" x2="12" y2="10"></line>
+                <line x1="18" y1="20" x2="18" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="16"></line>
+            </svg></i-feather>
+    </div>
+    <!----> Performance
+</a>
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true"
+    style="    overflow-y: scroll;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Modal Body (asking classwork type) -->
+            <div class="modal-body" id="exampleModalBody2">
+                <form class="signup-form" style="padding: 10px 0;" action="/class/{{href_window}}/add-new-classwork"
+                    method="post" onsubmit="upload_final(this)" enctype="multipart/form-data">
+                    <style>
+                        .custom-file-upload {
+                            border: none;
+                            border-bottom: 1px solid #e1e1e1;
+                        }
+
+                        .custom-file1 {
+                            margin-bottom: -0.3rem !important;
+                        }
+
+                        .custom-file-upload {
+                            border: 1px solid #ccc;
+                            display: inline-block;
+                            padding: 6px 12px;
+                            cursor: pointer;
+                        }
+
+                        ::-webkit-file-upload-button {
+                            display: none;
+                        }
+                    </style>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                            <input type="text" class="form-control" name="class_work_name" id="class_work_name" value=""
+                                placeholder="" maxlength="25" required="required" title="Max length is 25">
+                        </div>
+                    </div>
+                    <div class="form-group" id="for_flietype">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-file"></i></span>
+                            <!-- <input type="file" class="form-control" multiple="multiple" name="images" accept="image/*, .pdf, text/*, .doc, .txt" id="images" placeholder="file" required="required"> -->
+                            <div class="custom-file">
+                                <input type="file" class="file-upload form-control " id="pdf_file" name="pdf_file"
+                                    aria-describedby="inputGroupFileAddon01" placeholder="No File Choosen" required>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"
+                                style="padding-top: 0.5rem !important; max-width: 75px !important;">Start Date</span>
+                            <input type="date" class="form-control" name="start_time" id="start_time" value=""
+                                placeholder="Start time " required="required">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon"
+                                style="padding-top: 0.5rem !important; max-width: 75px !important;">End Date</i></span>
+                            <input type="date" class="form-control" name="end_time" id="end_time" value=""
+                                placeholder="End time" required="required">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="previous_classwork"
+                            data-target="#exampleModal" data-toggle="modal" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="upload_classwork">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Class Poster -->
+<div class="bg container-fluid" style="height:120px;">
+    <h3 style="color:white;padding-top:40px;">{{tittle}}
+        {% if current_user.role == 'Teacher' %}
+        
+        {% endif %}
+    </h3>
+</div>
+<!-- Poster End -->
+{% endblock %}
+
+{% block main_code %}
+<!-- Class Work Card -->
+
+<div class="container-fluid mt-n10">
+
+    <div class="card to-mb-4 mt-4 mb-4">
+        <div class="card-header collapsed" id="meeting_collapse"
+            style="color: #0061f2; font-weight:500; font-family: 'Segoe UI',  Arial, sans-serif">
+            <div class="card-name-dropdown">
+                <span>Class Work</span>
+                <div class="sidenav-collapse-arrow ml-2">
+                    <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down"
+                            class="svg-inline--fa fa-angle-down fa-w-10" style="padding-top: 0.15rem;"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            <path fill="currentColor"
+                                d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
+                            </path>
+                        </svg></fa-icon>
+                </div>
+            </div>
+            <div class="float-right card-modal-button">
+                <button class="btn btn-outline-primary " class="Upload_button" id="modal_toggle_button2" data-toggle="modal" data-target="#exampleModal2">
+                    Add Classwork
+                </button>
+            </div>
+        </div>
+        <div class="card-body collapsed" id="meeting_table_content">
+            <div class="responsive_table">
+                <table id="example" class="display table table-bordered table-hover " style="width: 100%;"> </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="mb-5"></div> -->
+{% endblock %}
+
+{% block scriptfile %}
+
+<!-- Loader And Link -->
+<script>
+    function loader_true() {
+        var loader = document.getElementById("preloader")
+        loader.style.display = 'none'
+
+        if (window.innerWidth <= 1000) {
+            $('#layoutSidenav_nav').addClass('remove_padding')
+            $('#layoutSidenav_content').addClass('adding_padding')
+        }
+
+    }
+    var href_window = "{{href_window}}"
+    $(".Participant").attr("href", `/class/${href_window}/participants`)
+    $(".Discuss").attr("href", `/class/${href_window}/discuss`)
+</script>
+<!-- Upload Classwork -->
+<script>
+    function todayDate() {
+        var today = new Date(); // get the current date
+        var dd = today.getDate(); //get the day from today.
+        var mm = today.getMonth() + 1; //get the month from today +1 because january is 0!
+        var yyyy = today.getFullYear(); //get the year from today
+
+        //if day is below 10, add a zero before (ex: 9 -> 09)
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+
+        //like the day, do the same to month (3->03)
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        //finally join yyyy mm and dd with a "-" between then
+        return yyyy + '-' + mm + '-' + dd;
+    }
+    $(document).ready(function () {
+        $('#start_time').attr('min', todayDate());
+        $('#end_time').attr('min', todayDate());
+        $('#start_time').attr('value', todayDate());
+        $('#end_time').attr('value', todayDate());
+    });
+
+    var classworkname, worktype, filetype
+    document.getElementById("modal_toggle_button2").addEventListener('click', (e) => {
+        document.getElementById("exampleModalLabel2").innerText = "Class Work"
+        document.getElementById("class_work_name").placeholder = "Class Work Name"
+    })
+    document.getElementById("modal_toggle_button").addEventListener('click', (e) => {
+        document.getElementById("exampleModalLabel2").innerText = "Test"
+        document.getElementById("class_work_name").placeholder = "Test Name"
+    })
+
+    function upload_final(form) {
+        document.getElementById("upload_classwork").setAttribute("data-bs-dismiss", "modal")
+        document.getElementById("upload_classwork").click()
+        document.getElementById("upload_classwork").removeAttribute("data-bs-dismiss")
+    }
+</script>
+
+<script>
+
+
+    // Toggle classes 
+    var classes2 = document.getElementById("meeting_collapse")
+    classes2.addEventListener('click', function () {
+        var class_classes2 = classes2.className.split(' ');
+        for (item in class_classes2) {
+            if ('collapsed' == class_classes2[item]) {
+                $('#meeting_collapse').removeClass('collapsed')
+                $('#meeting_table_content').removeClass('collapsed')
+            }
+            else {
+                $('#meeting_collapse').addClass('collapsed')
+                $('#meeting_table_content').addClass('collapsed')
+            }
+        }
+    })
+</script>
+
+
+<!---------------------------------------------------------------------------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------->
+<!---------------------------------------------------Tables For Classwork----------------------------------------------->
+
+<!-- Javascript File for table -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js">
+
+</script>
+<!-- ###### -->
+
+<!-- Classwork Table  (Teachers)-->
+{% if current_user.role == 'Teacher' %}
+<!-- Setting table data -->
+<script>
+    var list_pdf_urls = [];
+    let table_column_heading = ['Name', 'Start Date', 'End Date', 'Download', 'Submission']
+    var claswrk_dataSet = []
+    let table_clswrk = {{ classworks | tojson}}
+    claswrk_dataSet[0] = []
+    for (let item in table_clswrk) {
+        console.log(item)
+        claswrk_dataSet[item] = []
+        claswrk_dataSet[item][0] = table_clswrk[item]['class_work_name']
+        claswrk_dataSet[item][1] = table_clswrk[item]['start_date']
+        claswrk_dataSet[item][2] = table_clswrk[item]['end_date']
+        claswrk_dataSet[item][3] = `<btn class="btn btn-primary view_classwork classwork" id="${table_clswrk[item]['pdf_file_url']}">Download</btn>`
+        claswrk_dataSet[item][4] = `<a class="btn btn-primary response_classwork classwork" id="${table_clswrk[item]['classwork_id']}" href="/class/classwork-submitted/${href_window}&${table_clswrk[item]['classwork_id']}">View</a>`
+        list_pdf_urls[item] = table_clswrk[item]['pdf_file_url']
+    }
+</script>
+{% endif %}
+
+<!-- Classwork Table  (Student)-->
+{% if current_user.role == 'Student' %}
+<!-- Setting table data -->
+<script>
+    let list_pdf_urls = []
+    let table_column_heading = ['Name', 'Start Date', 'End Date', 'Download', 'Submit']
+    var claswrk_dataSet = []
+    let table_clswrk = {{ classworks | tojson}}
+    claswrk_dataSet[0] = []
+    for (let item in table_clswrk) {
+        console.log(item)
+        claswrk_dataSet[item] = []
+        claswrk_dataSet[item][0] = table_clswrk[item]['class_work_name']
+        claswrk_dataSet[item][1] = table_clswrk[item]['start_date']
+        claswrk_dataSet[item][2] = table_clswrk[item]['end_date']
+        claswrk_dataSet[item][3] = `<btn class=" btn btn-primary view_classwork classwork" id="${table_clswrk[item]['pdf_file_url']}_view_file">Download</btn>`
+        claswrk_dataSet[item][4] = `
+        <form method="post" action = "/class/${href_window}/submit-classwork" enctype="multipart/form-data">
+        <label class="btn btn-primary response_classwork classwork" style="cursor: pointer;" for="${table_clswrk[item]['pdf_file_url']}">Submit</label>
+        <input type="file" name="pdf_file" id="${table_clswrk[item]['pdf_file_url']}" onchange=file_selected(event) style="display:none" visibility = "none">
+        <input type="hidden" name="pdf_file_url" value="${table_clswrk[item]['classwork_id']}" style="display:none" visibility = "none">
+        <input type="submit" value ="submit" id="${table_clswrk[item]['pdf_file_url']}_button_to_click" style="display:none"> 
+        </form>`
+        list_pdf_urls[item] = table_clswrk[item]['pdf_file_url']
+    }
+    var to_event
+    function file_selected(event) {
+        $(`#${event.target.id}_button_to_click`).click()
+    }
+</script>
+{% endif %}
+
+<!-- Setting Table -->
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+            data: claswrk_dataSet,
+            columns: [
+                { title: table_column_heading[0] },
+                { title: table_column_heading[1] },
+                { title: table_column_heading[2] },
+                { title: table_column_heading[3] },
+                { title: table_column_heading[4] }
+            ]
+        });
+
+        // Adding ajax
+        for (let item in list_pdf_urls) {
+            let id_url = `${list_pdf_urls[item]}`
+            document.getElementById(`${id_url}_view_file`).addEventListener("click", (e) => {
+                window.location.href = `/class/classwork/pdf/${id_url}`
+                $.ajax({
+                    url: `/class/classwork/pdf/${id_url}`,
+                    type: "GET",
+                    success: function (resp) {
+                        if (resp == null) {
+                            let to_append = `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Problem in getting pdf please reload the page
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`
+                            $(".flashes").append(to_append)
+                        }
+                        else { }
+                    },
+                    error: function (e) {
+                        alert("Problem in getting pdf file.\n Please reload the page")
+                    }
+                })
+
+            })
+        }
+
+    });
+</script>
+
+<!---------------------------------------------------------------------------------------------------------------------->
+<!----------------------------------------------------------Script End-------------------------------------------------->
+<!---------------------------------------------------------------------------------------------------------------------->
+
+
+<script>
+    $(".main").innerWidth = $("#layoutSidenav_content").innerWidth
+</script>
+{% endblock %}

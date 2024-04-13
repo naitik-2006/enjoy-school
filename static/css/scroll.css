@@ -1,0 +1,37 @@
+.sidenav-menu::-webkit-scrollbar {
+    display: block;
+    width: .3rem;
+}
+
+.sidenav-menu::-webkit-scrollbar-thumb {
+    border-radius: 10rem;
+    height: 3em;
+    border-width: .1rem;
+    border-style: solid;
+    background-clip: padding-box
+}
+.sidenav-menu::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none
+}
+.sidenav-menu::-webkit-scrollbar-corner {
+    background-color: transparent
+}
+.sidenav-menu:hover::-webkit-scrollbar {
+    display: block
+}
+.sidenav-menu::-webkit-scrollbar-thumb {
+    background-color: #c5ccd6;
+    border-color: transparent
+}
+.sidenav-menu::-webkit-scrollbar-track {
+    background-color: rgba(31, 45, 65, .05);
+}
+.sidenav-menu::-webkit-scrollbar-thumb {
+    background-color: #c5ccd6;
+    border-color: #c5ccd6
+}
+.sidenav-menu::-webkit-scrollbar-track {
+    background-color: #f3f4f5;
+}

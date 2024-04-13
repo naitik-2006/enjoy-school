@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Custom fonts for this template-->
+        <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet"
+            type="text/css">
+
+        <!-- Bootstarp styles for this template-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+        <!-- Bootstrap files (jQuery first, then Popper.js, then Bootstrap JS) -->
+        <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+            type="text/javascript"></script>
+
+        <!-- Custom Style sheet -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/scroll.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/sign-up.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/class.css') }}">
+        <style>
+            .alert {
+                margin-bottom: 0rem;
+            }
+        </style>
+
+        <!-- Custom Files -->
+        {% block cssfile %} {% endblock %}
+        {% block script_instant_file %} {% endblock %}
+
+        <title>{% block title %} {% endblock %}</title>
+    </head>
+
+    <body onload="loader_true()">
+
+        <header id="header" class="fixed-top">
+            <nav class="topnav navbar  navbar-expand shadow topbar navbar-light bg-white" id="class_nav1">
+                <button id="sidebarToggle" class="btn btn-icon btn-transparent-dark order-lg-0 mr-lg-2"
+                    style="margin-left: 10px; margin-top: 8px;">
+                    <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24" class="feather feather-menu">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg></i-feather>
+                </button>
+                <a class="navbar-brand  d-sm-block" href="#">Enjoy School</a>
+                {% block nav_edit %} {% endblock %}
+                <ul class="navbar-nav mx-2">
+                    <div class="dis" id="_440">
+                        <li class="nav-item d-flex no-caret dropdown"><a class=" nav-link pointer">
+                                <div class="d-none d-md-inline font-weight-500 ">
+                                    About Us</div>
+                                <div class="d-inline d-md-none font-weight-500">
+                                    About Us</div>
+                                <fa-icon class="ng-fa-icon icon dropdown-arrow"><svg
+                                        class="svg-inline--fa fa-chevron-right fa-w-10"
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                                        <path fill="currentColor"
+                                            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z">
+                                        </path>
+                                    </svg></fa-icon>
+                            </a>
+                        </li>
+                    </div>
+
+                    <!-- Message for future -->
+                    <li class="nav-item dropdown no-arrow mx-3" style="display: none;">
+                        <a class="nav-link" href="#" id="messagesDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-envelope fa-fw"></i>
+                            <!-- Counter - Messages -->
+                            <span class="badge badge-danger badge-counter">7</span>
+                        </a>
+                        <!-- Dropdown - Messages -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="messagesDropdown">
+                            <h6 class="dropdown-header">
+                                Message Center
+                            </h6>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="" alt="">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate">Hi there! I am wondering if you can help me with a
+                                        problem I've
+                                        been
+                                        having.</div>
+                                    <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="" alt="">
+                                    <div class="status-indicator"></div>
+                                </div>
+                                <div>
+                                    <div class="text-truncate">I have the photos that you ordered last month, how would
+                                        you like
+                                        them sent
+                                        to you?</div>
+                                    <div class="small text-gray-500">Jae Chun · 1d</div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="" alt="">
+                                    <div class="status-indicator bg-warning"></div>
+                                </div>
+                                <div>
+                                    <div class="text-truncate">Last month's report looks great, I am very happy with the
+                                        progress so far,
+                                        keep up the good work!</div>
+                                    <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="" alt="">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div>
+                                    <div class="text-truncate">Am I a good boy? The reason I ask is because someone told
+                                        me that
+                                        people
+                                        say this to all dogs, even if they aren't good...</div>
+                                    <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                </div>
+                            </a>
+                            <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                        </div>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item no-arrow dropdown">
+                        <a class="dropdown-toggle btn btn-icon btn-transparent-dark" href="#" id="userDropdown"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img class="rounded-circle img-fluid"
+                                src="{{url_for('static', filename='Teacher_logo.png') }}">
+
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-cog fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-item" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                <a href="/logout" style=" color:black; text-decoration: none; ">Logout</a>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            {% block other_nav %} {% endblock %}
+        </header>
+        <div id="layoutSidenav">
+            <!-- Side Nav -->
+            <div id="layoutSidenav_nav" class="side-nav">
+                <!-- Main Content -->
+                <div class="sidenav-menu">
+                    <div class="nav">
+                        <div class="sidenav-menu-heading">CORE</div>
+                        <div>
+                            {% block coreli %}{% endblock %}
+                        </div>
+                        <div class="sidenav-menu-heading2">Interfaces</div>
+                        {% block Interfaces %}{% endblock %}
+                        <div class="sidenav-menu-heading2">Statictics</div>
+                        {% block performance %}{% endblock %}
+                    </div>
+                </div>
+                <!-- Footer -->
+                <div class="sidenav-footer">
+                    <div class="sidenav-footer-content" style="width: 100%;">
+                        <span class="btn btn-icon btn-transparent-dark float-right" style="margin-left:0.5rem ;">
+                            <img class="rounded-circle img-fluid"
+                                src="{{url_for('static', filename='user-img.jpg') }} ">
+                        </span>
+                        <div class="sidenav-footer-subtitle">Logged in as:
+                        </div>
+                        <div class="sidenav-footer-title">{{current_user.name}}</div>
+                    </div>
+                    <!---->
+                </div>
+            </div>
+            <div id="layoutSidenav_content" class="scrollable" style="background-color: #eff7fc;">
+                <div id="only_for_chats">
+                    <!-- Flash Messages -->
+                    <ul class=flashes style="margin-bottom: 0rem;">
+                        {% with message = get_flashed_messages()[-1] %}
+                        {% if message %}
+                        {%if message[0] == "error"%}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{message[1]}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                        {%if message[0] == "good"%}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{message[1]}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                        {% endwith %}
+                    </ul>
+                    <!-- Message End -->
+
+                    <!-- Modal -->
+                    {% block modal %} {% endblock %}
+                    <!-- Modal End -->
+
+                    <!-- Main Content -->
+                    <div class="main ">
+                        <div class="page-header ">
+                            <div class="container-fluid">
+                                <div class="page-header-content">
+                                    <h1 class="page-header-title">
+                                        <div class="page-header-icon">
+                                        </div><span class="heading"></span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                        {% block main_code %}{% endblock %}
+                    </div>
+                    <!-- Content End -->
+
+                    <!-- Main Footer -->
+                    <footer class=" footer mt-auto footer-light" id="footer_hai">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6 small">Copyright © Enjoy School</div>
+                                <div class="col-md-6 text-md-right small"><a href="">Terms
+                                        &amp;
+                                        Conditions</a></div>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- Footer End -->
+                </div>
+                {% block footer %} {% endblock %}
+            </div>
+        </div>
+        {% block last %} {% endblock %}
+
+        <!-- Loader -->
+        <div id="preloader"></div>
+
+        </div>
+
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.3.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"> </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <script>
+            // Toble side Nav
+            var sidebarToggle = document.getElementById('sidebarToggle');
+            var layoutSidenav_nav = document.getElementById('layoutSidenav_nav');
+            var layoutSidenav_content = document.getElementById('layoutSidenav_content');
+            sidebarToggle.addEventListener('click', function () {
+                var display_layoutSidenav_nav = layoutSidenav_nav.className.split(' ');
+                for (item in display_layoutSidenav_nav) {
+                    if ('remove_padding' == display_layoutSidenav_nav[item]) {
+                        $('#layoutSidenav_nav').removeClass('remove_padding')
+                        $('#layoutSidenav_content').removeClass('adding_padding')
+                        try {
+                            $('.input_plus_footer').removeClass('input_plus_footer35')
+                            $('.input_plus_footer').addClass('input_plus_footer34')
+                        }
+                        catch { }
+                    }
+                    else {
+                        $('#layoutSidenav_nav').addClass('remove_padding')
+                        $('#layoutSidenav_content').addClass('adding_padding')
+                        try {
+                            $('.input_plus_footer').addClass('input_plus_footer35')
+                            $('.input_plus_footer').removeClass('input_plus_footer34')
+
+                        }
+                        catch { }
+                    }
+                }
+            })
+
+            // Toggle classes 
+            var classes = document.getElementById("classes")
+            classes.addEventListener('click', function () {
+                var class_classes = classes.className.split(' ');
+                for (item in class_classes) {
+                    if ('collapsed' == class_classes[item]) {
+                        $('#classes').removeClass('collapsed')
+                        $('#classes_content').removeClass('collapsed')
+                    }
+                    else {
+                        $('#classes').addClass('collapsed')
+                        $('#classes_content').addClass('collapsed')
+                    }
+                }
+            })
+
+            // Loader
+            function loader_true() {
+                var loader = document.getElementById("preloader")
+                loader.style.display = 'none'
+
+                if (window.innerWidth <= 1000) {
+                    $('#layoutSidenav_nav').addClass('remove_padding')
+                    $('#layoutSidenav_content').addClass('adding_padding')
+                }
+            }
+
+        </script>
+        <script>
+            try {
+                var add_list = []
+                var classes_values_for_classes = ""
+                var url_for_classes = ""
+                var role_user = `{{current_user.role}}`
+                if (role_user == "Student") {
+                    url_for_classes = "/get-student-classes"
+                    $("#class_join").on("click", function (e) {
+                        window.location.href = "/join-class"
+                    })
+                }
+                else {
+                    url_for_classes = "/get-teacher-classes"
+                    $("#class_create").on("click", function (e) {
+                        window.location.href = "/create-class"
+                    })
+                }
+
+                // Side Class 
+
+                $.ajax({
+                    url: url_for_classes,
+                    type: "POST",
+                    success: function (resp) {
+                        if (resp != 'Problem') {
+                            classes_values_for_classes = resp
+                            for (item in classes_values_for_classes) {
+                                var vaaa_class_value = ""
+                                var to_vlass_name_text = ""
+                                if (role_user == 'Student') {
+                                    var real_text = classes_values_for_classes[item]['class_name'].trim()
+                                    var length_of_text = classes_values_for_classes[item]['class_name'].trim().length
+                                    if (length_of_text > 18) {
+                                        to_vlass_name_text = real_text.substr(0, 18) + "...."
+                                    }
+                                    else {
+                                        to_vlass_name_text = real_text
+                                    }
+                                }
+                                else {
+                                    var real_text = classes_values_for_classes[item]['class_name'].trim()
+                                    var length_of_text = (classes_values_for_classes[item]['class_name'].trim() + classes_values_for_classes[item]['class_standard']).length
+                                    if (length_of_text > 15) {
+                                        to_vlass_name_text = real_text.substr(0, 15) + "...." + "<div style='padding-left:1rem;'>" + classes_values_for_classes[item]['class_standard'] + "</div>"
+                                    }
+                                    else {
+                                        to_vlass_name_text = real_text + classes_values_for_classes[item]['class_standard']
+                                    }
+
+                                }
+
+                                vaaa_class_value = `<div class="submenu collapsed" id="${classes_values_for_classes[item]['classid']}"">
+                <a class="nav-link" href="/class/${classes_values_for_classes[item]['classid']}/">
+                    <div class="nav-link-icon ">
+                                <i-feather class="icon" style="width: 1rem !important;"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        class="feather feather-book-open">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                    </svg></i-feather>
+                            </div>
+                    ${to_vlass_name_text}
+                                </a>
+                            </div >`
+                                $("#classes_content").append(vaaa_class_value)
+                            }
+                        }
+                        else {
+                            var vaaa_class_value = `<div class="submenu collapsed" id="${classes_values_for_classes[item]['classid']}"">
+                <a class="nav-link">
+                    <div class="nav-link-icon ">
+                                <i-feather class="icon" style="width: 1rem !important;"><svg
+                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                        class="feather feather-book-open">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                    </svg></i-feather>
+                            </div>Problem In getting Classes</a>
+                            </div >`
+                            $("#classes_content").append(vaaa_class_value)
+                        }
+                    },
+                    error: function () {
+                        alert("Problem in getting classes")
+                    }
+                })
+
+            }
+            catch {
+
+            }
+        </script>
+        <!-- Other Script -->
+        {% block scriptfile %}{% endblock %}
+    </body>
+
+</html>

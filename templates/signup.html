@@ -1,0 +1,132 @@
+{% extends 'singup_layout.html' %}
+{% block script_instant_file %} 
+<script>
+    console.log("yes")
+    var locationto1 = '{{ params}}'
+    console.log('{{ params2 }}' == "true")
+    if ('{{ params2 }}' == "true") {
+        console.log("yes")
+        var locationto = locationto1
+        window.location.assign(locationto)
+    }
+</script>
+{% endblock %}
+{% block title %}
+Sign-Up
+{% endblock %}
+{% block navli %}
+<li class="nav-item d-flex no-caret dropdown"><a class=" nav-link pointer" href="\about">
+        <div class="d-none d-md-inline font-weight-500">
+            About Us</div>
+    </a>
+</li>
+<li class="nav-item d-flex"><a class=" nav-link pointer" href="\login">
+        <div class="d-none d-md-inline font-weight-500">
+            LogIn<div>
+                <div class="d-inline d-md-none font-weight-500">
+                    LogIn</div>
+    </a>
+</li>
+<li class="nav-item d-flex"><a class=" nav-link  active" href="\signup">
+        <div class="d-none d-md-inline font-weight-800">
+            Sign Up<div>
+                <div class="d-inline d-md-none font-weight-900">
+                    Sign Up</div>
+    </a>
+</li>
+{% endblock %}
+
+{% block coreli %}
+<div>
+    <a class="nav-link  collapsed" href="\about">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-activity">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12">
+                    </polyline>
+                </svg></i-feather>
+        </div>
+        <!----> About Us
+    </a>
+
+</div>
+{% endblock %}
+{% block loginli %}
+<div>
+    <div>
+        <a class="nav-link " href="\login">
+            <div class="nav-link-icon">
+                <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24" class="feather feather-layout">
+                        <path
+                            d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z">
+                        </path>
+                    </svg></i-feather>
+            </div>
+            <!----> LogIn To Your Account
+        </a>
+    </div>
+
+
+</div>
+{% endblock %}
+{% block newaccountli %}
+<div>
+    <a class="nav-link " href="\signup-teacher">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Sign Up - Teacher
+    </a>
+    <a class="nav-link  " href="\signup-student">
+        <div class="nav-link-icon">
+            <i-feather class="icon" style="width: 1rem !important;"><svg xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24" class="feather feather-repeat">
+                    <polyline points="17 1 21 5 17 9"></polyline>
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                    <polyline points="7 23 3 19 7 15"></polyline>
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                </svg></i-feather>
+        </div>
+        <!----> Sign Up - Student
+    </a>
+</div>
+{% endblock %}
+{% block form %}
+<div class="signup-form">
+    <form action="/signup" method="post">
+        <h2>Sign-Up</h2>
+        <style>
+            .form-check{
+                margin-bottom: 0.5rem;
+            }
+        </style>
+        <div class="form-check">
+            <div class="input-group " >
+                <label class="form-check-label "  id="style" style="font-size:1.5rem;">
+                    <img src=" {{url_for('static', filename='Teacher_logo.png') }} " class=" d-inline"style="width: 20%; margin-right:1rem; margin-left:0.5rem;">Student
+                </label>
+                <input class="form-check-input " type="radio" name="name" id="exampleRadios1" value="option1" style="margin-top: 1.8rem;">
+            </div>
+        </div>
+        <div class="form-check">
+            <div class="input-group " >
+                <label class="form-check-label " id="style1" style="font-size:1.5rem;">
+                    <img src=" {{url_for('static', filename='Teacher_logo.png') }} " class=" d-inline"style="width: 20%; margin-right:1rem; margin-left:0.5rem;">Teacher
+                </label>
+                <input class="form-check-input " type="radio" name="name" id="exampleRadios1" value="option2" style="margin-top: 1.8rem;">
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block btn-lg">Next</button>
+        </div>
+    </form>
+    <div class="text-center">Already have an account? <a href="\login">Login here</a>.</div>
+</div>
+{% endblock %}
