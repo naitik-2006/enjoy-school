@@ -25,11 +25,13 @@ Functions Useful -
 
 
 from MySQLdb import _mysql
+from flask import jsonify
 import user_classes as uc
 import media_files as mf
 import flash_errors as fe
 from werkzeug.utils import secure_filename
 import re
+import mysql.connector
 
 mysql_passwd = ''
 mysql_user = "root"
@@ -43,13 +45,15 @@ def get_class_chats(classid):
 
 
     try:
-        dbase =_mysql.connect(db="class_chats", user = mysql_user , passwd = mysql_passwd)
+        dbase = mysql.connector.connect(host="localhost",user="root",password="",database="class_chats")
+        mycursor = dbase.cursor()
 
-        dbase.query(f"""SELECT `sno` , `user_email` , `user_name` , `msg` , `date-time` , `send_msg` FROM `{classid}_chats` """)
+        query = (f"""SELECT `sno` , `user_email` , `user_name` , `msg` , `date-time` , `send_msg` FROM `{classid}_chats` """)
+        mycursor.execute(query)
 
-        chats_tp =  dbase.store_result().fetch_row(maxrows = 0)
+        chats_tp =  mycursor.fetchall()
 
-        chats_li = [{"id" : sno.decode() , "participant_email" : user_email.decode() ,"participant_name" : user_name.decode()  , "message" : msg.decode() , "date-time" : date_time.decode() ,  "send-to" : send_to.decode()} for sno , user_email , user_name , msg , date_time , send_to in chats_tp ]
+        chats_li = [{"id" : sno , "participant_email" : user_email ,"participant_name" : user_name  , "message" : eval(msg,dict()) , "date-time" : date_time ,  "send-to" : send_to} for sno , user_email , user_name , msg , date_time , send_to in chats_tp ]
 
         return chats_li
 
@@ -59,12 +63,15 @@ def get_class_chats(classid):
 def del_older_msg(classid , db):
 
     try:
-
-        db.query(f"""SELECT  `sno` FROM `{classid}_chats`""")
-        snos =  db.store_result().fetch_row(maxrows = 0)
+        mycur = db.cursor()
+        query = (f"""SELECT  `sno` FROM `{classid}_chats`""")
+        mycur.execute(query)
+        snos =  mycur.fetchall()
         if len(snos) >= 200:
 
-            db.query(f"""DELETE FROM `{classid}_chats` WHERE `{classid}_chats`.`sno` = '{snos[0][0].decode()}'""")
+            query = (f"""DELETE FROM `{classid}_chats` WHERE `{classid}_chats`.`sno` = '{snos[0][0]}'""")
+            mycur.execute(query)
+            db.commit()
 
         return None
     
@@ -73,9 +80,10 @@ def del_older_msg(classid , db):
 
 def add_message(classid , participant_email , participant_name , data , msg_type , db , img_class , pdf_class , video_class , audio_class , doc_class):
     try:
-        dbase =_mysql.connect(db="class_chats",user = mysql_user , passwd = mysql_passwd)
-
-        del_older_msg(classid , dbase)
+        mysql_db = mysql.connector.connect(host="localhost",user=mysql_user,password="",database="class_chats")
+        mycursor = mysql_db.cursor()
+        del_older_msg(classid , mysql_db)
+        
 
         current_participants = uc.get_participants_email(classid)
         if current_participants == "Problem In Contacting":
@@ -91,14 +99,10 @@ def add_message(classid , participant_email , participant_name , data , msg_type
             regex_to_match = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
             urls_finded = re.findall(regex_to_match , message)      
             urls = [x[0] for x in urls_finded]
-
+            
             msg_inf = {"type" : msg_type , "msg" : message , "urls" : urls}
             msg_dict = str(msg_inf)
             return_dict.update(msg_inf)
-
-            
-
-
 
         elif  msg_type == "media_file" :
 
@@ -121,7 +125,9 @@ def add_message(classid , participant_email , participant_name , data , msg_type
             fe.some_went_wrong()
             return "swr"
 
-        dbase.query(f"""INSERT INTO `{classid}_chats` (`user_email`, `user_name` ,`msg`, `send_msg` , `date-time`) VALUES ( '{participant_email}', '{participant_name}',"{msg_dict}", "{current_participants}" , current_timestamp())""")
+        query = (f"""INSERT INTO `{classid}_chats` (`user_email`, `user_name` ,`msg`, `send_msg` , `date-time`) VALUES ( '{participant_email}', '{participant_name}',"{msg_dict}", "{current_participants}" , current_timestamp())""")
+        mycursor.execute(query)
+        mysql_db.commit()
         return return_dict
 
     except Exception:

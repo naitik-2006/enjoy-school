@@ -258,7 +258,7 @@ def upload():
 
 
     file = request.files.get("image")
-    print(request.form.get("date"))
+    # print(request.form.get("date"))
 
     upload_image = mf.upload_image_file(file , Media_Files_Images , db , 15 , request)
 
@@ -770,7 +770,7 @@ def resend_foget_pass_verify_otp(slug):
 @login_required
 @app.route("/create-class" , methods = ["POST", "GET"] )
 def create_class():
-    print("request")
+    # print("request")
     if current_user.role == 'Teacher':
 
         if request.method == 'POST':
@@ -806,11 +806,11 @@ def req_join_class():
         if request.method == 'POST':
             cls_id = request.form.get("id")
 
-            print(cls_id)
+            # print(cls_id)
             if cls_id == None or cls_id == "":
                 fe.some_went_wrong()
                 return redirect("/join-class")
-            print(cls_id)
+            # print(cls_id)
             join_class_request = uc.add_joining_req(current_user.email, current_user.name, cls_id)
 
             if join_class_request in ("Problem In Contacting" , "No class found" , "Already Joined" , "Already Requested", "Max Joined" ):
@@ -879,7 +879,7 @@ def class_home_page(slug):
         return render_template("404.html")
 
     clswrks = ch.get_all_classworks(slug , current_user.email)
-    print(clswrks)
+    # print(clswrks)
     meetings = ""
 
     return render_template("class_template/class_work.html", href_window = slug , tittle = cls_name , classworks = clswrks , meetings = meetings)
@@ -1082,11 +1082,14 @@ def handle_join_room_event(data):
 
     room_url = data["room"]
     classid = room_url[:15]
+    # print("printing")
+    # print(room_url)
+    # print(classid)
 
     if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
         fe.some_went_wrong()
         return "swr"
-
+    print("room joined")
     join_room(classid)
 
 
@@ -1097,20 +1100,17 @@ def handle_send_msg_event(data):
     classid = room_url[:15]
     msg_type = data["type"]
 
+
     if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
         fe.some_went_wrong()
         return "swr"
 
 
     add_msg = cc.add_message(classid, current_user.email, current_user.name , data , msg_type, db , Media_Files_Images , Media_Files_Pdfs , Media_Files_Videos , Media_Files_Audios , Media_Files_Docs)
-
     if add_msg in ("Problem In Contacting" , "fi" , "swr"):
         return "swr"
     
-    socketio.emit('recieve_krle', jsonify(add_msg) , room = room_url)
-
-    # add_msg Example - {"user_email" : myemail@gmail.com , "user_name" : My Name , "type" : "text_msg" , "msg" : "My Profile: https://auth.geeksforgeeks.org/user/Chinmoy%20Lenka/articles in the portal of http://www.geeksforgeeks.org/" , "urls" :  ['https://auth.geeksforgeeks.org/user/Chinmoy%20Lenka/articles', 'http://www.geeksforgeeks.org/']}
-
+    socketio.emit('recieve_krle', (add_msg) , room = classid)
 
 @app.route("/chat/image/<string:url>" , methods = ["POST"])
 def get_image_response(url):
@@ -1182,14 +1182,14 @@ def approve_class_join_req():
     if current_user.role == 'Teacher':
 
         classid = request.form.get('id')
-        print(classid)
+        # print(classid)
 
         if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
             fe.some_went_wrong()
             return "swr"
 
         app_req = uc.approve_request(request.form.get('student_email'), classid)
-        print("add_req")
+        # print("add_req")
 
         if app_req in ("Problem In Contacting" , "Request Not Found" , "Max joined" , "Max Participants" , "Already Joined"):
             return "redirect"
@@ -1337,7 +1337,7 @@ def get_participants():
 def test():
     data = "string"
     data = jsonify(data)
-    print(data)
+    # print(data)
     return data
 
 #************************************************************************

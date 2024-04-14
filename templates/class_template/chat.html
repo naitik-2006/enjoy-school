@@ -60,7 +60,7 @@
         -webkit-box-direction: normal;
     }
 </style>
-<!-- Chatting -->
+<!-- Chatting (Simply Whatsapp ki Copy kri hai Mostly)-->
 <style>
     .signup-form {
         width: 100% !important;
@@ -1046,51 +1046,6 @@
 <!-- Chat Code Card -->
 <div class="container-fluid mt-n10" id="chatting">
     <div id="messages">
-        <div class="file_recieve class_style style_class  message-in message-in2 ">
-            <span></span>
-            <div class="chat-body">
-                <div class="body_style1 body_style2">
-                    <div class="file-body">
-                        <div class="file_download_button" title="Download “user_classes.py”" type="button">
-                            <div class="file_download_button_back">
-                                <div class="file-download-button">
-                                    <div class="file_image_container">
-                                        <div class="file-button-image"></div>
-                                    </div>
-                                    <div class="file_text_container" style="flex-grow: 1;">
-                                        <span class=""
-                                            style="font-family: 'fangsong', Times, serif; font-size: 1.06rem;font-weight: bolder;">faltu.faltu</span>
-                                    </div>
-                                    <div class="" style="flex-grow: 0;">
-                                        <div class="file_main_download">
-                                            <span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" width="34"
-                                                    height="34">
-                                                    <path fill="currentColor"
-                                                        d="M17 2c8.3 0 15 6.7 15 15s-6.7 15-15 15S2 25.3 2 17 8.7 2 17 2m0-1C8.2 1 1 8.2 1 17s7.2 16 16 16 16-7.2 16-16S25.8 1 17 1z">
-                                                    </path>
-                                                    <path fill="currentColor"
-                                                        d="M22.4 17.5h-3.2v-6.8c0-.4-.3-.7-.7-.7h-3.2c-.4 0-.7.3-.7.7v6.8h-3.2c-.6 0-.8.4-.4.8l5 5.3c.5.7 1 .5 1.5 0l5-5.3c.7-.5.5-.8-.1-.8z">
-                                                    </path>
-                                                </svg>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="file_details">
-                            <span class="extension_name" title="flatu">flatu</span>
-                            <span class="extension_name" title="26 kB">26 kB</span>
-                        </div>
-                        <div class="file_send_time">
-                            <div class="send-time-file"><span>7:40 PM</span></div>
-                        </div>
-                    </div>
-                    <span></span>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -1103,8 +1058,6 @@
         <form id="message_input" class="signup-form">
             <div class="form-group">
                 <div class="input-group">
-                    <!-- <div class="textarea"> -->
-                    <!-- <div class="inneer"></div> -->
                     <textarea type="text" class="form-control" name="message" id="message" value=""
                         placeholder="Enter Your Message Here"></textarea>
                     <div class="outtr"></div>
@@ -1170,7 +1123,9 @@
 {% endblock %}
 
 {% block scriptfile %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"
+    integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO"
+    crossorigin="anonymous"></script>
 
 
 
@@ -1183,18 +1138,22 @@
 <script>
     const socket = io.connect("http://127.0.1:5000");
     socket.on('connect', function () {
+        // Connection socket io
         socket.emit('join_room', {
             username: "{{current_user.name}}",
             room: href_window + "" + "_chat"
         })
+
+        // Adding event listen to the submit button
         document.getElementById("message_input").onsubmit = function (e) {
-            e.preventDefault()
             var value_message = document.getElementById("message").value.trim();
             $("#file_preview").removeClass("display");
-            const file2 = document.getElementById("attachment").files[0];
+            console.log(document.getElementById("attachment").files)
+            var file2 = document.getElementById("attachment").files[0];
             document.getElementById("attachment").value = "";
             let image_url = ['jpg', 'img', 'jpeg', 'png', 'PNG']
             let video_url = ['mp4', 'mp3', 'mkv']
+
             if (value_message.length) {
                 socket.emit('send_message', {
                     'username': '{{ current_user.name }}',
@@ -1205,30 +1164,24 @@
                 });
                 document.getElementById("message").value = "";
                 document.getElementById("message").focus;
-
-
             }
             else if (file2) {
                 reader.readAsDataURL(file2)
-                let result
                 reader.onload = function () {
-                    result = reader.result;
                     socket.emit('send_message', {
                         'username': '{{ current_user.name }}',
                         'useremail': '{{ current_user.email }}',
                         'room': href_window + "" + "_chat",
                         'type': "media_file",
-                        'message': result,
-                        'file_size': 26,
-                        'filename': "Python",
-                        'type': "Py"
+                        'message': reader.result
                     });
                 }
             }
+            e.preventDefault()
         }
+
         socket.on('recieve_krle', function (data) {
 
-            // Vaiable and loader setter
             $("#preloader").hide()
             let newnode = ""
             let time = new Date()
@@ -1265,9 +1218,7 @@
                         </div>`
                         last_elem_id2 = today_date;
                     }
-                    else {
 
-                    }
                     $("#messages").append(newnode)
 
                     if (last_elem_id != data['user_email']) {
@@ -1288,9 +1239,7 @@
                         </div>`
                         last_elem_id2 = today_date
                     }
-                    else {
 
-                    }
                     $("#messages").append(newnode);
                     newnode = `<div class="class_style style_class  message-in message-in2 " id="${data['user_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div  class="message_head"><span class="card_heading_style  card_heading_style3">${data['user_name']}</span></div><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${data['msg']}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${today_time}</span></div></div></div><span></span></div></div></div>`
                 }
@@ -1314,8 +1263,8 @@
             }
             else {
                 // Note In the red color please listen carefully before changing the variable
-                //mene isime variable bhi assign nhi kiye 
-                //nahi mb hatayi hai 
+                // mene isime variable bhi assign nhi kiye 
+                // nahi mb hatayi hai 
 
                 if (data['user_email'] == '{{current_user.email}}') {
 
@@ -1388,7 +1337,6 @@
     let resp_try = {{ old_chats | tojson }}
 
     try {
-        let resp = resp_try;
         let html_for_chats = '';
         let last_elem_id = "kuch nhi ha /*-**/* yar mere";
         let last_elem_id2 = "kuch nhi ha /*-**/* yar mere";
@@ -1406,26 +1354,43 @@
         }
         catch {
         }
+
         let time = new Date()
         let today_date = time.toLocaleDateString().split("/")[1] + "-" + time.toLocaleDateString().split("/")[0] + "-" + time.toLocaleDateString().split("/")[2]
-        for (var item in resp) {
+        
+        function formatDate(dateString) {
+            // Create a new Date object from the given date string
+            var date = new Date(dateString);
+
+            // Extract the day, month, and year components from the date object
+            var day = date.getDate();
+            var month = date.getMonth() + 1; // Months are zero-indexed, so we add 1
+            var year = date.getFullYear();
+
+
+            // Assemble the formatted date string in the format dd-mm-yyyy
+            var formattedDate = day + '-' + month + '-' + year;
+
+            return formattedDate;
+        }
+
+        for (var item in resp_try) {
 
             try {
-                msg_type = resp[item]["msg_type"]
+                msg_type = resp_try[item]['message']["type"]
                 if (msg_type == 'msg_text') {
 
-                    if (resp[item]["message"] == "None") {
+                    if (resp_try[item]["message"]['msg'] == "None") {
                         msg_type = null
                     }
                     else {
-                        msg_type = resp[item]["msg_type"]
-                        msg_content = resp[item]["message"]
-                        msg_urls = resp[item]["msg_details"]["urls"]
+                        msg_content = resp_try[item]["message"]['msg']
+                        msg_urls = resp_try[item]["message"]["urls"]
                     }
 
                     // Url checking and replacing
                     let str_to_replace = msg_content
-                    if (msg_urls['length'] > 0) {
+                    if (msg_urls.length > 0) {
                         for (let item_urls in msg_content.split(" ")) {
                             for (let item_of_url in msg_urls) {
                                 if (msg_urls[item_of_url] == msg_content.split(" ")[item_urls]) {
@@ -1438,13 +1403,15 @@
                     msg_content = str_to_replace
 
                     // Adding Message
-                    if (resp[item]['participant_email'] == `{{current_user.email}}`) {
+                    let a = resp_try[item]['send-to']
+                    a = a.replace(/'/g, '"');
+                    a = JSON.parse(a)
+                    console.log(a.includes(`{{current_user.email}}`));
+                    if (resp_try[item]['participant_email'] == `{{current_user.email}}`) {
 
                         // Checking date and adding date
-                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
-
-                        }
-                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
+                        if (formatDate(resp_try[item]['date-time']) == last_elem_id2) {}
+                        else if (formatDate(resp_try[item]['date-time']) == today_date) {
                             html_for_chats = html_for_chats + `<div id="messages_date">
                             <div class="class_style date_fix">
                                 <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
@@ -1455,52 +1422,48 @@
                         else {
                             html_for_chats = html_for_chats + `<div id="messages_date">
                             <div class="class_style date_fix">
-                                <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
+                                <div class="date_main_bg"><span class="what_is_the_date">${formatDate(resp_try[item]['date-time'])}</span></div>
                             </div>
                         </div>`;
-                            last_elem_id2 = resp[item]['date-time'].split(" ")[0];
+                            last_elem_id2 = formatDate(resp_try[item]['date-time']);
                         }
 
                         if (last_elem_id != `{{current_user.email}}`) {
-                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out   message-in4  message-in5" id="${resp[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out   message-in4  message-in5" id="${resp_try[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp_try[item]['date-time'].split(" ")[4]}</span></div></div></div><span></span></div></div></div>`
                         }
                         else {
-                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out  " id="${resp[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-out  " id="${resp_try[item]['participant_email']}"><span></span><div class="chat-body "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp_try[item]['date-time'].split(" ")[4]}</span></div></div></div><span></span></div></div></div>`
                         }
 
                     }
-                    else if (resp[item]['send-to'].includes(`{{current_user.email}}`)) {
+                    
+                    else if (a.includes(`{{current_user.email}}`)) {
 
                         // Checking date and adding date
-                        if (resp[item]['date-time'].split(" ")[0] == last_elem_id2) {
-                        }
-                        else if (resp[item]['date-time'].split(" ")[0] == today_date) {
-                            html_for_chats = html_for_chats + `<div id="messages_date">
-                                <div class="class_style date_fix">
-                                    <div class="date_main_bg"><span class="what_is_the_date">Today</span></div>
-                                </div>
-                            </div>`
+                        if (formatDate(resp_try[item]['date-time']) == last_elem_id2) {}
+                        else if (formatDate(resp_try[item]['date-time']) == today_date) {
+                            html_for_chats = html_for_chats + `<div id="messages_date"><div class="class_style date_fix"><div class="date_main_bg"><span class="what_is_the_date">Today</span></div></div></div>`
                             last_elem_id2 = today_date
                         }
                         else {
                             html_for_chats = html_for_chats + `<div id="messages_date">
-                                <div class="class_style date_fix">
-                                    <div class="date_main_bg"><span class="what_is_the_date">${resp[item]['date-time'].split(" ")[0]}</span></div>
-                                </div>
-                            </div>`
-                            last_elem_id2 = resp[item]['date-time'].split(" ")[0]
+                            <div class="class_style date_fix">
+                                <div class="date_main_bg"><span class="what_is_the_date">${formatDate(resp_try[item]['date-time'])}</span></div>
+                            </div>
+                        </div>`;
+                            last_elem_id2 = formatDate(resp_try[item]['date-time']);
                         }
 
-                        if (last_elem_id != `${resp[item]['participant_email']}`) {
-                            html_for_chats = html_for_chats + `<div class="class_style style_class  message-in message-in2 " id="${resp[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div  class="message_head"><span class="card_heading_style  card_heading_style3">${resp[item]['participant_name']}</span></div><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                        if (last_elem_id != `${resp_try[item]['participant_email']}`) {
+                            html_for_chats = html_for_chats + `<div class="class_style style_class  message-in message-in2 " id="${resp_try[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div  class="message_head"><span class="card_heading_style  card_heading_style3">${resp_try[item]['participant_name']}</span></div><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp_try[item]['date-time'].split(" ")[4]}</span></div></div></div><span></span></div></div></div>`
                         }
                         else {
-                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-in message-in3" id="${resp[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp[item]['date-time'].split(" ")[1]}</span></div></div></div><span></span></div></div></div>`
+                            html_for_chats = html_for_chats + ` <div class="class_style style_class message-in message-in3" id="${resp_try[item]['participant_email']}"><span></span><div class="chat-body  "><div class=" body_style1  body_style2"><div class="chat-message"><div><div class="headp"><span class="card_heading_style3 selectable-text invisible-space copyable-text"><span>${msg_content}</span></span><span class="special_padding"></span></div></div><div class="time_div"><div class="for_time"><span class="style_time" dir="auto">${resp_try[item]['date-time'].split(" ")[4]}</span></div></div></div><span></span></div></div></div>`
                         }
                     }
                     else {
                     }
-                    last_elem_id = resp[item]['participant_email'];
+                    last_elem_id = resp_try[item]['participant_email'];
                 }
 
                 else if (resp = "Problem In Contacting") {
@@ -1514,7 +1477,7 @@
                     }
                     else {
                         msg_type = resp[item]["type"]
-                        user_email= resp[item]["user_email"]
+                        user_email = resp[item]["user_email"]
                         user_name = resp[item]["user_name"]
                         msg_size = resp[item]["file_size"]
                         file_name = resp[item]["file_name"]
@@ -1555,15 +1518,15 @@
                         }
 
                     }
-                    
-                    
-                    
+
+
+
                     // --------------------------------------------------------------------------------------------------
                     // ----------------------------------------------Pause-----------------------------------------------
                     // --------------------------------------------------------------------------------------------------
-                    
-                    
-                    
+
+
+
                     else if (resp[item]['send-to'].includes(`{{current_user.email}}`)) {
 
                         // Checking date and adding date
@@ -1604,9 +1567,9 @@
             }
 
             catch {
-
             }
         }
+
         $("#messages").append(html_for_chats);
     }
 
@@ -1666,10 +1629,13 @@
                 $("#message_submit_button").click();
                 $("#preloader").show()
             }
-            else { }
+            else {
+
+            }
         }
         else { }
     }
+
     document.getElementById("button_preview_cancel").addEventListener('click', (e) => {
         document.getElementById("attachment").value = "";
         document.getElementById("img_tag_preview").src = "";
@@ -1679,6 +1645,7 @@
         $(".input_plus_footer").show();
         document.getElementById("video").pause();
     })
+
     document.getElementById("file_upload_submit").addEventListener("click", (e) => {
         document.getElementById("img_tag_preview").src = "";
         document.getElementById("vid_tag_preview").src = "";
@@ -1695,38 +1662,6 @@
 <!----------------------------------------------------Setting Cookies--------------------------------------------------->
 <!---------------------------------------------------------------------------------------------------------------------->
 
-<script>
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                console.log(c.substring(name.length, c.length));
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function checkCookie() {
-        var message_sno = getCookie("last_meassage_sno");
-        if (message_sno != "") {
-        }
-        else {
-        }
-    }
-    checkCookie()
-</script>
 
 
 <!---------------------------------------------------------------------------------------------------------------------->
