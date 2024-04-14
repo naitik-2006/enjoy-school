@@ -53,6 +53,27 @@ def del_older_clswrk(classid , db):
     except Exception:
         pass
 
+def del_clswrk(classid , sno):
+    '''
+        Delete classworks if they exceed the maximum limit (12)
+    '''
+    
+    try:
+        mysql_db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_other")
+        mycur = mysql_db.cursor()
+        query = (f"""SELECT  `sno` FROM `{classid}_other` WHERE `{classid}_other`.`sno` = {int(sno)} """)
+        mycur.execute(query)
+        snos = mycur.fetchall()
+
+        # if len(snos) >= 12:
+
+        query = (f"""DELETE FROM `{classid}_other` WHERE `{classid}_other`.`sno` = '{snos[0][0]}'""")
+        mycur.execute(query)
+        mysql_db.commit()
+    
+    except Exception:
+        pass
+
 def insert_new_classwork(classid , class_work_name , pdf_file , start_date , end_date , db , dbase_tb_class):
     
     try:
@@ -77,9 +98,10 @@ def insert_new_classwork(classid , class_work_name , pdf_file , start_date , end
     except Exception:
         return "Problem In Contacting"
 
-
 def valid_clswrk_submission(start_date , end_date , user_email , st_details , flash_msg = True):
-
+    '''
+        check whether user able to submit classwork or not
+    '''
     current_date_li = list(time.localtime())[:3]
 
     if no_of_days(end_date) - no_of_days(current_date_li , nt_list_format=False) < 0  or no_of_days(current_date_li , nt_list_format=False)  - no_of_days(start_date) < 0 :
@@ -193,30 +215,6 @@ def get_all_st_submitted_wrk(classid , classwork_id):
     except Exception:
         fe.server_contact_error()
         return "Problem In Contacting"
-
-def valid_file_download(classid , clswrk_id):
-
-    mysql_db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_other")
-    mycursor = mysql_db.cursor()
-
-    query = (f"""SELECT  `details` FROM {classid}_other WHERE `type`  = 'classwork'  AND `sno` = '{clswrk_id}' """)
-    mycursor.execute(query)
-
-    result = mycursor.fetchall()
-    if not result:
-        fe.some_went_wrong()
-        return False
-
-    details_dict = eval(result[-1][-1] , dict())
-
-    current_date_li = list(time.localtime())[:3]
-
-    if no_of_days(details_dict["end_date"]) - no_of_days(current_date_li , nt_list_format=False) < 0  or no_of_days(current_date_li , nt_list_format=False)  - no_of_days(details_dict["start_date"]) < 0 :
-        fe.cant_downlod_now()
-        return False
-
-    return True
-
 
 if __name__ == '__main__':
     pass

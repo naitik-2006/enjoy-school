@@ -35,6 +35,8 @@ def leave_class():
 
 def student_wrk_upload():
     return flash(("good" , "Classwork has been submitted successfully.")) 
+def clswrk_deleted():
+    return flash(("good" , "Classwork has been deleted successfully.")) 
 
 
 

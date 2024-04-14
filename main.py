@@ -251,7 +251,7 @@ def get_nav_classes(user):
             fe.server_contact_error()
             return "Problem"    
 
-
+# For chats
 
 @app.route("/upload" , methods = ["POST"])
 def upload():
@@ -271,8 +271,6 @@ def get_img(slug):
     if img_details:
     #    return Response(*img_details[:2] , mimetype=img_details[2])
         return send_file(BytesIO(img_details[0]) , attachment_filename=img_details[1] , as_attachment=True)
-
-
 
 @app.route("/get-images/<string:slug>")
 def get_image_back(slug):
@@ -511,7 +509,6 @@ def signup_teacher_verification(slug):
             session["teacher-otp-verification"] = slug
     
     return  redirect(url_for(main_path))
-
 
 @app.route("/otp-verification/resend/<string:slug>" , methods = ["POST"])
 def resend_user_verification_otp(slug):
@@ -927,6 +924,31 @@ def add_new_classwork(classid):
     return redirect(f"/class/{classid}")
 
 @login_required
+@app.route("/class/<string:data>/delete" , methods = ["POST"])
+def delete_classwork(data):
+
+    if current_user.role != "Teacher":
+        return render_template("404.html")
+
+    try:
+        classid , clswrk_id = data.split("&")
+    except Exception:
+        return render_template("404.html")
+
+    if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
+        fe.some_went_wrong()
+        return redirect(f"/class/{classid}")
+    
+    ch.del_clswrk(classid, clswrk_id)
+
+    
+
+    fs.clswrk_deleted()
+    return redirect(f"/class/{classid}")
+
+
+
+@login_required
 @app.route("/class/<string:classid>/submit-classwork" , methods = ["POST"])
 def add_st_wrk(classid):
 
@@ -985,7 +1007,7 @@ def get_classwork_submission_details(data):
     if participants == "Problem In Contacting":
         redirect(f"/class/{classid}")
 
-    return render_template("class_template/classwork_submission_details.html" , st_email_li = list(submission_details[0]) , st_pdf = submission_details[1] , participants = participants, class_name = submission_details[2], title = title, cls_id = clswrk_id, id = classid)
+    return render_template("class_template/classwork_submission_details.html" , href_window = data, st_email_li = list(submission_details[0]) , st_pdf = submission_details[1] , participants = participants, class_name = submission_details[2], title = title, cls_id = clswrk_id, id = classid)
 
 
 
@@ -1256,9 +1278,6 @@ def leave_class():
 
 
 #--------------------------------------------------------------------------
-
-# Ajax functions to be removed ----
-
 
 @login_required
 @app.route("/get-class-cards" , methods = ['POST'])
