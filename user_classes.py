@@ -106,8 +106,6 @@ def get_more_info_classes(user_email):
     except Exception:
         return "Problem In Contacting"
 
-
-
 def get_class_cards(user_email):
 
     """This function is helpful When we want to display classes cards on home screen...
@@ -159,7 +157,6 @@ def get_class_cards(user_email):
 
     except Exception:
         return "Problem In Contacting"
-
 
 def get_participants(classid):
 
@@ -214,19 +211,19 @@ def get_participants_dict(classid):
     """
 
     try:
+        mysql_db = mysql.connector.connect(host="localhost",user=db_user,password="",database="class_information")
+        mycursor = mysql_db.cursor()
 
-        dbase = _mysql.connect(db="class_information",user = db_user , passwd = mysql_passwd)
-
-        dbase.query(f"""SELECT  `name` , `email` FROM {classid} """)
-        result = dbase.store_result()
+        query = (f"""SELECT  `name` , `email` FROM {classid} """)
+        mycursor.execute(query)
 
         participants_dict = {}
 
         
         while True:
-            row = result.fetch_row()
+            row = mycursor.fetchone()
             if row:
-                participants_dict[f"{row[-1][1] }"]  = row[-1][0] 
+                participants_dict[f"{row[1] }"]  = row[0] 
             else:
                 break
 
@@ -482,7 +479,6 @@ def create_new_class(user_email , class_name , name , class_standard , descripti
         fe.server_contact_error()
         return None
 
-
 def check_already_presence(classid , user_email):
      
     """
@@ -500,8 +496,6 @@ def check_already_presence(classid , user_email):
         if st_class["classid"] == classid:
             return True
     return False
-
-
 
 def add_joining_req(email , name ,  classid):
 
@@ -559,7 +553,6 @@ def add_joining_req(email , name ,  classid):
         
     return None
 
-
 def get_join_req(classid):
 
     """ This function will help us to get all the pending requests for joining the class...
@@ -588,8 +581,6 @@ def get_join_req(classid):
 
     except Exception:
         return "Problem In Contacting"
-
-
 
 def get_class_name(classid):
 

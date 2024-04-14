@@ -78,4 +78,5 @@ def cant_submit_now():
 def cant_download_now():
     return flash(("error","Cannot download the classwork pdf now!"))
 
-
+def cant_downlod_now():
+    return flash(("error", "File can not download now"))

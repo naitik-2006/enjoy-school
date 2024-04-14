@@ -9,6 +9,7 @@ import string
 from random import choice
 from werkzeug.utils import secure_filename
 import flash_errors as fe
+import mysql.connector
 
 
 mysql_passwd = ''
@@ -80,9 +81,11 @@ def get_uni_url(db , table_name):
     try:
 
         url =  ''.join(choice(string.ascii_lowercase  + string.digits) for x in range(8))
+        mycursor = db.cursor()
         while True:
-            db.query(f"""SELECT  `filename` FROM {table_name} WHERE url = '{url}' """)
-            if not (db.store_result().fetch_row()):
+            query = (f"""SELECT  `filename` FROM {table_name} WHERE url = '{url}' """)
+            mycursor.execute(query)
+            if not (mycursor.fetchall()):
                 return url
             url =  ''.join(choice(string.ascii_lowercase + string.digits) for x in range(8))
     except Exception:
@@ -180,36 +183,32 @@ def upload_pdf_file(pdf_file ,dbase_tb_class , db , no_days):
         if not(ext.upper() in ["PDF" , "TXT" , "DOC" , "DOCX" , "PPT" , "PPTX"]):
             fe.select_file_nt_support()
             return "fi"
-
-        mysql_db = _mysql.connect(db = "media_files" , user = db_user , passwd = mysql_passwd)
+        mysql_db = mysql.connector.connect(host="localhost",user=db_user,password="",database="media_files")
+        mycursor = mysql_db.cursor()
 
         current_days = get_counted_days()
-        pdf_content = pdf_file.read()
+        pdf_content = pdf_file.read().decode('utf-8')
 
         if len(pdf_content) > 1024 * 1024 * 25:
             fe.pdf_over_size()
             return "fi"
 
-        url = get_uni_url(mysql_db , "images")
+        url = get_uni_url(mysql_db , "pdfs")
 
         if url == "Problem In Contacting":
             return url
         
-        add_pdf = dbase_tb_class(
-            url = url,
-            file= pdf_content,
-            filename= secure_filename(filename),
-            mimetype = pdf_file.mimetype,
-            date = current_days
-        )
+        add_pdf = dbase_tb_class( url = url, file= pdf_content, filename= secure_filename(filename), mimetype = pdf_file.mimetype, date = current_days)
 
         db.session.add(add_pdf)
         db.session.commit() 
 
-        old_days_del_msg = current_days - no_days
+        old_days_del_pdf = current_days - no_days
 
         try:
-            mysql_db.query(f"""DELETE from `pdfs` WHERE `pdfs`.`date` <= {old_days_del_msg}""")
+            query = (f"""DELETE from `pdfs` WHERE `pdfs`.`date` <= {old_days_del_pdf}""")
+            mycursor.execute(query)
+            mysql_db.commit()
 
         except Exception:
             pass

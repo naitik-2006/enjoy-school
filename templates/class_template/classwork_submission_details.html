@@ -647,7 +647,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Class Work</h5>
+                <h5 class="modal-title" id="exampleModalLabel2">{{class_name}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -659,42 +659,14 @@
                     method="post" onsubmit="upload_final(this)" enctype="multipart/form-data">
                     <div class="form-group">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input type="text" class="form-control" name="class_work_name" id="class_work_name" value=""
-                                placeholder="Class Work Name" maxlength="25" required="required"
-                                title="Max length is 25">
-                        </div>
-                    </div>
-                    <div class="form-group" id="for_flietype">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-file"></i></span>
-                            <!-- <input type="file" class="form-control" multiple="multiple" name="images" accept="image/*, .pdf, text/*, .doc, .txt" id="images" placeholder="file" required="required"> -->
-                            <div class="custom-file">
-                                <input type="file" class="file-upload form-control " id="pdf_file" name="pdf_file"
-                                    aria-describedby="inputGroupFileAddon01" placeholder="No File Choosen" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"
-                                style="padding-top: 0.5rem !important; max-width: 75px !important;">Start Date</span>
-                            <input type="date" class="form-control" name="start_time" id="start_time" value=""
-                                placeholder="Start time " required="required">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <span class="input-group-addon"
-                                style="padding-top: 0.5rem !important; max-width: 75px !important;">End Date</i></span>
-                            <input type="date" class="form-control" name="end_time" id="end_time" value=""
-                                placeholder="End time" required="required">
+                            <p class=""
+                                style="padding-top: 0.5rem !important; ">Do You really want to delete this class work</p>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="previous_classwork"
                             data-target="#exampleModal2" data-toggle="modal" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" id="upload_classwork">Upload</button>
+                        <button type="submit" class="btn btn-primary" id="upload_classwork">Delete</button>
                     </div>
                 </form>
             </div>
@@ -717,65 +689,16 @@
         <div class="card-header collapsed" id="meeting_collapse"
             style="color: #0061f2; font-weight:500; font-family: 'Segoe UI',  Arial, sans-serif">
             <div class="card-name-dropdown">
-                <span>Class Work</span>
-                <div class="sidenav-collapse-arrow ml-2">
-                    <fa-icon class="ng-fa-icon ml-auto"><svg data-icon="angle-down"
-                            class="svg-inline--fa fa-angle-down fa-w-10" style="padding-top: 0.15rem;"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                            <path fill="currentColor"
-                                d="M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z">
-                            </path>
-                        </svg></fa-icon>
-                </div>
+                <span>{{ class_name }}</span>
             </div>
-            {%if current_user.role == "Teacher"%}
             <div class="float-right card-modal-button">
-                <button class="btn btn-outline-primary " class="Upload_button" id="modal_toggle_button2"
+                <button class="btn btn-outline-danger " class="Upload_button" id="modal_toggle_button2"
                     data-toggle="modal" data-target="#exampleModal2">
-                    Add Classwork
+                    Delete Classwork
                 </button>
             </div>
-            <!-- Upload Classwork -->
-            <script>
-
-                // to get date in desired format
-                function todayDate() {
-                    var today = new Date(); // get the current date
-                    var dd = today.getDate(); //get the day from today.
-                    var mm = today.getMonth() + 1; //get the month from today +1 because january is 0!
-                    var yyyy = today.getFullYear(); //get the year from today
-
-                    //if day is below 10, add a zero before (ex: 9 -> 09)
-                    if (dd < 10) {
-                        dd = '0' + dd
-                    }
-
-                    //like the day, do the same to month (3->03)
-                    if (mm < 10) {
-                        mm = '0' + mm
-                    }
-
-                    //finally join yyyy mm and dd with a "-" between then
-                    return yyyy + '-' + mm + '-' + dd;
-                }
-
-                // setting modal default , min value
-                $(document).ready(function () {
-                    $('#start_time').attr('min', todayDate());
-                    $('#end_time').attr('min', todayDate());
-                    $('#start_time').attr('value', todayDate());
-                    $('#end_time').attr('value', todayDate());
-                });
-
-                var classworkname, worktype, filetype
-
-                function upload_final(form) {
-                    document.getElementById("previous_classwork").click()
-                }
-            </script>
-            {% endif %}
         </div>
-        <div class="card-body collapsed" id="meeting_table_content">
+        <div class="card-body" id="meeting_table_content">
             <div id="responsive" class="responsive_table">
                 <table id="example" class="display table table-bordered table-hover " style="width: 99.9%;"> </table>
             </div>
@@ -804,25 +727,6 @@
     $(".Discuss").attr("href", `/class/${href_window}/discuss`)
 </script>
 
-<!-- Classwork Table content Toggle  -->
-<script>
-
-
-    var classes2 = document.getElementById("meeting_collapse")
-    classes2.addEventListener('click', function () {
-        var class_classes2 = classes2.className.split(' ');
-        for (item in class_classes2) {
-            if ('collapsed' == class_classes2[item]) {
-                $('#meeting_collapse').removeClass('collapsed')
-                $('#meeting_table_content').removeClass('collapsed')
-            }
-            else {
-                $('#meeting_collapse').addClass('collapsed')
-                $('#meeting_table_content').addClass('collapsed')
-            }
-        }
-    })
-</script>
 
 <!---------------------------------------------------------------------------------------------------------------------->
 <!---------------------------------------------------------------------------------------------------------------------->
@@ -837,65 +741,31 @@
 <!-- Table variable declaratio-->
 <script>
     var list_pdf_urls = [];
-    let table_column_heading = ['Name', 'Start Date', 'End Date', 'Download', 'Submission']
+    let table_column_heading = ['Name', 'Submission Date', 'View']
+</script>
+
+<script>
+    let part_email = {{ st_email_li | safe }}
+    let st_pdfs = {{ st_pdf | safe }}
+    let participant = {{ participants | safe }}
     var claswrk_dataSet = []
-    let table_clswrk = {{ classworks | safe}}
+    let cls_sno = `{{ cls_id }}`
+    let cls_name = `{{ class_name }}`
+    var list_pdf_urls = []
+
+    for (let item in part_email) {
+        claswrk_dataSet[item] = []
+        claswrk_dataSet[item][0] = participant[part_email[item]];
+        claswrk_dataSet[item][1] = st_pdfs[part_email[item]][1];
+        claswrk_dataSet[item][2] = `<btn class="btn btn-primary view_classwork classwork" id="${st_pdfs[part_email[item]][0]}_view_file">Download</btn>`;
+        list_pdf_urls[item] = [];
+        list_pdf_urls[item][1] = participant[part_email[item]] + "_" + cls_name;
+        list_pdf_urls[item][0] = st_pdfs[part_email[item]][0];
+    }
+
 </script>
 
-<!-- Classwork Table  (Teachers)-->
-{% if current_user.role == 'Teacher' %}
-<!-- Setting table data -->
-<script>
-
-    if (table_clswrk != "Problem In Contacting") {
-        for (let item in table_clswrk) {
-            claswrk_dataSet[item] = []
-            claswrk_dataSet[item][0] = table_clswrk[item]['class_work_name']
-            claswrk_dataSet[item][1] = table_clswrk[item]['start_date']
-            claswrk_dataSet[item][2] = table_clswrk[item]['end_date']
-            claswrk_dataSet[item][3] = `<btn class="btn btn-primary view_classwork classwork" id="${table_clswrk[item]['pdf_file_url']}_view_file">Download</btn>`
-            claswrk_dataSet[item][4] = `<a class="btn btn-primary response_classwork classwork" id="${table_clswrk[item]['classwork_id']}" href="/class/classwork-submitted/${href_window}&${table_clswrk[item]['classwork_id']}">View</a>`
-            list_pdf_urls[item] = []
-            list_pdf_urls[item][0] = table_clswrk[item]['pdf_file_url']
-            list_pdf_urls[item][1] = table_clswrk[item]['classwork_id']
-            list_pdf_urls[item][2] = table_clswrk[item]['class_work_name']
-        }
-    }
-</script>
-{% endif %}
-
-<!-- Classwork Table  (Student)-->
-{% if current_user.role == 'Student' %}
-<!-- Setting table data -->
-<script>
-    if (table_clswrk != "Problem In Contacting") {
-        for (let item in table_clswrk) {
-            claswrk_dataSet[item] = []
-            claswrk_dataSet[item][0] = table_clswrk[item]['class_work_name']
-            claswrk_dataSet[item][1] = table_clswrk[item]['start_date']
-            claswrk_dataSet[item][2] = table_clswrk[item]['end_date']
-            claswrk_dataSet[item][3] = `<btn class=" btn btn-primary view_classwork classwork" id="${table_clswrk[item]['pdf_file_url']}_view_file">Download</btn>`
-            claswrk_dataSet[item][4] = `
-        <form method="post" action = "/class/${href_window}/submit-classwork" enctype="multipart/form-data">
-        <label class="btn btn-primary response_classwork classwork" style="cursor: pointer;" for="${table_clswrk[item]['pdf_file_url']}">Submit</label>
-        <input type="file" name="pdf_file" id="${table_clswrk[item]['pdf_file_url']}" onchange=file_selected(event) style="display:none" visibility = "none">
-        <input type="hidden" name="pdf_file_url" value="${table_clswrk[item]['classwork_id']}" style="display:none" visibility = "none">
-        <input type="submit" value ="submit" id="${table_clswrk[item]['pdf_file_url']}_button_to_click" style="display:none"> 
-        </form>`
-            list_pdf_urls[item] = []
-            list_pdf_urls[item][0] = table_clswrk[item]['pdf_file_url']
-            list_pdf_urls[item][1] = table_clswrk[item]['classwork_id']
-            list_pdf_urls[item][2] = table_clswrk[item]['class_work_name']
-        }
-    }
-    var to_event
-    function file_selected(event) {
-        $(`#${event.target.id}_button_to_click`).click()
-    }
-</script>
-{% endif %}
-
-<!-- Setting Table -->
+<!--Setting Table -->
 <script>
     $(document).ready(function () {
         $('#example').DataTable({
@@ -903,9 +773,7 @@
             columns: [
                 { title: table_column_heading[0] },
                 { title: table_column_heading[1] },
-                { title: table_column_heading[2] },
-                { title: table_column_heading[3] },
-                { title: table_column_heading[4] }
+                { title: table_column_heading[2] }
             ]
         });
 
@@ -922,28 +790,21 @@
         parentDiv.insertBefore(newDiv, thirdDiv);
 
 
-        // getting class id
-        var pathname = window.location.pathname;
-        var pathSegments = pathname.split('/');
-        var lastSegment = pathSegments[pathSegments.length - 1];
-        console.log(lastSegment)
-
 
         // Adding function to the Download classwork Option
+        let class_id = `{{ id }}`
+
         for (let item in list_pdf_urls) {
-            console.log(list_pdf_urls[item][1])
-            console.log("item")
             let id_url = `${list_pdf_urls[item][0]}`
             document.getElementById(`${id_url}_view_file`).addEventListener("click", (e) => {
                 $.ajax({
                     url: `/class/classwork/pdf/${id_url}`,
                     type: "POST",
                     data: {
-                        "classid": lastSegment,
-                        "class_sno": list_pdf_urls[item][1]
+                        "classid": class_id,
+                        "class_sno": cls_sno
                     },
                     success: function (resp) {
-                        console.log(resp)
                         var blob = new Blob([resp]);
                         var url = URL.createObjectURL(blob);
 
@@ -951,8 +812,7 @@
                         var a = document.createElement('a');
                         a.href = url;
 
-                        // var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-                        a.download = list_pdf_urls[item][2];
+                        a.download = list_pdf_urls[item][1];
                         document.body.appendChild(a);
                         a.click();
 

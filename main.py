@@ -882,7 +882,7 @@ def class_home_page(slug):
         return render_template("404.html")
 
     clswrks = ch.get_all_classworks(slug , current_user.email)
-    # meetings = ch.get_all_meetings(slug)
+    print(clswrks)
     meetings = ""
 
     return render_template("class_template/class_work.html", href_window = slug , tittle = cls_name , classworks = clswrks , meetings = meetings)
@@ -895,10 +895,6 @@ def class_home_page(slug):
 @app.route("/class/<string:classid>/add-new-classwork" , methods = ["POST"])
 def add_new_classwork(classid):
 
-    # Redirects using js ---
-    # index - /
-    # modal - open same modal with filled values using js cookies...
-    # cls_home - open class home page (/class/classid)
 
 
     if current_user.role != 'Teacher':
@@ -907,7 +903,7 @@ def add_new_classwork(classid):
 
     if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
         fe.some_went_wrong()
-        return jsonify("index")
+        return redirect(f"/class/{classid}")
 
     pdf_file = request.files.get("pdf_file")
     class_work_name = request.form.get("class_work_name")
@@ -916,21 +912,19 @@ def add_new_classwork(classid):
 
     if None in (pdf_file.filename , class_work_name , start_time , end_time) or "" in (pdf_file.filename , class_work_name , start_time , end_time , request):
         fe.some_went_wrong()
-        return jsonify("modal")
+        return redirect(f"/class/{classid}")
 
     classwork_upload_status = ch.insert_new_classwork(classid , class_work_name, pdf_file , start_time , end_time , db , Media_Files_Pdfs)
 
     if classwork_upload_status == "Problem In Contacting":
         fe.server_contact_error()
-        return jsonify("modal")
+        return redirect(f"/class/{classid}")
 
     if classwork_upload_status == "fi":
-        return jsonify("modal")
+        return redirect(f"/class/{classid}")
 
     fs.clswrk_uploaded()
-    return jsonify("cls_home")
-
-
+    return redirect(f"/class/{classid}")
 
 @login_required
 @app.route("/class/<string:classid>/submit-classwork" , methods = ["POST"])
@@ -973,6 +967,7 @@ def get_classwork_submission_details(data):
         classid , clswrk_id = data.split("&")
     except Exception:
         return render_template("404.html")
+    title = uc.get_class_name(classid)
 
     if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
         return render_template("404.html")
@@ -990,36 +985,29 @@ def get_classwork_submission_details(data):
     if participants == "Problem In Contacting":
         redirect(f"/class/{classid}")
 
-    return render_template("classwork_submission_details.html" , st_email_li = submission_details[0] , st_pdf = submission_details[1] , participants = participants)
+    return render_template("class_template/classwork_submission_details.html" , st_email_li = list(submission_details[0]) , st_pdf = submission_details[1] , participants = participants, class_name = submission_details[2], title = title, cls_id = clswrk_id, id = classid)
 
 
 
 @login_required
-@app.route("/class/classwork/pdf/<string:url>")
+@app.route("/class/classwork/pdf/<string:url>", methods = ['POST'])
 def get_wrk_pdf(url):
 
-    # Valid File Download !
-    # Require clswrk_id and classid from form input ....
-
-    clswrk_id = request.form.get("clswrk_id")
     classid = request.form.get("classid")
-    
+    classsno = request.form.get("class_sno")
     if uc.get_class_name(classid) == None or current_user.email not in uc.get_participants_email(classid):
         fe.some_went_wrong()
-        return jsonify("swr")
-
-    if ch.valid_file_download(classid , clswrk_id):
-        return jsonify("swr")
+        return "error"
     
     pdf_details = mf.reterive_pdf_file(url , Media_Files_Pdfs)
 
     if pdf_details:
-        return send_file(BytesIO(pdf_details[0]) , attachment_filename=pdf_details[1] , as_attachment=True , mimetype=pdf_details[2])
+        print(pdf_details)
+        return send_file(BytesIO(pdf_details[0].encode()) , download_name=pdf_details[1] , as_attachment=True , mimetype=pdf_details[2])
 
     else:
         fe.no_file_fnd()
         return jsonify("fnf")
-
 
 
 
@@ -1291,7 +1279,6 @@ def get_teacher_classes():
     classes = uc.get_more_info_classes(current_user.email)
     if classes == 'Problem In Contacting':
         classes = "Problem"
-    print(jsonify(classes))
     return jsonify(classes)
 
 @login_required
