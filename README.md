@@ -24,3 +24,4 @@
 ## Note :-
 * Some features, such as sending and accepting files in the "discuss" tab, have not been completed yet.
 * Features like scheduling meetings, assigning quizzes, and sharing class codes are currently unavailable.
+* Try to keep username of database root and password = "", otherwise you have to change it in all the files 
