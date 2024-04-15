@@ -24,7 +24,6 @@ Functions Useful -
 
 
 
-from MySQLdb import _mysql
 from flask import jsonify
 import user_classes as uc
 import media_files as mf

@@ -5,7 +5,7 @@ Module to manage the class home page ...
 """
 
 
-from MySQLdb import _mysql
+
 import media_files as mf
 import time
 import flash_errors as fe

@@ -24,7 +24,6 @@ Databases used -
 
 
 
-from MySQLdb import _mysql , _exceptions
 import string
 from random import choice
 import flash_errors as fe

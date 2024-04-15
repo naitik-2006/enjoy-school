@@ -1,0 +1,10 @@
+{
+    "local_host": "mysql://root:password@localhost",
+    "email-al-regis": "Email alreday Registered! Please log in into the existing account.",
+    "verify-email-id": "your email id",
+    "verify-email-password": "Email id passsword is app key",
+    "website_domain":"https//:EnjoySchool/"
+    
+}
+
+
